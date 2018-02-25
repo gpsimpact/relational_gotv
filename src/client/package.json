@@ -16,11 +16,14 @@
     "start": "yarn watch:css & PORT=3001 react-scripts start",
     "build": "yarn build:css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "proxy": "http://localhost:3000/",
   "devDependencies": {
+    "@storybook/react": "^3.3.14",
     "autoprefixer": "^8.0.0",
+    "babel-core": "^6.26.0",
     "postcss-cli": "^5.0.0",
     "tailwindcss": "^0.4.1"
   }
