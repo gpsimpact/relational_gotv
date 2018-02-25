@@ -1,0 +1,27 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "apollo-boost": "^0.1.1",
+    "graphql": "^0.13.1",
+    "react": "^16.2.0",
+    "react-apollo": "^2.1.0-beta.2",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.1.1"
+  },
+  "scripts": {
+    "build:css": "postcss src/styles/index.css -o src/index.css",
+    "watch:css": "postcss src/styles/index.css -o src/index.css -w",
+    "start": "yarn watch:css & PORT=3001 react-scripts start",
+    "build": "yarn build:css && react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:3000/",
+  "devDependencies": {
+    "autoprefixer": "^8.0.0",
+    "postcss-cli": "^5.0.0",
+    "tailwindcss": "^0.4.1"
+  }
+}

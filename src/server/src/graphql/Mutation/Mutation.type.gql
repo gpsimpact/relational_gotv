@@ -1,0 +1,183 @@
+
+enum RegistrantPrefixEnum {
+  mr
+  mrs
+  miss
+  ms
+}
+
+enum RegistrantSuffixEnum {
+  jr
+  sr
+  ii
+  iii
+  iv
+}
+
+input RegistrationInput {
+  # unique id in uuid4 format
+  hash: String
+  attest_citizen: Boolean
+  attest_eighteen_plus: Boolean
+  prefix: RegistrantPrefixEnum
+  suffix: RegistrantSuffixEnum
+  name_first: String
+  name_last: String
+  name_middle: String
+  address_home: String
+  address_apt_lot: String
+  address_city_town: String
+  address_state: String
+  address_zipcode: String
+  mail_address: String
+  mail_address_city_town: String
+  mail_address_state: String
+  mail_address_zipcode: String
+  # YYYY-mm-dd
+  dob: String
+  telephone: String
+  id_number: String
+  party: String
+  race_ethnic: String
+  # YYYY-mm-dd
+  date_signed: String
+  # base 64 data uri png format
+  signature_path: String
+  previous_prefix: RegistrantPrefixEnum
+  previous_suffix: RegistrantSuffixEnum
+  previous_name_first: String
+  previous_name_last: String
+  previous_name_middle: String
+  previous_address_home: String
+  previous_address_apt_lot: String
+  previous_address_city_town: String
+  previous_address_state: String
+  previous_address_zipcode: String
+  helper: String
+  # free form place to record reason for update
+  most_recent_update_label: String
+}
+
+type RegistrantProfile {
+  # unique id in uuid4 format
+  hash: String
+  attest_citizen: Boolean
+  attest_eighteen_plus: Boolean
+  prefix: RegistrantPrefixEnum
+  suffix: RegistrantSuffixEnum
+  name_first: String
+  name_last: String
+  name_middle: String
+  address_home: String
+  address_apt_lot: String
+  address_city_town: String
+  address_state: String
+  address_zipcode: String
+  mail_address: String
+  mail_address_city_town: String
+  mail_address_state: String
+  mail_address_zipcode: String
+  # YYYY-mm-dd
+  dob: String
+  telephone: String
+  id_number: String
+  party: String
+  race_ethnic: String
+  # YYYY-mm-dd
+  date_signed: String
+  # base 64 data uri png format
+  signature_path: String
+  previous_prefix: RegistrantPrefixEnum
+  previous_suffix: RegistrantSuffixEnum
+  previous_name_first: String
+  previous_name_last: String
+  previous_name_middle: String
+  previous_address_home: String
+  previous_address_apt_lot: String
+  previous_address_city_town: String
+  previous_address_state: String
+  previous_address_zipcode: String
+  helper: String
+  # optional label for most recent mutation
+  most_recent_update_label: String
+}
+
+# the structure of the imput required by 
+# - `registerMyself` mutation
+input RegisterUserInput {
+  # the User first name
+  first_name: String!
+  # the user last name
+  last_name: String!
+  # the user email. Must be real address to complete registration process
+  email: String!
+  # password
+  password: String!
+}
+
+type UserProfile {
+  first_name: String
+  last_name: String
+  email: String!
+  email_verified: Boolean
+}
+
+type LoginResult {
+  userProfile: UserProfile
+  token: String
+}
+
+input ChangePasswordInput {
+  # existing password
+  currentPassword: String!
+  # new password
+  newPassword: String!
+}
+
+input ResetPasswordInput {
+  # email address
+  token: String!
+  # new password
+  newPassword: String!
+}
+
+input UpdateProfileInput {
+  # the User first name
+  first_name: String
+  # the user last name
+  last_name: String
+}
+
+type OrganizationUserPermission {
+  email: String!
+  permissions: [String]
+}
+
+type OrganizationPermissions {
+  organization: Organization!
+  users: [OrganizationUserPermission]
+}
+
+type Organization {
+  hash: String!
+  name: String!
+}
+
+enum PermissionEnum {
+  READ_ONLY
+  ADMIN
+}
+
+type Mutation {
+  updateRegistrant(data: RegistrationInput): RegistrantProfile
+  registerUser(user: RegisterUserInput): UserProfile!
+  login(email: String!, password: String!): LoginResult
+  changePassword(data:ChangePasswordInput): String!
+  sendVerificationEmail(email: String!, base_url: String!): String!
+  verifyEmailAddress(token: String!): String!
+  sendPasswordResetEmail(email: String!, base_url: String!): String!
+  resetPassword(data: ResetPasswordInput!): String!
+  updateProfile(data: UpdateProfileInput): UserProfile!
+  addOrganizationPermission(organizationHash: String!, permission: PermissionEnum!, userEmail: String!): OrganizationPermissions!
+  removeOrganizationPermission(organizationHash: String!, permission: PermissionEnum!, userEmail: String!): OrganizationPermissions!
+}

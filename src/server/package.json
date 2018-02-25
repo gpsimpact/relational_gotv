@@ -1,0 +1,49 @@
+{
+  "name": "relational_gotv_server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jake Lowen <jake@gpsimpact.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "backpack",
+    "build": "backpack build",
+    "db:migrate": "knex-migrate up --knexfile ./src/db/knexfile.js --migrations ./src/db/migrations/",
+    "db:reset": "knex-migrate redo --knexfile ./src/db/knexfile.js --migrations ./src/db/migrations/ --verbose",
+    "test:lint": "yarn eslint .",
+    "test": "NODE_ENV=test jest --coverage --forceExit",
+    "test:watch": "NODE_ENV=test && jest --watch --coverage"
+  },
+  "dependencies": {
+    "apollo-engine": "^0.8.8",
+    "apollo-errors": "1.5.1",
+    "apollo-server-express": "^1.3.2",
+    "bcrypt": "^1.0.3",
+    "compression": "^1.7.1",
+    "dataloader": "^1.4.0",
+    "express": "^4.16.2",
+    "gm": "^1.23.1",
+    "graphql": "^0.13.1",
+    "graphql-tools": "^2.20.0",
+    "jsonwebtoken": "^8.1.1",
+    "juice": "^4.2.2",
+    "knex": "^0.14.2",
+    "knex-migrate": "^1.5.1",
+    "mailgun-js": "^0.16.0",
+    "path": "^0.12.7",
+    "pg": "^7.4.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-jest": "^22.1.0",
+    "babel-preset-env": "^1.6.1",
+    "backpack-core": "^0.5.0",
+    "eslint": "^4.17.0",
+    "eslint-plugin-jest": "^21.7.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "faker": "^4.1.0",
+    "jest": "^22.1.4",
+    "prettier": "^1.10.2",
+    "supertest": "^3.0.0"
+  }
+}

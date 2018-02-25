@@ -1,0 +1,13 @@
+{
+  "presets": [
+    "env",
+    "backpack-core/babel"
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "transform-es2015-modules-commonjs"
+      ]
+    }
+  }
+}

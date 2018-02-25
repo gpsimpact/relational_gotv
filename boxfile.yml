@@ -1,0 +1,25 @@
+run.config:
+  engine: nodejs
+  engine.config:
+    runtime: nodejs-8.9
+  fs_watch: true
+  extra_steps:
+    - 'cd src/server && yarn install && cd ..'
+    - 'cd src/client && yarn install && cd ..'
+  cache_dirs:
+    - src/server/node_modules
+    - src/client/node_modules
+  build_triggers:
+    - package.json
+    - src/client/package.json
+    - src/server/package.json
+
+# add front end client web component
+web.app:
+  start: yarn start
+  routes:
+    - /
+
+# add a postgres database
+data.db:
+  image: nanobox/postgresql:9.6

@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User Registration Registering new user with existing email should return error 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    [GraphQLError: This email address is already associated with an account.],
+  ],
+}
+`;

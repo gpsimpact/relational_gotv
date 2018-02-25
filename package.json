@@ -1,0 +1,19 @@
+{
+  "name": "relational_gotv",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "eslint-plugin-react": "^7.7.0"
+  },
+  "scripts": {
+    "client_dev": "cd src/client && yarn start",
+    "server_dev": "cd src/server && yarn dev",
+    "client_build": "cd src/client && yarn build",
+    "server_build": "cd src/server && yarn build",
+    "build": "yarn server_build && yarn client_build",
+    "dev": "concurrently --kill-others-on-fail \"yarn server_dev\" \"yarn client_dev\"",
+    "start": "node src/server/build/main.js"
+  }
+}

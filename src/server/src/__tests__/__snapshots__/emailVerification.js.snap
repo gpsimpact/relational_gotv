@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`email verification it should fail if token is bad 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    [GraphQLError: Invalid Token.],
+  ],
+}
+`;

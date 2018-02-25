@@ -1,0 +1,47 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": [
+    "prettier",
+    "jest",
+    "react"
+  ],
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest/globals": true,
+    "browser": true
+  },
+  "rules": {
+    "no-duplicate-imports": "error",
+    "no-undef": "error",
+    "no-unused-vars": "error",
+    "no-else-return": "error",
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/valid-expect": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "es5",
+        "singleQuote": true,
+        "bracketSpacing": true,
+        "tabWidth": 2,
+        "printWidth": 100
+      }
+    ],
+    "at-rule-no-unknown": "off"
+  },
+  "settings": {},
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ]
+}
