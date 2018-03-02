@@ -1,8 +1,5 @@
 export default {
   Mutation: {
-    updateRegistrant(root, args, ctx) {
-      return ctx.models.registrant.updateRegistrantByHash(args.data, ctx);
-    },
     registerUser(root, args, ctx) {
       return ctx.models.user.register(args.user, ctx);
     },
@@ -26,12 +23,6 @@ export default {
     },
     updateProfile(root, args, ctx) {
       return ctx.models.user.updateProfile(args.data, ctx);
-    },
-    addOrganizationPermission(root, args, ctx) {
-      return ctx.models.organizationPermissions.addOrganizationPermission(args, ctx);
-    },
-    removeOrganizationPermission(root, args, ctx) {
-      return ctx.models.organizationPermissions.removeOrganizationPermission(args, ctx);
     },
   },
 };

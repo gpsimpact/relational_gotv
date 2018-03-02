@@ -1,3 +1,0 @@
-type status {
-  message: String    
-}

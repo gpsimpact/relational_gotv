@@ -6,12 +6,20 @@ class OrganizationConnector {
     this.sqlDb = sqlDb;
   }
 
-  organizationByHash = new DataLoader(keys =>
+  organizationById = new DataLoader(keys =>
     this.sqlDb
       .table('organizations')
-      .whereIn('hash', keys)
+      .whereIn('id', keys)
       .select()
-      .then(mapTo(keys, x => x.hash))
+      .then(mapTo(keys, x => x.id))
+  );
+
+  organizationBySlug = new DataLoader(keys =>
+    this.sqlDb
+      .table('organizations')
+      .whereIn('slug', keys)
+      .select()
+      .then(mapTo(keys, x => x.slug))
   );
 }
 

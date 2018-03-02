@@ -10,7 +10,7 @@ import {
 } from '../errors';
 
 class UserModel {
-  register = async ({ email, password, first_name, last_name }, ctx) => {
+  register = async ({ email, password, first_name, last_name, org_id }, ctx) => {
     // search db for matching emails
     const prevUser = await ctx.connectors.user.userByEmail.load(email);
     if (prevUser) {
@@ -20,12 +20,17 @@ class UserModel {
     const hash = bcrypt.hashSync(password, 10);
     const newUser = await ctx.connectors.user.createNewUser({
       email,
-      password,
       first_name,
       last_name,
       password: hash,
       email_verified: false,
     });
+
+    await ctx.connectors.organizationPermissions.addOrganizationPermission(
+      org_id,
+      email,
+      'AMBASSADOR'
+    );
 
     return await ctx.connectors.user.userByEmail
       .clear(email)
@@ -49,9 +54,9 @@ class UserModel {
     const permsByService = {};
     map(userServicePermissionsRaw, permission => {
       if (has(permsByService, permission.service_id)) {
-        permsByService[permission.org_hash].push(permission.permission);
+        permsByService[permission.org_id].push(permission.permission);
       } else {
-        permsByService[permission.org_hash] = [permission.permission];
+        permsByService[permission.org_id] = [permission.permission];
       }
     });
 

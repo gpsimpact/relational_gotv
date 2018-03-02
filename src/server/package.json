@@ -7,11 +7,11 @@
   "scripts": {
     "dev": "backpack",
     "build": "backpack build",
-    "db:migrate": "knex-migrate up --knexfile ./src/db/knexfile.js --migrations ./src/db/migrations/",
-    "db:reset": "knex-migrate redo --knexfile ./src/db/knexfile.js --migrations ./src/db/migrations/ --verbose",
+    "db:migrate": "cd src/db && knex-migrate up --knexfile ./knexfile.js --migrations ./migrations && cd ../.",
+    "db:reset": "cd src/db && knex-migrate down --to 0 --knexfile ./knexfile.js --migrations ./migrations && knex-migrate redo --knexfile ./knexfile.js --migrations ./migrations && cd ../..",
     "test:lint": "yarn eslint .",
-    "test": "NODE_ENV=test jest --coverage --forceExit",
-    "test:watch": "NODE_ENV=test && jest --watch --coverage"
+    "test": "yarn db:reset && NODE_ENV=test jest --coverage --forceExit",
+    "test:watch": "yarn db:reset && NODE_ENV=test && jest --watch --coverage"
   },
   "dependencies": {
     "apollo-engine": "^0.8.8",
@@ -29,6 +29,7 @@
     "knex": "^0.14.2",
     "knex-migrate": "^1.5.1",
     "mailgun-js": "^0.16.0",
+    "merge-graphql-schemas": "^1.5.0",
     "path": "^0.12.7",
     "pg": "^7.4.1"
   },
@@ -42,7 +43,8 @@
     "eslint-plugin-jest": "^21.7.0",
     "eslint-plugin-prettier": "^2.6.0",
     "faker": "^4.1.0",
-    "jest": "^22.1.4",
+    "jest": "^22.4.2",
+    "jest-cli": "^22.4.2",
     "prettier": "^1.10.2",
     "supertest": "^3.0.0"
   }

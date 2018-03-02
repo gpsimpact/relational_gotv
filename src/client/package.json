@@ -3,18 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "apollo-boost": "^0.1.1",
-    "graphql": "^0.13.1",
+    "apollo-cache-inmemory": "^1.1.9",
+    "apollo-client": "^2.2.5",
+    "apollo-link-context": "^1.0.7",
+    "apollo-link-http": "^1.5.2",
+    "bootstrap": "^4.0.0",
+    "formik": "^0.11.11",
+    "graphql": "0.12.3",
+    "graphql-tag": "^2.8.0",
+    "jwt-decode": "^2.2.0",
+    "querystring": "^0.2.0",
     "react": "^16.2.0",
     "react-apollo": "^2.1.0-beta.2",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.1"
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.1",
+    "reactstrap": "^5.0.0-beta.2",
+    "yup": "^0.24.1"
   },
   "scripts": {
-    "build:css": "postcss src/styles/index.css -o src/index.css",
-    "watch:css": "postcss src/styles/index.css -o src/index.css -w",
-    "start": "yarn watch:css & PORT=3001 react-scripts start",
-    "build": "yarn build:css && react-scripts build",
+    "start": "PORT=3001 react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9001 -c .storybook"
@@ -23,8 +32,6 @@
   "devDependencies": {
     "@storybook/react": "^3.3.14",
     "autoprefixer": "^8.0.0",
-    "babel-core": "^6.26.0",
-    "postcss-cli": "^5.0.0",
-    "tailwindcss": "^0.4.1"
+    "babel-core": "^6.26.0"
   }
 }

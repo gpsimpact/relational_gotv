@@ -11,20 +11,18 @@ import { map, has, pick } from 'lodash';
 import { hasPermission, mapToMany } from '../utils';
 
 class OrganizationPermissionModel {
-  addOrganizationPermission = async ({ organizationHash, userEmail, permission }, ctx) => {
-    if (hasPermission(ctx.user, organizationHash, 'ADMIN', true)) {
+  addOrganizationPermission = async ({ organizationId, userEmail, permission }, ctx) => {
+    if (hasPermission(ctx.user, organizationId, 'ADMIN', true)) {
       await ctx.connectors.organizationPermissions.addOrganizationPermission(
-        organizationHash,
+        organizationId,
         userEmail,
         permission
       );
 
-      const orgProfile = await ctx.connectors.organization.organizationByHash.load(
-        organizationHash
-      );
+      const orgProfile = await ctx.connectors.organization.organizationById.load(organizationId);
 
       const orgPermissions = await ctx.connectors.organizationPermissions.organizationPermissions.load(
-        organizationHash
+        organizationId
       );
 
       const permsByEmail = new Map();
@@ -50,20 +48,18 @@ class OrganizationPermissionModel {
     }
   };
 
-  removeOrganizationPermission = async ({ organizationHash, userEmail, permission }, ctx) => {
-    if (hasPermission(ctx.user, organizationHash, 'ADMIN', true)) {
+  removeOrganizationPermission = async ({ organizationId, userEmail, permission }, ctx) => {
+    if (hasPermission(ctx.user, organizationId, 'ADMIN', true)) {
       await ctx.connectors.organizationPermissions.removeOrganizationPermission(
-        organizationHash,
+        organizationId,
         userEmail,
         permission
       );
 
-      const orgProfile = await ctx.connectors.organization.organizationByHash.load(
-        organizationHash
-      );
+      const orgProfile = await ctx.connectors.organization.organizationById.load(organizationId);
 
       const orgPermissions = await ctx.connectors.organizationPermissions.organizationPermissions.load(
-        organizationHash
+        organizationId
       );
 
       const permsByEmail = new Map();

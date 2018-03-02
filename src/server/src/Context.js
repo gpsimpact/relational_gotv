@@ -7,6 +7,8 @@ import sendEmail from './connectors/email';
 import RegistrantModel from './models/registrants';
 import UserModel from './models/users';
 import OrganizationPermissionModel from './models/organizationPermissions';
+import PotentialVotersConnector from './connectors/potentialVoters';
+import PotentialVotersModel from './models/potentialVoters';
 
 class MakeContext {
   constructor(request) {
@@ -18,12 +20,14 @@ class MakeContext {
       organizationPermissions: { ...new OrganizationPermissionsConnector({ sqlDb }) },
       organization: { ...new OrganizationConnector({ sqlDb }) },
       sendEmail,
+      potentialVoters: { ...new PotentialVotersConnector({ sqlDb }) },
     };
 
     this.models = {
       registrant: { ...new RegistrantModel() },
       user: { ...new UserModel() },
       organizationPermissions: { ...new OrganizationPermissionModel() },
+      potentialVoters: { ...new PotentialVotersModel() },
     };
   }
 

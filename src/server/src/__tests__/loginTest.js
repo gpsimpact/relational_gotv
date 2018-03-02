@@ -27,15 +27,15 @@ describe('login', () => {
     await db('users').insert({ email: users[0].email, password: passwordHash });
     const org1 = faker.random.uuid();
     const org2 = faker.random.uuid();
-    await db('organizations').insert({ hash: org1, name: faker.company.companyName() });
-    await db('organizations').insert({ hash: org2, name: faker.company.companyName() });
+    await db('organizations').insert({ id: org1, name: faker.company.companyName() });
+    await db('organizations').insert({ id: org2, name: faker.company.companyName() });
     await db('permissions').insert({
-      org_hash: org1,
+      org_id: org1,
       email: users[0].email,
       permission: 'READ_ONLY',
     });
     await db('permissions').insert({
-      org_hash: org2,
+      org_id: org2,
       email: users[0].email,
       permission: 'ADMIN',
     });

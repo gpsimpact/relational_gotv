@@ -23,3 +23,7 @@ export const InvalidTokenError = createError('InavlidTokenError', {
 export const InsufficientPermissionsError = createError('InsufficientPermissionsError', {
   message: 'Insufficient permissions.',
 });
+
+export const InsufficientIdFieldsError = createError('InsufficientIdFieldsError', {
+  message: 'You did not pass the correct identification fields to this operation.',
+});

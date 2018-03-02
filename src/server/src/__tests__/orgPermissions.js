@@ -26,7 +26,7 @@ describe('Organizational Permissions', () => {
     const adminPermission = {
       [org1]: ['ADMIN'],
     };
-    await db('organizations').insert({ hash: org1, name: faker.company.companyName() });
+    await db('organizations').insert({ id: org1, name: faker.company.companyName() });
 
     const rootValue = {};
     const context = new MakeContext({
@@ -36,12 +36,12 @@ describe('Organizational Permissions', () => {
     const query = `
       mutation {
           addOrganizationPermission(
-            organizationHash: "${org1}",
+            organizationId: "${org1}",
             permission: READ_ONLY,
             userEmail: "${users[1].email}"
           ) {
             organization {
-              hash
+              id
             }
             users {
               email
@@ -66,7 +66,7 @@ describe('Organizational Permissions', () => {
     const adminPermission = {
       [org1]: ['READ_ONLY'],
     };
-    await db('organizations').insert({ hash: org1, name: faker.company.companyName() });
+    await db('organizations').insert({ id: org1, name: faker.company.companyName() });
 
     const rootValue = {};
     const context = new MakeContext({
@@ -76,12 +76,12 @@ describe('Organizational Permissions', () => {
     const query = `
       mutation {
           addOrganizationPermission(
-            organizationHash: "${org1}",
+            organizationId: "${org1}",
             permission: READ_ONLY,
             userEmail: "${users[1].email}"
           ) {
             organization {
-              hash
+              id
             }
             users {
               email
@@ -101,14 +101,14 @@ describe('Organizational Permissions', () => {
     const adminPermission = {
       [org1]: ['ADMIN'],
     };
-    await db('organizations').insert({ hash: org1, name: faker.company.companyName() });
+    await db('organizations').insert({ id: org1, name: faker.company.companyName() });
     await db('permissions').insert({
-      org_hash: org1,
+      org_id: org1,
       email: users[1].email,
       permission: 'READ_ONLY',
     });
     await db('permissions').insert({
-      org_hash: org1,
+      org_id: org1,
       email: users[2].email,
       permission: 'ADMIN',
     });
@@ -120,12 +120,12 @@ describe('Organizational Permissions', () => {
     const query = `
       mutation {
           removeOrganizationPermission(
-            organizationHash: "${org1}",
+            organizationId: "${org1}",
             permission: READ_ONLY,
             userEmail: "${users[1].email}"
           ) {
             organization {
-              hash
+              id
             }
             users {
               email
@@ -150,14 +150,14 @@ describe('Organizational Permissions', () => {
     const adminPermission = {
       [org1]: ['READ_ONLY'],
     };
-    await db('organizations').insert({ hash: org1, name: faker.company.companyName() });
+    await db('organizations').insert({ id: org1, name: faker.company.companyName() });
     await db('permissions').insert({
-      org_hash: org1,
+      org_id: org1,
       email: users[1].email,
       permission: 'READ_ONLY',
     });
     await db('permissions').insert({
-      org_hash: org1,
+      org_id: org1,
       email: users[2].email,
       permission: 'ADMIN',
     });
@@ -169,12 +169,12 @@ describe('Organizational Permissions', () => {
     const query = `
       mutation {
           removeOrganizationPermission(
-            organizationHash: "${org1}",
+            organizationId: "${org1}",
             permission: READ_ONLY,
             userEmail: "${users[1].email}"
           ) {
             organization {
-              hash
+              id
             }
             users {
               email
@@ -194,14 +194,14 @@ describe('Organizational Permissions', () => {
     const adminPermission = {
       [org1]: 'ADMIN',
     };
-    await db('organizations').insert({ hash: org1, name: faker.company.companyName() });
+    await db('organizations').insert({ id: org1, name: faker.company.companyName() });
     await db('permissions').insert({
-      org_hash: org1,
+      org_id: org1,
       email: users[1].email,
       permission: 'READ_ONLY',
     });
     await db('permissions').insert({
-      org_hash: org1,
+      org_id: org1,
       email: users[2].email,
       permission: 'ADMIN',
     });
@@ -213,12 +213,12 @@ describe('Organizational Permissions', () => {
     const query = `
       mutation {
           addOrganizationPermission(
-            organizationHash: "${org1}",
+            organizationId: "${org1}",
             permission: BAD_OPTION,
             userEmail: "${users[1].email}"
           ) {
             organization {
-              hash
+              id
             }
             users {
               email

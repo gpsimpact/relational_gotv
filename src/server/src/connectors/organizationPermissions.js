@@ -17,23 +17,23 @@ class OrganizationPermissionsConnector {
   organizationPermissions = new DataLoader(keys =>
     this.sqlDb
       .table('permissions')
-      .whereIn('org_hash', keys)
+      .whereIn('org_id', keys)
       .select()
-      .then(mapToMany(keys, x => x.org_hash))
+      .then(mapToMany(keys, x => x.org_id))
   );
 
-  addOrganizationPermission = (org_hash, email, permission) =>
+  addOrganizationPermission = (org_id, email, permission) =>
     this.sqlDb.table('permissions').insert({
-      org_hash,
+      org_id,
       email,
       permission,
     });
 
-  removeOrganizationPermission = (org_hash, email, permission) =>
+  removeOrganizationPermission = (org_id, email, permission) =>
     this.sqlDb
       .table('permissions')
       .where({
-        org_hash,
+        org_id,
         email,
         permission,
       })

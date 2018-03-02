@@ -6,18 +6,18 @@ class RegistrantConnector {
     this.sqlDb = sqlDb;
   }
 
-  registrantByHash = new DataLoader(keys =>
+  registrantById = new DataLoader(keys =>
     this.sqlDb
       .table('registrants')
-      .whereIn('hash', keys)
+      .whereIn('id', keys)
       .select()
-      .then(mapTo(keys, x => x.hash))
+      .then(mapTo(keys, x => x.id))
   );
 
-  updateRegistrantByHash = (hash, data) =>
+  updateRegistrantById = (id, data) =>
     this.sqlDb
       .table('registrants')
-      .where({ hash })
+      .where({ id })
       .update(data)
       .returning('*');
 

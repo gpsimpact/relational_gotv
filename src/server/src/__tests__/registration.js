@@ -10,7 +10,7 @@ beforeEach(async () => await Promise.all([db.raw('TRUNCATE TABLE registrants CAS
 afterAll(async () => await db.destroy());
 
 describe('Registration Updates', () => {
-  test('registrant call with No hash creates one', async () => {
+  test('registrant call with No id creates one', async () => {
     // faker.seed(199); // ensures consistent result
     const registrantRecord = {
       name_first: faker.name.firstName(),
@@ -24,7 +24,7 @@ describe('Registration Updates', () => {
               name_last: "${registrantRecord.name_last}", 
             }
           ) {
-            hash
+            id
             name_first
             name_last
           }
@@ -34,13 +34,13 @@ describe('Registration Updates', () => {
     const context = new MakeContext({ user: null });
     const result = await graphql(schema, query, rootValue, context);
     var regexGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    expect(regexGuid.test(result.data.updateRegistrant.hash)).toBe(true);
+    expect(regexGuid.test(result.data.updateRegistrant.id)).toBe(true);
   });
 
-  test('registrant update call with existing hash updates record', async () => {
+  test('registrant update call with existing id updates record', async () => {
     // create a registrant record
     const registrantRecord = {
-      hash: faker.random.uuid(),
+      id: faker.random.uuid(),
       name_first: faker.name.firstName(),
       name_last: faker.name.lastName(),
     };
@@ -51,11 +51,11 @@ describe('Registration Updates', () => {
       mutation {
           updateRegistrant(
             data:{
-              hash: "${registrantRecord.hash}",
+              id: "${registrantRecord.id}",
               name_first: "${new_name_first}", 
             }
           ) {
-            hash
+            id
             name_first
             name_last
           }
@@ -65,20 +65,20 @@ describe('Registration Updates', () => {
     const context = new MakeContext({ user: null });
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.updateRegistrant.hash).toEqual(registrantRecord.hash);
+    expect(result.data.updateRegistrant.id).toEqual(registrantRecord.id);
     expect(result.data.updateRegistrant.name_last).toEqual(registrantRecord.name_last);
     expect(result.data.updateRegistrant.name_first).toEqual(new_name_first);
     const dbRecord = await db
       .table('registrants')
-      .where({ hash: registrantRecord.hash })
+      .where({ id: registrantRecord.id })
       .first();
     expect(dbRecord.name_first).toEqual(new_name_first);
   });
 
-  test('registrant update call with new provided hash inserts record', async () => {
+  test('registrant update call with new provided id inserts record', async () => {
     // create a registrant record
     const registrantRecord = {
-      hash: faker.random.uuid(),
+      id: faker.random.uuid(),
       name_first: faker.name.firstName(),
       name_last: faker.name.lastName(),
     };
@@ -86,12 +86,12 @@ describe('Registration Updates', () => {
       mutation {
           updateRegistrant(
             data:{
-              hash: "${registrantRecord.hash}",
+              id: "${registrantRecord.id}",
               name_first: "${registrantRecord.name_first}", 
               name_last: "${registrantRecord.name_last}", 
             }
           ) {
-            hash
+            id
             name_first
             name_last
           }
@@ -100,7 +100,7 @@ describe('Registration Updates', () => {
     const rootValue = {};
     const context = new MakeContext({ user: null });
     const result = await graphql(schema, query, rootValue, context);
-    expect(result.data.updateRegistrant.hash).toEqual(registrantRecord.hash);
+    expect(result.data.updateRegistrant.id).toEqual(registrantRecord.id);
     expect(result.data.updateRegistrant.name_last).toEqual(registrantRecord.name_last);
     expect(result.data.updateRegistrant.name_first).toEqual(registrantRecord.name_first);
   });
@@ -108,7 +108,7 @@ describe('Registration Updates', () => {
   test('registrant update call updates updated timestamp', async () => {
     // create a registrant record
     const registrantRecord = {
-      hash: faker.random.uuid(),
+      id: faker.random.uuid(),
       name_first: faker.name.firstName(),
       name_last: faker.name.lastName(),
     };
@@ -122,11 +122,11 @@ describe('Registration Updates', () => {
       mutation {
           updateRegistrant(
             data:{
-              hash: "${registrantRecord.hash}",
+              id: "${registrantRecord.id}",
               name_first: "${new_name_first}", 
             }
           ) {
-            hash
+            id
             name_first
             name_last
           }
@@ -137,7 +137,7 @@ describe('Registration Updates', () => {
     await graphql(schema, query, rootValue, context);
     const updatedDbRecord = await db
       .table('registrants')
-      .where({ hash: registrantRecord.hash })
+      .where({ id: registrantRecord.id })
       .first();
     expect(updatedDbRecord.updated_at).not.toEqual(firstDbRecord[0].updated_at);
   });
@@ -149,7 +149,7 @@ describe('Registration Updates', () => {
 
     // create a registrant record
     const registrantRecord = {
-      hash: faker.random.uuid(),
+      id: faker.random.uuid(),
       name_first: faker.name.firstName(),
       name_last: faker.name.lastName(),
       updated_at: d,
@@ -164,11 +164,11 @@ describe('Registration Updates', () => {
       mutation {
           updateRegistrant(
             data:{
-              hash: "${registrantRecord.hash}",
+              id: "${registrantRecord.id}",
               name_first: "${new_name_first}", 
             }
           ) {
-            hash
+            id
             name_first
             name_last
           }
