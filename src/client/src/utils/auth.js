@@ -1,4 +1,5 @@
 import decode from 'jwt-decode';
+import { keys, has } from 'lodash';
 
 export const setToken = idToken => localStorage.setItem('token', idToken);
 
@@ -25,4 +26,16 @@ export const isTokenExpired = token => {
 export const isLoggedIn = () => {
   const token = getToken();
   return doesTokenExist(token) && !isTokenExpired(token);
+};
+
+export const extractOrgs = () => {
+  const token = getToken();
+  const decoded = decode(token);
+  return keys(decoded.permissions);
+};
+
+export const hasOrgAccess = orgId => {
+  const token = getToken();
+  const decoded = decode(token);
+  return has(decoded.permissions, orgId);
 };

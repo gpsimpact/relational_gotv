@@ -8,6 +8,7 @@ import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import schema from '../graphql/schema';
 import MakeContext from '../Context';
 import buildEmail from '../email';
+import jwt from 'jsonwebtoken';
 
 // APOLLO OPTICS SERVICE - TEMPORARILY DISABLED UNTIL API IS MORE COMPLETE
 // const engine = new Engine({
@@ -36,13 +37,27 @@ app.use(
   '/graphql',
   bodyParser.json(),
   graphqlExpress(req => {
-    return {
+    let token = null;
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+      token = req.headers.authorization.split(' ')[1];
+    }
+    try {
+      req.user = token ? jwt.verify(token, process.env.JWT_SECRET) : null;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+      req.user = null;
+    }
+
+    const options = {
       schema,
       context: new MakeContext(req),
       formatError,
       // tracing: true, // for apollo optics
       // cacheControl: true, // for apollo optics
     };
+
+    return options;
   })
 );
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));

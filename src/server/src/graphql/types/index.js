@@ -1,11 +1,11 @@
 import { mergeTypes } from 'merge-graphql-schemas';
 import organizationType from './OrganizationType';
 import potentialVoterType from './PotentialVoterType';
-import registrantType from './RegistrantType';
 import statusType from './StatusType';
 import userType from './UserType';
+import voterType from './VoterType';
 
-const types = [organizationType, potentialVoterType, registrantType, statusType, userType];
+const types = [organizationType, potentialVoterType, statusType, userType, voterType];
 
 // NOTE: 2nd param is optional, and defaults to false
 // Only use if you have defined the same type multiple times in

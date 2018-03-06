@@ -1,15 +1,31 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { isLoggedIn } from '../utils/auth';
+import { isLoggedIn, extractOrgs } from '../utils/auth';
+import UserHome from './UserHome';
+import PvIndex from './PvIndex';
 
-const OrgRoutes = () => {
-  return isLoggedIn() ? (
-    <Switch>
-      <Route path="/" render={() => <div>This is user area</div>} />
-    </Switch>
-  ) : (
-    <Redirect to="/login" />
-  );
+const UserRoutes = () => {
+  if (isLoggedIn()) {
+    const orgs = extractOrgs();
+    console.log(orgs);
+    return (
+      <Switch>
+        <Route
+          exact
+          path="/u/"
+          render={() => {
+            if (orgs.length > 1) {
+              return <div>SomeYetUnmadeChooserComponent </div>;
+            }
+            return <Redirect to={`/u/${orgs[0]}`} />;
+          }}
+        />
+        <Route exact path="/u/:orgSlug" component={UserHome} />
+        <Route exact path="/u/pv/:pvid" component={PvIndex} />
+      </Switch>
+    );
+  }
+  return <Redirect to="/login" />;
 };
 
-export default OrgRoutes;
+export default UserRoutes;

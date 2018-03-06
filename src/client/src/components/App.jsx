@@ -2,12 +2,14 @@ import React from 'react';
 import Main from './Main';
 import NavBar from './NavBar';
 import { isLoggedIn } from '../utils/auth';
+import { Container } from 'reactstrap';
 
 const App = () => (
   <div>
     <NavBar isLoggedIn={isLoggedIn()} />
-
-    <Main />
+    <Container>
+      <Main />
+    </Container>
   </div>
 );
 

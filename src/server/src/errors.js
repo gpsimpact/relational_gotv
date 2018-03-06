@@ -27,3 +27,7 @@ export const InsufficientPermissionsError = createError('InsufficientPermissions
 export const InsufficientIdFieldsError = createError('InsufficientIdFieldsError', {
   message: 'You did not pass the correct identification fields to this operation.',
 });
+
+export const UnauthorizedError = createError('UnauthorizedError', {
+  message: 'Anonymous access is denied.',
+});

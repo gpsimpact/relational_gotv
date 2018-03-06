@@ -57,6 +57,18 @@ class PotentialVoterModel {
         .load(dlKey);
     }
   };
+
+  getPvInfo = async ({ id }, ctx) => {
+    // get existing record
+    const existingRecord = await ctx.connectors.potentialVoters.pvByUserById.load(id);
+    // don't allow update if this is not their PV
+    if (existingRecord.user_email !== ctx.user.email) {
+      throw new InsufficientPermissionsError();
+    }
+    if (hasPermission(ctx.user, existingRecord.org_id, 'AMBASSADOR', true)) {
+      return existingRecord;
+    }
+  };
 }
 
 export default PotentialVoterModel;

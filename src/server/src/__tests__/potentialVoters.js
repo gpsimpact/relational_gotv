@@ -27,11 +27,6 @@ describe('Potential Voters', () => {
     await db('users').insert(users[0]);
     await db('organizations').insert(org1);
     await db('potential_voters').insert(pvs);
-    // await db('permissions').insert({
-    //   org_id: org1.id,
-    //   email: users[0].email,
-    //   permission: 'AMBASSADOR',
-    // });
     const userPerms = {
       [org1.id]: ['AMBASSADOR'],
     };
@@ -317,12 +312,116 @@ describe('Potential Voters', () => {
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const results = await graphql(schema, query, rootValue, context);
-    // console.log(JSON.stringify(results, null, '\t'));
     expect(
       find(results.errors, {
         message:
           'You must provide either an id to update or user_email + org_id to create new potential voter.',
       })
     ).not.toBeUndefined();
+  });
+
+  test('User can query for a single PV', async () => {
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(10, 11, users[0].email, org1.id);
+    await db('users').insert(users[0]);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+    const userPerms = {
+      [org1.id]: ['AMBASSADOR'],
+    };
+    const query = `
+      query {
+          potentialVoterInfo(
+            id: "${pvs[0].id}"
+          ) {
+            id
+            first_name
+            last_name
+            city
+            user_email
+            org_id
+            state_file_id
+          }
+        }
+    `;
+    const rootValue = {};
+    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    const result = await graphql(schema, query, rootValue, context);
+    expect(result.data.potentialVoterInfo).toEqual(pvs[0]);
+  });
+
+  test('User cant query for a single PV if its not assigned to their email', async () => {
+    const users = generateFakeUsers(2, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(10, 11, users[1].email, org1.id);
+    await db('users').insert(users);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+    const userPerms = {
+      [org1.id]: ['AMBASSADOR'],
+    };
+    const query = `
+      query {
+          potentialVoterInfo(
+            id: "${pvs[0].id}"
+          ) {
+            id
+            first_name
+            last_name
+            city
+            user_email
+            org_id
+            state_file_id
+            vo_ab_requested
+            vo_ab_requested_iso8601
+            vo_voted
+            vo_voted_iso8601
+            vo_voted_method
+          }
+        }
+    `;
+    const rootValue = {};
+    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    const result = await graphql(schema, query, rootValue, context);
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(find(result.errors, { message: 'Insufficient permissions.' })).not.toBeUndefined();
+  });
+
+  test('User cant query for a single PV without ambassador permissions', async () => {
+    const users = generateFakeUsers(2, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(10, 11, users[0].email, org1.id);
+    await db('users').insert(users);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+    const userPerms = {
+      [org1.id]: [],
+    };
+    const query = `
+      query {
+          potentialVoterInfo(
+            id: "${pvs[0].id}"
+          ) {
+            id
+            first_name
+            last_name
+            city
+            user_email
+            org_id
+            state_file_id
+            vo_ab_requested
+            vo_ab_requested_iso8601
+            vo_voted
+            vo_voted_iso8601
+            vo_voted_method
+          }
+        }
+    `;
+    const rootValue = {};
+    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    const result = await graphql(schema, query, rootValue, context);
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(find(result.errors, { message: 'Insufficient permissions.' })).not.toBeUndefined();
   });
 });

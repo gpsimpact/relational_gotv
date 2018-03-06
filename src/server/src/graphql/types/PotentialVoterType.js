@@ -31,6 +31,7 @@ export default `
 
   type Query {
     myPotentialVoters(org_id: String!): [PotentialVoter]
+    potentialVoterInfo(id: String!): PotentialVoter
   }
 
   type Mutation {

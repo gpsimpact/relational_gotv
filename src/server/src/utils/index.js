@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { includes } from 'lodash';
+import { includes, has } from 'lodash';
 import { InsufficientPermissionsError } from '../errors';
 
 export function mapTo(keys, keyFn) {
@@ -31,7 +31,7 @@ export const generateFakeUsers = (num, seed) => {
   const fakeUsers = [];
   Array(num)
     .fill()
-    .map((_, i) => {
+    .map(() => {
       fakeUsers.push({
         first_name: faker.name.firstName(),
         last_name: faker.name.lastName(),
@@ -48,7 +48,7 @@ export const generateFakePVs = (num, seed, user_email, org_id) => {
   const vote_methods = ['early-in-person', 'mail', 'election-day', 'N/A'];
   Array(num)
     .fill()
-    .map((_, i) => {
+    .map(() => {
       fakePVs.push({
         id: faker.random.uuid(),
         first_name: faker.name.firstName(),
@@ -56,18 +56,63 @@ export const generateFakePVs = (num, seed, user_email, org_id) => {
         city: faker.address.city(),
         user_email,
         org_id,
-        state_file_id: faker.random.number(),
-        vo_ab_requested: faker.random.boolean(),
-        vo_ab_requested_iso8601: faker.date.recent(),
-        vo_voted: faker.random.boolean(),
-        vo_voted_iso8601: faker.date.recent(),
-        vo_voted_method: vote_methods[Math.floor(Math.random() * vote_methods.length)],
+        state_file_id: faker.random.number().toString(),
+        // vo_ab_requested: faker.random.boolean(),
+        // vo_ab_requested_iso8601: faker.date
+        //   .recent()
+        //   .toISOString()
+        //   .substring(0, 10),
+        // vo_voted: faker.random.boolean(),
+        // vo_voted_iso8601: faker.date
+        //   .recent()
+        //   .toISOString()
+        //   .substring(0, 10),
+        // vo_voted_method: vote_methods[Math.floor(Math.random() * vote_methods.length)],
       });
     });
   return fakePVs;
 };
 
+export const generateFakeVoters = (num, seed) => {
+  faker.seed(seed); // ensures consistent result
+  const fakeVoters = [];
+  const vote_methods = ['early-in-person', 'mail', 'election-day', 'N/A'];
+  Array(num)
+    .fill()
+    .map(() => {
+      fakeVoters.push({
+        state_file_id: faker.random.number().toString(),
+        first_name: faker.name.firstName(),
+        middle_name: faker.name.firstName(),
+        last_name: faker.name.lastName(),
+        home_address: faker.address.streetAddress(),
+        city: faker.address.city(),
+        state: faker.address.state(),
+        zipcode: faker.address.zipCode(),
+        dob_iso8601: faker.date
+          .between('1917-01-01', '1999-02-01')
+          .toISOString()
+          .substring(0, 10),
+        vo_ab_requested: faker.random.boolean(),
+        vo_ab_requested_iso8601: faker.date
+          .recent()
+          .toISOString()
+          .substring(0, 10),
+        vo_voted: faker.random.boolean(),
+        vo_voted_iso8601: faker.date
+          .recent()
+          .toISOString()
+          .substring(0, 10),
+        vo_voted_method: vote_methods[Math.floor(Math.random() * vote_methods.length)],
+      });
+    });
+  return fakeVoters;
+};
+
 export const hasPermission = (viewer, service, requiredPermission, throwOnFail = false) => {
+  if (!has(viewer, 'permissions')) {
+    return false;
+  }
   if (!includes(viewer.permissions[service], requiredPermission)) {
     if (throwOnFail) {
       throw new InsufficientPermissionsError();
