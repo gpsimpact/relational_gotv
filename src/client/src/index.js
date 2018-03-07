@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import './styles/index.css';
@@ -43,9 +43,20 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const cache = new InMemoryCache({
+  dataIdFromObject: object => {
+    switch (object.__typename) {
+      case 'voter':
+        return object.state_file_id;
+      default:
+        return defaultDataIdFromObject(object); // fall back to default handling
+    }
+  },
+});
+
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  cache,
 });
 
 const ApolloApp = () => (

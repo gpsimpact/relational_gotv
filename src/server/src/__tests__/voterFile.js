@@ -114,4 +114,86 @@ describe('Voter File', () => {
     // console.log(JSON.stringify(result, null, '\t'));
     expect(find(result.errors, { message: 'Anonymous access is denied.' })).not.toBeUndefined();
   });
+
+  test('user can query for a single voter', async () => {
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const voters = generateFakeVoters(100, 133);
+    // await db('users').insert(users[0]);
+    // await db('organizations').insert(org1);
+    await db('voter_file').insert(voters);
+    const userPerms = {
+      [org1.id]: ['AMBASSADOR'],
+    };
+    const query = `
+      query {
+          voter(
+            where: {
+              state_file_id: "${voters[0].state_file_id}",
+            }
+          ) {
+            state_file_id
+            first_name
+            middle_name
+            last_name
+            home_address
+            city
+            state
+            zipcode
+            dob_iso8601
+            vo_ab_requested
+            vo_ab_requested_iso8601
+            vo_voted
+            vo_voted_iso8601
+            vo_voted_method
+          }
+        }
+    `;
+    const rootValue = {};
+    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    const result = await graphql(schema, query, rootValue, context);
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(result.data.voter).toEqual(voters[0]);
+  });
+
+  test('user can NOT query without auth', async () => {
+    // const users = generateFakeUsers(1, 1);
+    // const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const voters = generateFakeVoters(100, 133);
+    // await db('users').insert(users[0]);
+    // await db('organizations').insert(org1);
+    await db('voter_file').insert(voters);
+    // const userPerms = {
+    //   [org1.id]: ['AMBASSADOR'],
+    // };
+    const query = `
+      query {
+          voter(
+            where: {
+              state_file_id: "${voters[0].state_file_id}",
+            }
+          ) {
+            state_file_id
+            first_name
+            middle_name
+            last_name
+            home_address
+            city
+            state
+            zipcode
+            dob_iso8601
+            vo_ab_requested
+            vo_ab_requested_iso8601
+            vo_voted
+            vo_voted_iso8601
+            vo_voted_method
+          }
+        }
+    `;
+    const rootValue = {};
+    const context = new MakeContext({ user: null });
+    const result = await graphql(schema, query, rootValue, context);
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(find(result.errors, { message: 'Anonymous access is denied.' })).not.toBeUndefined();
+  });
 });

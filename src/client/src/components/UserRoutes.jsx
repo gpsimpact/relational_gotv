@@ -7,7 +7,6 @@ import PvIndex from './PvIndex';
 const UserRoutes = () => {
   if (isLoggedIn()) {
     const orgs = extractOrgs();
-    console.log(orgs);
     return (
       <Switch>
         <Route

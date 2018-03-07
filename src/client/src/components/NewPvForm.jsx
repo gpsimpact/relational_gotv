@@ -3,14 +3,13 @@ import { Formik } from 'formik';
 // import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import TextInput from './elements/TextInput';
-import { Button, Row, Col } from 'reactstrap';
+import { Button, Row, Col, Card, CardHeader, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import Yup from 'yup';
 import MY_POTENTIAL_VOTERS from '../queries/myPotentialVoters';
 import NEW_POTENTIAL_VOTER from '../mutations/newPotentialVoter';
 
 const NewPvForm = ({ org_id, submit }) => (
   <div>
-    <h2 className="text-center">Add a new Potential Voter</h2>
     <Formik
       initialValues={{
         first_name: '',
@@ -42,53 +41,61 @@ const NewPvForm = ({ org_id, submit }) => (
         handleSubmit,
         isSubmitting,
       }) => (
-        <form onSubmit={handleSubmit}>
-          <Row>
-            <Col>
-              <TextInput
-                id="first_name"
-                type="text"
-                label="First Name"
-                placeholder="Enter their first name"
-                error={touched.first_name && errors.first_name}
-                value={values.first_name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Col>
-            <Col>
-              <TextInput
-                id="last_name"
-                type="text"
-                label="Last Name"
-                placeholder="Enter their last name"
-                error={touched.last_name && errors.last_name}
-                value={values.last_name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Col>
-            <Col>
-              <TextInput
-                id="city"
-                type="text"
-                label="City"
-                placeholder="Enter their City"
-                error={touched.city && errors.city}
-                value={values.city}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Button type="submit" color="primary" disabled={isSubmitting}>
-                Add New!
-              </Button>
-            </Col>
-          </Row>
-        </form>
+        <Card>
+          <CardHeader>
+            <CardTitle>Add a new Potential Voter</CardTitle>
+            <CardSubtitle>Some helper text?</CardSubtitle>
+          </CardHeader>
+          <CardBody>
+            <form onSubmit={handleSubmit}>
+              <Row>
+                <Col>
+                  <TextInput
+                    id="first_name"
+                    type="text"
+                    label="First Name"
+                    placeholder="Enter their first name"
+                    error={touched.first_name && errors.first_name}
+                    value={values.first_name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </Col>
+                <Col>
+                  <TextInput
+                    id="last_name"
+                    type="text"
+                    label="Last Name"
+                    placeholder="Enter their last name"
+                    error={touched.last_name && errors.last_name}
+                    value={values.last_name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </Col>
+                <Col>
+                  <TextInput
+                    id="city"
+                    type="text"
+                    label="City"
+                    placeholder="Enter their City"
+                    error={touched.city && errors.city}
+                    value={values.city}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Button type="submit" color="primary" disabled={isSubmitting}>
+                    Add New!
+                  </Button>
+                </Col>
+              </Row>
+            </form>
+          </CardBody>
+        </Card>
       )}
     />
   </div>

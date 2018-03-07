@@ -20,6 +20,19 @@ class VoterConnector {
     return query.select();
   };
 
+  voterSingleSearch = (where, whereLike) => {
+    const query = this.sqlDb.table('voter_file');
+    if (where) {
+      query.where(where);
+    }
+    if (whereLike) {
+      map(whereLike, (value, key) => {
+        query.where(key, 'ilike', value);
+      });
+    }
+    return query.select().first();
+  };
+
   voterById = new DataLoader(keys =>
     this.sqlDb
       .table('voter_file')

@@ -7,6 +7,14 @@ class VoterModel {
     ctx.ensureIsAuthenticated();
     return await ctx.connectors.voters.voterMultiSearch(where, whereLike);
   };
+
+  voterSingleSearch = async ({ where }, ctx) => {
+    ctx.ensureIsAuthenticated();
+    if (where.state_file_id) {
+      return await ctx.connectors.voters.voterById.load(where.state_file_id);
+    }
+    return await ctx.connectors.voters.voterSingleSearch(where);
+  };
 }
 
 export default VoterModel;
