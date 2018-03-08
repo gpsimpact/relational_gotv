@@ -2,6 +2,7 @@ import { InsufficientPermissionsError } from '../errors';
 
 class TaskModel {
   updateTask = async ({ id, status, form_data }, ctx) => {
+    console.log('HERE???');
     // load the full task record
     const taskRecord = await ctx.connectors.tasks.taskById.load(id);
     // from task pv_id, grab the pv record

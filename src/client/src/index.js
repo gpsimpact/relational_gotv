@@ -7,8 +7,10 @@ import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
+import { ApolloLink } from 'apollo-link';
 import { InMemoryCache, defaultDataIdFromObject } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
+import { onError } from 'apollo-link-error';
 import { setContext } from 'apollo-link-context';
 import './styles/index.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -29,6 +31,15 @@ import 'bootstrap/dist/css/bootstrap.css';
 //   // },
 // });
 
+const errorLink = onError(({ networkError, graphQLErrors }) => {
+  if (graphQLErrors) {
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+    );
+  }
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
 const httpLink = createHttpLink({
   uri: '/graphql', //process.env.REACT_APP_APOLLO_ENDPOINT || "http://localhost:5000/graphql"
 });
@@ -43,6 +54,8 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const link = ApolloLink.from([authLink, errorLink, httpLink]);
+
 const cache = new InMemoryCache({
   dataIdFromObject: object => {
     switch (object.__typename) {
@@ -55,7 +68,7 @@ const cache = new InMemoryCache({
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link,
   cache,
 });
 

@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import POTENTIAL_VOTER_INFO from '../queries/potentialVoterInfo';
-import { graphql } from 'react-apollo';
+import UPDATE_TASK from '../mutations/updateTask';
+import { graphql, compose } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import VoterProfile from './VoterProfile';
 import VoterSearch from './VoterSearch';
+import SchemaForm from './SchemaForm';
 
 export class PvIndex extends PureComponent {
   render() {
@@ -33,13 +35,51 @@ export class PvIndex extends PureComponent {
             )}
           </Col>
         </Row>
+        {potentialVoterInfo.nextTask ? (
+          <Row>
+            <Col>
+              <SchemaForm
+                key={potentialVoterInfo.nextTask.id}
+                taskId={potentialVoterInfo.nextTask.id}
+                schema={potentialVoterInfo.nextTask.form_schema}
+                submitFn={values =>
+                  this.props.submit(
+                    potentialVoterInfo.nextTask.id,
+                    'COMPLETE',
+                    values,
+                    potentialVoterInfo.id
+                  )
+                }
+              />
+            </Col>
+          </Row>
+        ) : null}
       </div>
     );
   }
 }
 
-const PvIndexWithData = graphql(POTENTIAL_VOTER_INFO, {
-  options: props => ({ variables: { id: props.match.params.pvid } }),
-})(withRouter(PvIndex));
+const PvIndexWithData = compose(
+  graphql(POTENTIAL_VOTER_INFO, {
+    options: props => ({ variables: { id: props.match.params.pvid } }),
+  }),
+  graphql(UPDATE_TASK, {
+    // options: props => ({ variables: { id, status, form_data } }),
+    props: ({ mutate }) => ({
+      submit: (id, status, form_data, pvid) =>
+        Promise.resolve(
+          mutate({
+            variables: { id, status, form_data },
+            refetchQueries: [
+              {
+                query: POTENTIAL_VOTER_INFO,
+                variables: { id: pvid },
+              },
+            ],
+          })
+        ),
+    }),
+  })
+)(withRouter(PvIndex));
 
 export default PvIndexWithData;

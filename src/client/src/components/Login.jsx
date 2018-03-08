@@ -58,7 +58,7 @@ class Login extends Component {
                       if (qs && qs.next) {
                         window.location = qs.next;
                       } else {
-                        window.location = '/u/dashboard';
+                        window.location = '/u/';
                       }
                     } else {
                       const errors = ['Incorrect Email or Password'];

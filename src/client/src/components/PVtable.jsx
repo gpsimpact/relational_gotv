@@ -6,6 +6,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { withRouter } from 'react-router-dom';
 import { faSquare, faCheckSquare } from '@fortawesome/fontawesome-pro-light';
 import MY_POTENTIAL_VOTERS from '../queries/myPotentialVoters';
+import { map } from 'lodash';
 
 const CheckBox = ({ checked }) => {
   return checked ? (
@@ -21,23 +22,29 @@ const PvTableRow = ({ data, push }) => (
     <td>{data && data.last_name}</td>
     <td>{data && data.city}</td>
     <td>{data && data.state_file_id ? <CheckBox checked /> : <CheckBox />}</td>
-    <td>{data && data.vo_ab_requested ? <CheckBox checked /> : <CheckBox />}</td>
-    <td>{data && data.vo_voted ? <CheckBox checked /> : <CheckBox />}</td>
     <td>
-      {data && data.open_tasks} / {data && data.total_tasks}
+      {data && data.countAvailableTasks} / {data && data.countCompletedTasks}
     </td>
-    <td>{data && data.pvPoints ? data.pvPoints : '-'}</td>
+    <td>{data && data.voPoints && data.taskPoints ? data.voPoints + data.taskPoints : 0}</td>
   </tr>
 );
 
 export class PvTable extends Component {
   render() {
     const { data: { loading, error, myPotentialVoters } } = this.props;
+
     if (loading) {
       return <p>Loading...</p>;
     } else if (error) {
       return <p>Error!</p>;
     }
+    // Replace this with an api method..
+    // let totalPoints = 0;
+    // myPotentialVoters.map(pv => {
+    //   totalPoints = totalPoints + pv.voPoints + pv.taskPoints;
+    // });
+    const points = map(myPotentialVoters, pv => pv.voPoints + pv.taskPoints);
+    const totalPoints = points.reduce((a, b) => a + b, 0);
     return (
       <Table hover size="md">
         <thead>
@@ -46,9 +53,7 @@ export class PvTable extends Component {
             <th>Last Name</th>
             <th>City</th>
             <th>Registered</th>
-            <th>AB Application</th>
-            <th>Voted</th>
-            <th>Tasks Completed</th>
+            <th>Available Tasks</th>
             <th>Points</th>
           </tr>
         </thead>
@@ -68,10 +73,7 @@ export class PvTable extends Component {
             <th />
             <th />
             <th />
-            <th />
-            <th />
-            <th>543</th>
-            <th />
+            <th>{totalPoints}</th>
           </tr>
         </tfoot>
       </Table>

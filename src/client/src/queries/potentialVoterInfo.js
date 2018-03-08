@@ -10,6 +10,14 @@ const POTENTIAL_VOTER_INFO = gql`
       user_email
       org_id
       state_file_id
+      countCompletedTasks
+      countAvailableTasks
+      voPoints
+      taskPoints
+      nextTask {
+        id
+        form_schema
+      }
     }
   }
 `;

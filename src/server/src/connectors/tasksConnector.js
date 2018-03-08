@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 import { mapTo } from '../utils';
-import knex from 'knex';
+// import knex from 'knex';
 
 class TasksConnector {
   constructor({ sqlDb }) {

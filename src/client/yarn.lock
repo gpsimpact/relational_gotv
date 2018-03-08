@@ -441,6 +441,12 @@ apollo-link-dedup@^1.0.0:
   dependencies:
     apollo-link "^1.2.1"
 
+apollo-link-error@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/apollo-link-error/-/apollo-link-error-1.0.7.tgz#df6d7b13e9b73f9a615547b65ec9a4c930ca7f18"
+  dependencies:
+    apollo-link "^1.2.1"
+
 apollo-link-http-common@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/apollo-link-http-common/-/apollo-link-http-common-0.2.2.tgz#ac8a1810eca6a7ed37a34baeeb0a55752e6a0e30"

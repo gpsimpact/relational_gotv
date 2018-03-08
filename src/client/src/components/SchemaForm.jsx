@@ -1,49 +1,18 @@
 import React, { PureComponent } from 'react';
-import { Row, Col, Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { Formik } from 'formik';
 import Yup from 'yup';
 import TextInput from './elements/TextInput';
 
-const testSchema = {
-  formTitle: 'This is form title',
-  submitButtonText: 'Wombat!',
-  fields: [
-    {
-      id: 'alpha',
-      type: 'text',
-      widget: 'textinput',
-      validationType: 'string',
-      label: 'This is alpha label',
-      placeholder: 'Enter alpha',
-      validationTests: [
-        {
-          method: 'required',
-          message: 'Alpha is required',
-        },
-        {
-          method: 'min',
-          value: 5,
-          message: 'must have length greater than 5',
-        },
-      ],
-      initialValue: 'pizza',
-    },
-    {
-      widget: 'p',
-      text: 'lorem ipsum dolsom',
-    },
-  ],
-};
-
 class SchemaForm extends PureComponent {
   render() {
     const initialValues = {};
-    testSchema.fields.forEach(field => {
+    this.props.schema.fields.forEach(field => {
       initialValues[field.id] = field.initialValue;
     });
 
     const validationSchema = {};
-    testSchema.fields.forEach(field => {
+    this.props.schema.fields.forEach(field => {
       let validator;
       // initialize validator with write yup type -- INCOMPLETE
       if (field.validationType) {
@@ -85,13 +54,12 @@ class SchemaForm extends PureComponent {
 
     return (
       <div>
-        <h2>{testSchema.formTitle}</h2>
+        <h2>{this.props.schema.formTitle}</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={Yup.object().shape(validationSchema)}
           onSubmit={(values, { setSubmitting, setErrors /* setValues and other goodies */ }) => {
-            console.log(values);
-            setSubmitting(false);
+            this.props.submitFn(values);
           }}
           render={({
             values,
@@ -103,7 +71,7 @@ class SchemaForm extends PureComponent {
             isSubmitting,
           }) => (
             <form onSubmit={handleSubmit}>
-              {testSchema.fields.map((field, idx) => {
+              {this.props.schema.fields.map((field, idx) => {
                 if (field.widget === 'textinput') {
                   return (
                     <TextInput
@@ -119,12 +87,13 @@ class SchemaForm extends PureComponent {
                     />
                   );
                 }
+                return null;
                 // else if (field.widget === 'p') {
                 //   return <p key={idx}>{field.text}</p>;
                 // }
               })}
               <Button type="submit" color="primary" disabled={isSubmitting}>
-                {testSchema.submitButtonText}
+                {this.props.schema.submitButtonText}
               </Button>
             </form>
           )}
