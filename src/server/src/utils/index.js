@@ -45,7 +45,7 @@ export const generateFakeUsers = (num, seed) => {
 export const generateFakePVs = (num, seed, user_email, org_id) => {
   faker.seed(seed); // ensures consistent result
   const fakePVs = [];
-  const vote_methods = ['early-in-person', 'mail', 'election-day', 'N/A'];
+  // const vote_methods = ['early-in-person', 'mail', 'election-day', 'N/A'];
   Array(num)
     .fill()
     .map(() => {
@@ -57,20 +57,30 @@ export const generateFakePVs = (num, seed, user_email, org_id) => {
         user_email,
         org_id,
         state_file_id: faker.random.number().toString(),
-        // vo_ab_requested: faker.random.boolean(),
-        // vo_ab_requested_iso8601: faker.date
-        //   .recent()
-        //   .toISOString()
-        //   .substring(0, 10),
-        // vo_voted: faker.random.boolean(),
-        // vo_voted_iso8601: faker.date
-        //   .recent()
-        //   .toISOString()
-        //   .substring(0, 10),
-        // vo_voted_method: vote_methods[Math.floor(Math.random() * vote_methods.length)],
       });
     });
   return fakePVs;
+};
+
+export const generateFakeTasks = (num, seed, pv_id) => {
+  faker.seed(seed); // ensures consistent result
+  const fakeTasks = [];
+  const status = ['COMPLETE', 'INCOMPLETE', 'INPROGRESS', 'SKIPPED'];
+  Array(num)
+    .fill()
+    .map(() => {
+      fakeTasks.push({
+        id: faker.random.uuid(),
+        form_schema: JSON.stringify({}),
+        pv_id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: status[Math.floor(Math.random() * status.length)],
+        sequence: faker.random.number(),
+        description: faker.commerce.productName(),
+      });
+    });
+  return fakeTasks;
 };
 
 export const generateFakeVoters = (num, seed) => {

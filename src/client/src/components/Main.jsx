@@ -4,6 +4,7 @@ import Home from './Home';
 import OrgRoutes from './OrgRoutes';
 import UserRoutes from './UserRoutes';
 import Login from './Login';
+import SchemaForm from './SchemaForm';
 
 const Main = () => (
   <Switch>
@@ -11,6 +12,7 @@ const Main = () => (
     <Route exact path="/login" component={Login} />
     <Route path="/org" component={OrgRoutes} />
     <Route path="/u" component={UserRoutes} />
+    <Route path="/test" component={SchemaForm} />
   </Switch>
 );
 

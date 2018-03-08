@@ -12,6 +12,11 @@ export default `
     vo_voted: Boolean
     vo_voted_iso8601: String
     vo_voted_method: String
+    nextTask: Task
+    countCompletedTasks: Int
+    countAvailableTasks: Int
+    voPoints: Int
+    taskPoints: Int
   }
 
   input PotentialVoterInput {

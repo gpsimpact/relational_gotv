@@ -6,7 +6,12 @@ import MakeContext from '../Context';
 import { find } from 'lodash';
 // import bcrypt from 'bcrypt';
 // import jwt from 'jsonwebtoken';
-import { generateFakePVs, generateFakeUsers } from '../utils';
+import {
+  generateFakePVs,
+  generateFakeUsers,
+  // generateFakeTasks,
+  generateFakeVoters,
+} from '../utils';
 
 beforeAll(async () => await db.migrate.latest({ directory: 'src/db/migrations' }));
 beforeEach(
@@ -15,6 +20,7 @@ beforeEach(
       db.raw('TRUNCATE TABLE users CASCADE'),
       db.raw('TRUNCATE TABLE organizations CASCADE'),
       db.raw('TRUNCATE TABLE potential_voters CASCADE'),
+      db.raw('TRUNCATE TABLE voter_file CASCADE'),
     ])
 );
 afterAll(async () => await db.destroy());
@@ -421,7 +427,191 @@ describe('Potential Voters', () => {
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
-    // console.log(JSON.stringify(result, null, '\t'));
     expect(find(result.errors, { message: 'Insufficient permissions.' })).not.toBeUndefined();
+  });
+
+  test('PV query returns task object', async () => {
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
+    const tasks = [
+      {
+        id: faker.random.uuid(),
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'COMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+      {
+        id: faker.random.uuid(),
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INCOMPLETE',
+        sequence: 2,
+        description: faker.commerce.productName(),
+      },
+    ];
+    await db('users').insert(users[0]);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+    await db('tasks').insert(tasks);
+    const userPerms = {
+      [org1.id]: ['AMBASSADOR'],
+    };
+    const query = `
+      query {
+          potentialVoterInfo(
+            id: "${pvs[0].id}"
+          ) {
+            nextTask {
+              id
+              form_schema
+              form_data
+              point_value
+              status
+              sequence
+              description
+            }
+          }
+        }
+    `;
+    const rootValue = {};
+    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    const result = await graphql(schema, query, rootValue, context);
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(result.data.potentialVoterInfo.nextTask.id).toBe(tasks[1].id);
+  });
+
+  test('PV query returns task counts', async () => {
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
+    const tasks = [
+      {
+        id: faker.random.uuid(),
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'COMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+      {
+        id: faker.random.uuid(),
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'COMPLETE',
+        sequence: 2,
+        description: faker.commerce.productName(),
+      },
+      {
+        id: faker.random.uuid(),
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INCOMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+    ];
+    await db('users').insert(users[0]);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+    await db('tasks').insert(tasks);
+    const userPerms = {
+      [org1.id]: ['AMBASSADOR'],
+    };
+    const query = `
+      query {
+          potentialVoterInfo(
+            id: "${pvs[0].id}"
+          ) {
+            countCompletedTasks
+            countAvailableTasks
+          }
+        }
+    `;
+    const rootValue = {};
+    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    const result = await graphql(schema, query, rootValue, context);
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(result.data.potentialVoterInfo.countCompletedTasks).toBe(2);
+    expect(result.data.potentialVoterInfo.countAvailableTasks).toBe(1);
+  });
+
+  test('PV query returns points fields', async () => {
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
+    const voters = generateFakeVoters(1, 133);
+    // specify test voter condition. should equal 20 + 20 (not 100)
+    voters[0].vo_ab_requested = true;
+    voters[0].vo_voted = false;
+    await db('voter_file').insert(voters);
+    pvs[0].state_file_id = voters[0].state_file_id;
+    const tasks = [
+      {
+        id: faker.random.uuid(),
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: 21,
+        status: 'COMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+      {
+        id: faker.random.uuid(),
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: 42,
+        status: 'COMPLETE',
+        sequence: 2,
+        description: faker.commerce.productName(),
+      },
+      {
+        id: faker.random.uuid(),
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INCOMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+    ];
+    await db('users').insert(users[0]);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+    await db('tasks').insert(tasks);
+    const userPerms = {
+      [org1.id]: ['AMBASSADOR'],
+    };
+    const query = `
+      query {
+          potentialVoterInfo(
+            id: "${pvs[0].id}"
+          ) {
+            voPoints
+            taskPoints
+          }
+        }
+    `;
+    const rootValue = {};
+    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    const result = await graphql(schema, query, rootValue, context);
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(result.data.potentialVoterInfo.voPoints).toBe(40);
+    expect(result.data.potentialVoterInfo.taskPoints).toBe(63);
   });
 });

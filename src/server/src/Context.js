@@ -9,6 +9,8 @@ import PotentialVotersConnector from './connectors/potentialVoters';
 import PotentialVotersModel from './models/potentialVoters';
 import VoterConnector from './connectors/voters';
 import VoterModel from './models/voterModel';
+import TaskConnector from './connectors/tasksConnector';
+import TaskModel from './models/taskModel';
 import { UnauthorizedError } from './errors';
 
 class MakeContext {
@@ -22,6 +24,7 @@ class MakeContext {
       sendEmail,
       potentialVoters: { ...new PotentialVotersConnector({ sqlDb }) },
       voters: { ...new VoterConnector({ sqlDb }) },
+      tasks: { ...new TaskConnector({ sqlDb }) },
     };
 
     this.models = {
@@ -29,6 +32,7 @@ class MakeContext {
       organizationPermissions: { ...new OrganizationPermissionModel() },
       potentialVoters: { ...new PotentialVotersModel() },
       voters: { ...new VoterModel() },
+      tasks: { ...new TaskModel() },
     };
   }
 
