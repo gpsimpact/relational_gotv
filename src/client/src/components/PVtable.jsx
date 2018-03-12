@@ -25,7 +25,7 @@ const PvTableRow = ({ data, push }) => (
     <td>
       {data && data.countAvailableTasks} / {data && data.countCompletedTasks}
     </td>
-    <td>{data && data.voPoints && data.taskPoints ? data.voPoints + data.taskPoints : 0}</td>
+    <td>{data ? data.voPoints || 0 + data.taskPoints || 0 : 0}</td>
   </tr>
 );
 

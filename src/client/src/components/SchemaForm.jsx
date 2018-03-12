@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Button } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, CardTitle, CardSubtitle } from 'reactstrap';
 import { Formik } from 'formik';
 import Yup from 'yup';
 import TextInput from './elements/TextInput';
@@ -53,52 +53,58 @@ class SchemaForm extends PureComponent {
     });
 
     return (
-      <div>
-        <h2>{this.props.schema.formTitle}</h2>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={Yup.object().shape(validationSchema)}
-          onSubmit={(values, { setSubmitting, setErrors /* setValues and other goodies */ }) => {
-            this.props.submitFn(values);
-          }}
-          render={({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-          }) => (
-            <form onSubmit={handleSubmit}>
-              {this.props.schema.fields.map((field, idx) => {
-                if (field.widget === 'textinput') {
-                  return (
-                    <TextInput
-                      key={idx}
-                      id={field.id}
-                      type={field.type}
-                      label={field.label}
-                      placeholder={field.placeholder}
-                      error={touched[field.id] && errors[field.id]}
-                      value={values[field.id]}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                  );
-                }
-                return null;
-                // else if (field.widget === 'p') {
-                //   return <p key={idx}>{field.text}</p>;
-                // }
-              })}
-              <Button type="submit" color="primary" disabled={isSubmitting}>
-                {this.props.schema.submitButtonText}
-              </Button>
-            </form>
-          )}
-        />
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>{this.props.schema.formTitle}</CardTitle>
+          <CardSubtitle>
+            Earn {this.props.point_value} points by completing this task as instructed.
+          </CardSubtitle>
+        </CardHeader>
+        <CardBody>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={Yup.object().shape(validationSchema)}
+            onSubmit={(values, { setSubmitting, setErrors /* setValues and other goodies */ }) => {
+              this.props.submitFn(values);
+            }}
+            render={({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+            }) => (
+              <form onSubmit={handleSubmit}>
+                {this.props.schema.fields.map((field, idx) => {
+                  if (field.widget === 'textinput') {
+                    return (
+                      <TextInput
+                        key={idx}
+                        id={field.id}
+                        type={field.type}
+                        label={field.label}
+                        placeholder={field.placeholder}
+                        error={touched[field.id] && errors[field.id]}
+                        value={values[field.id]}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                    );
+                  } else if (field.widget === 'p') {
+                    return <p key={idx}>{field.text}</p>;
+                  }
+                  return null;
+                })}
+                <Button type="submit" color="primary" disabled={isSubmitting}>
+                  {this.props.schema.submitButtonText}
+                </Button>
+              </form>
+            )}
+          />
+        </CardBody>
+      </Card>
     );
   }
 }

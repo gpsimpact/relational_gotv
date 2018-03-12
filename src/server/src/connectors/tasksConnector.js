@@ -1,5 +1,7 @@
 import DataLoader from 'dataloader';
 import { mapTo } from '../utils';
+import { map } from 'lodash';
+import { write } from 'fs';
 // import knex from 'knex';
 
 class TasksConnector {
@@ -67,6 +69,14 @@ class TasksConnector {
       .groupBy('pv_id')
       .then(mapTo(keys, x => x.pv_id))
   );
+
+  bulkAddTasks = async (pv_id, tasks) => {
+    const writeableTasks = map(tasks, task => {
+      task.pv_id = pv_id;
+      return task;
+    });
+    return this.sqlDb.table('tasks').insert(writeableTasks);
+  };
 }
 
 export default TasksConnector;

@@ -1,6 +1,7 @@
 import { hasPermission } from '../utils';
-import { InsufficientPermissionsError, InsufficientIdFieldsError } from '../errors';
-import { omit } from 'lodash';
+import { InsufficientPermissionsError } from '../errors';
+// import { omit } from 'lodash';
+import { newPVtasks } from '../taskDefinitions';
 
 class PotentialVoterModel {
   userPVsWithinOrg = async ({ org_id }, ctx) => {
@@ -13,33 +14,6 @@ class PotentialVoterModel {
   };
 
   createPotentialVoter = async ({ data }, ctx) => {
-    if (data.id) {
-      // get existing record
-      const existingRecord = await ctx.connectors.potentialVoters.pvByUserById.load(data.id);
-      // don't allow update if this is not their PV
-      if (existingRecord.user_email !== ctx.user.email) {
-        throw new InsufficientPermissionsError();
-      }
-      if (hasPermission(ctx.user, existingRecord.org_id, 'AMBASSADOR', true)) {
-        // remove email, id, and org_id from eligible update values
-        const writeSafeValues = omit(data, ['id', 'user_email', 'org_id']);
-        const manualUpdate = await ctx.connectors.potentialVoters.updatePotentialVoterById(
-          data.id,
-          writeSafeValues
-        );
-        return await ctx.connectors.potentialVoters.pvByUserById
-          .clear(data.id)
-          .prime(data.id, manualUpdate[0])
-          .load(data.id);
-      }
-    }
-    if (!ctx.user.email || !data.org_id) {
-      throw new InsufficientIdFieldsError({
-        message:
-          'You must provide either an id to update or user_email + org_id to create new potential voter.',
-      });
-    }
-
     if (hasPermission(ctx.user, data.org_id, 'AMBASSADOR', true)) {
       const dlKey = {
         user_email: ctx.user.email,
@@ -51,10 +25,28 @@ class PotentialVoterModel {
         user_email: ctx.user.email,
       });
 
+      await ctx.connectors.tasks.bulkAddTasks(manualInsert[0].id, newPVtasks);
+
       return await ctx.connectors.potentialVoters.pvByUserByOrg
         .clear(dlKey)
         .prime(dlKey, manualInsert[0])
         .load(dlKey);
+    }
+  };
+
+  updatePotentialVoter = async ({ id, data }, ctx) => {
+    // get existing record
+    const existingRecord = await ctx.connectors.potentialVoters.pvByUserById.load(id);
+    // don't allow update if this is not their PV
+    if (existingRecord.user_email !== ctx.user.email) {
+      throw new InsufficientPermissionsError();
+    }
+    if (hasPermission(ctx.user, existingRecord.org_id, 'AMBASSADOR', true)) {
+      const manualUpdate = await ctx.connectors.potentialVoters.updatePotentialVoterById(id, data);
+      return await ctx.connectors.potentialVoters.pvByUserById
+        .clear(id)
+        .prime(id, manualUpdate[0])
+        .load(id);
     }
   };
 

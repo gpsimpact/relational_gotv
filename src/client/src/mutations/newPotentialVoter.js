@@ -10,11 +10,6 @@ const NEW_POTENTIAL_VOTER = gql`
       user_email
       org_id
       state_file_id
-      vo_ab_requested
-      vo_ab_requested_iso8601
-      vo_voted
-      vo_voted_iso8601
-      vo_voted_method
     }
   }
 `;

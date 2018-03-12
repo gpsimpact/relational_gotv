@@ -19,11 +19,6 @@ exports.up = function(knex) {
           .references('id')
           .inTable('organizations');
         table.string('state_file_id');
-        // table.boolean('vo_ab_requested').defaultTo(false);
-        // table.string('vo_ab_requested_iso8601');
-        // table.boolean('vo_voted').defaultTo(false);
-        // table.string('vo_voted_iso8601');
-        // table.string('vo_voted_method');
       });
     }
   });

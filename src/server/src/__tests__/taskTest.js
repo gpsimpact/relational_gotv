@@ -7,6 +7,7 @@ import { find } from 'lodash';
 // import bcrypt from 'bcrypt';
 // import jwt from 'jsonwebtoken';
 import { generateFakePVs, generateFakeUsers } from '../utils';
+import { newPVtasks } from '../taskDefinitions';
 
 beforeAll(async () => await db.migrate.latest({ directory: 'src/db/migrations' }));
 beforeEach(
@@ -113,5 +114,45 @@ describe('Tasks', () => {
     const context = new MakeContext({ user: { email: 'bademail@test.org' } });
     const result = await graphql(schema, query, rootValue, context, { form_data: fake_form_data });
     expect(find(result.errors, { message: 'Insufficient permissions.' })).not.toBeUndefined();
+  });
+
+  test('creating new PV creates default tasks', async () => {
+    // create a new pv
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
+    await db('users').insert(users[0]);
+    await db('organizations').insert(org1);
+    const userPerms = {
+      [org1.id]: ['AMBASSADOR'],
+    };
+    const query = `
+      mutation {
+          createPotentialVoter(
+            data: {
+              first_name: "${pvs[0].first_name}",
+              last_name: "${pvs[0].last_name}",
+              city: "${pvs[0].city}",
+              org_id: "${org1.id}"
+            }
+          ) {
+            id
+            first_name
+            last_name
+            city
+            user_email
+            org_id
+            state_file_id
+          }
+        }
+    `;
+    const rootValue = {};
+    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    const results = await graphql(schema, query, rootValue, context);
+    // console.log(JSON.stringify(results, null, '\t'));
+    // query db tasks for this pv
+    const dbTasks = await db.table('tasks').where({ pv_id: results.data.createPotentialVoter.id });
+    // expect db tasks for this pv to match
+    expect(dbTasks.length).toEqual(newPVtasks.length);
   });
 });

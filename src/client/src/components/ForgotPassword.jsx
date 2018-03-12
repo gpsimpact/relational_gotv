@@ -1,75 +1,63 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Card, CardBody, CardTitle, Button, CardFooter, CardHeader } from 'reactstrap';
+import { Card, CardBody, CardTitle, Button, CardHeader, Alert } from 'reactstrap';
 import { Formik } from 'formik';
 import Yup from 'yup';
-import querystring from 'querystring';
+// import querystring from 'querystring';
 import { map } from 'lodash';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import FormError from './elements/FormError';
 import TextInput from './elements/TextInput';
-import { setToken } from '../utils/auth';
+// import { setToken } from '../utils/auth';
 
-const LOGIN_MUTATION = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      userProfile {
-        first_name
-        last_name
-        email
-        email_verified
-      }
-      token
-    }
+const FORGOT_PASS_MUTATION = gql`
+  mutation sendPasswordResetEmail($email: String!, $base_url: String!) {
+    sendPasswordResetEmail(email: $email, base_url: $base_url)
   }
 `;
 
-class Login extends Component {
+class ForgotPassword extends Component {
+  state = {
+    alertOpen: false,
+  };
+
+  onDismiss = () => {
+    this.setState({ alertOpen: false });
+  };
+
   render() {
     return (
       <div style={{ paddingTop: 40 }}>
+        <Alert color="success" isOpen={this.state.alertOpen} toggle={this.onDismiss}>
+          Success! Please check your email.
+        </Alert>
         <Card>
           <CardHeader>
-            <CardTitle>Login </CardTitle>
+            <CardTitle>Forgot Password</CardTitle>
           </CardHeader>
           <CardBody>
             <Formik
               initialValues={{
                 email: '',
-                password: '',
               }}
               validationSchema={Yup.object().shape({
                 email: Yup.string()
                   .email('Must be a properly formatted email address')
                   .required('Email is required'),
-                password: Yup.string().required('password is required'),
               })}
               onSubmit={(values, { props, setSubmitting, setErrors }) => {
                 this.props
                   .mutate({
-                    variables: { email: values.email, password: values.password },
+                    variables: { email: values.email, base_url: window.location.host },
                   })
                   .then(({ data }) => {
                     setSubmitting(false);
-                    if (data.login.token) {
-                      setToken(data.login.token);
-                      // window.localStorage.setItem('token', data.login.token);
-                      let qs = querystring.parse(this.props.location.search.slice(1));
-                      if (qs && qs.next) {
-                        window.location = qs.next;
-                      } else {
-                        window.location = '/u/';
-                      }
-                    } else {
-                      const errors = ['Incorrect Email or Password'];
-                      setErrors({ email: ' ', password: ' ', form: errors });
-                    }
+                    this.setState({ alertOpen: true });
                   })
                   .catch(error => {
                     setSubmitting(false);
-                    const errors = ['Incorrect Email or Password'];
-                    setErrors({ email: ' ', password: ' ', form: errors });
+
                     console.log('there was an error sending the query', error);
                   });
               }}
@@ -84,6 +72,10 @@ class Login extends Component {
               }) => (
                 <form onSubmit={handleSubmit} noValidate>
                   {map(errors.form, error => <FormError key={error} error={error} />)}
+                  <p>
+                    Enter your email address. An email with a password reset link will be sent to
+                    that email address if that account exists.
+                  </p>
                   <TextInput
                     id="email"
                     label="Email"
@@ -95,40 +87,24 @@ class Login extends Component {
                     error={errors.email && touched.email}
                   />
 
-                  <TextInput
-                    id="password"
-                    label="Password"
-                    type="password"
-                    placeholder="Password"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.password}
-                    error={errors.password && touched.password}
-                  />
-
                   <Button
                     type="submit"
                     color="primary"
                     className="submit-button"
                     disabled={isSubmitting}
                   >
-                    Login
+                    Send Email
                   </Button>
                 </form>
               )}
             />
           </CardBody>
-          <CardFooter>
-            <p>
-              <Link to="/forgotPassword">Forgot Password?</Link>
-            </p>
-          </CardFooter>
         </Card>
       </div>
     );
   }
 }
 
-const LoginGQL = graphql(LOGIN_MUTATION)(withRouter(Login));
+const ForgotPasswordGQL = graphql(FORGOT_PASS_MUTATION)(withRouter(ForgotPassword));
 
-export default LoginGQL;
+export default ForgotPasswordGQL;

@@ -47,11 +47,6 @@ describe('Potential Voters', () => {
             user_email
             org_id
             state_file_id
-            vo_ab_requested
-            vo_ab_requested_iso8601
-            vo_voted
-            vo_voted_iso8601
-            vo_voted_method
           }
         }
     `;
@@ -82,11 +77,6 @@ describe('Potential Voters', () => {
             user_email
             org_id
             state_file_id
-            vo_ab_requested
-            vo_ab_requested_iso8601
-            vo_voted
-            vo_voted_iso8601
-            vo_voted_method
           }
         }
     `;
@@ -122,11 +112,6 @@ describe('Potential Voters', () => {
             user_email
             org_id
             state_file_id
-            vo_ab_requested
-            vo_ab_requested_iso8601
-            vo_voted
-            vo_voted_iso8601
-            vo_voted_method
           }
         }
     `;
@@ -170,11 +155,6 @@ describe('Potential Voters', () => {
             user_email
             org_id
             state_file_id
-            vo_ab_requested
-            vo_ab_requested_iso8601
-            vo_voted
-            vo_voted_iso8601
-            vo_voted_method
           }
         }
     `;
@@ -185,7 +165,7 @@ describe('Potential Voters', () => {
     expect(find(result.errors, { message: 'Insufficient permissions.' })).not.toBeUndefined();
   });
 
-  test('calling create mutation while providing ID updates instead of inserts', async () => {
+  test('user can modify a PV', async () => {
     const users = generateFakeUsers(1, 1);
     const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
     const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
@@ -197,9 +177,9 @@ describe('Potential Voters', () => {
     };
     const query = `
       mutation {
-          createPotentialVoter(
+          updatePotentialVoter(
+            id: "${pvs[0].id}" 
             data: {
-              id: "${pvs[0].id}"
               first_name: "Billiam"
             }
           ) {
@@ -210,11 +190,6 @@ describe('Potential Voters', () => {
             user_email
             org_id
             state_file_id
-            vo_ab_requested
-            vo_ab_requested_iso8601
-            vo_voted
-            vo_voted_iso8601
-            vo_voted_method
           }
         }
     `;
@@ -222,7 +197,7 @@ describe('Potential Voters', () => {
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const results = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(results, null, '\t'));
-    expect(results.data.createPotentialVoter.first_name).toBe('Billiam');
+    expect(results.data.updatePotentialVoter.first_name).toBe('Billiam');
     const dbPVs = await db('potential_voters')
       .where({
         id: pvs[0].id,
@@ -232,7 +207,7 @@ describe('Potential Voters', () => {
     expect(dbPVs.last_name).toBe(pvs[0].last_name);
   });
 
-  test('above, but user can not not update id, org_id, or user_email', async () => {
+  test('user can NOT modify a PV not assigned to them.', async () => {
     const users = generateFakeUsers(1, 1);
     const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
     const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
@@ -244,12 +219,10 @@ describe('Potential Voters', () => {
     };
     const query = `
       mutation {
-          createPotentialVoter(
+          updatePotentialVoter(
+            id: "${pvs[0].id}" 
             data: {
-              id: "${pvs[0].id}"
-              first_name: "Billiam",
-              org_id: "nonsense",
-              user_email: "bunk"
+              first_name: "Billiam"
             }
           ) {
             id
@@ -259,31 +232,19 @@ describe('Potential Voters', () => {
             user_email
             org_id
             state_file_id
-            vo_ab_requested
-            vo_ab_requested_iso8601
-            vo_voted
-            vo_voted_iso8601
-            vo_voted_method
           }
         }
     `;
     const rootValue = {};
-    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    const context = new MakeContext({
+      user: { email: 'badEmail@foo.com', permissions: userPerms },
+    });
     const results = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(results, null, '\t'));
-    expect(results.data.createPotentialVoter.first_name).toBe('Billiam');
-    const dbPVs = await db('potential_voters')
-      .where({
-        id: pvs[0].id,
-      })
-      .first();
-    expect(dbPVs.first_name).toBe('Billiam');
-    expect(dbPVs.last_name).toBe(pvs[0].last_name);
-    expect(dbPVs.user_email).toBe(pvs[0].user_email);
-    expect(dbPVs.org_id).toBe(pvs[0].org_id);
+    expect(find(results.errors, { message: 'Insufficient permissions.' })).not.toBeUndefined();
   });
 
-  test('must pas either ID or email and org to mutate', async () => {
+  test('user can NOT modify a PV without ambassador permissions.', async () => {
     const users = generateFakeUsers(1, 1);
     const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
     const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
@@ -291,13 +252,14 @@ describe('Potential Voters', () => {
     await db('organizations').insert(org1);
     await db('potential_voters').insert(pvs);
     const userPerms = {
-      [org1.id]: ['AMBASSADOR'],
+      [org1.id]: [],
     };
     const query = `
       mutation {
-          createPotentialVoter(
+          updatePotentialVoter(
+            id: "${pvs[0].id}" 
             data: {
-              first_name: "Billiam",
+              first_name: "Billiam"
             }
           ) {
             id
@@ -307,23 +269,16 @@ describe('Potential Voters', () => {
             user_email
             org_id
             state_file_id
-            vo_ab_requested
-            vo_ab_requested_iso8601
-            vo_voted
-            vo_voted_iso8601
-            vo_voted_method
           }
         }
     `;
     const rootValue = {};
-    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    const context = new MakeContext({
+      user: { email: users[0].email, permissions: userPerms },
+    });
     const results = await graphql(schema, query, rootValue, context);
-    expect(
-      find(results.errors, {
-        message:
-          'You must provide either an id to update or user_email + org_id to create new potential voter.',
-      })
-    ).not.toBeUndefined();
+    // console.log(JSON.stringify(results, null, '\t'));
+    expect(find(results.errors, { message: 'Insufficient permissions.' })).not.toBeUndefined();
   });
 
   test('User can query for a single PV', async () => {
@@ -379,11 +334,6 @@ describe('Potential Voters', () => {
             user_email
             org_id
             state_file_id
-            vo_ab_requested
-            vo_ab_requested_iso8601
-            vo_voted
-            vo_voted_iso8601
-            vo_voted_method
           }
         }
     `;
@@ -416,11 +366,6 @@ describe('Potential Voters', () => {
             user_email
             org_id
             state_file_id
-            vo_ab_requested
-            vo_ab_requested_iso8601
-            vo_voted
-            vo_voted_iso8601
-            vo_voted_method
           }
         }
     `;

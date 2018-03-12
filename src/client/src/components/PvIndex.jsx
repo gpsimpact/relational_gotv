@@ -35,13 +35,14 @@ export class PvIndex extends PureComponent {
             )}
           </Col>
         </Row>
-        {potentialVoterInfo.nextTask ? (
-          <Row>
+        {potentialVoterInfo.nextTask && potentialVoterInfo.state_file_id ? (
+          <Row style={{ paddingTop: 30 }}>
             <Col>
               <SchemaForm
                 key={potentialVoterInfo.nextTask.id}
                 taskId={potentialVoterInfo.nextTask.id}
                 schema={potentialVoterInfo.nextTask.form_schema}
+                point_value={potentialVoterInfo.nextTask.point_value}
                 submitFn={values =>
                   this.props.submit(
                     potentialVoterInfo.nextTask.id,

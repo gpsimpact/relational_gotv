@@ -7,11 +7,6 @@ export default `
     user_email: String!
     org_id: String!
     state_file_id: String
-    vo_ab_requested: Boolean
-    vo_ab_requested_iso8601: String
-    vo_voted: Boolean
-    vo_voted_iso8601: String
-    vo_voted_method: String
     nextTask: Task
     countCompletedTasks: Int
     countAvailableTasks: Int
@@ -26,12 +21,14 @@ export default `
     city: String
     user_email: String
     state_file_id: String
-    vo_ab_requested: Boolean
-    vo_ab_requested_iso8601: String
-    vo_voted: Boolean
-    vo_voted_iso8601: String
-    vo_voted_method: String
     org_id: String
+  }
+
+  input UpdatePotentialVoterInput {
+    first_name: String
+    last_name: String
+    city: String
+    state_file_id: String
   }
 
   type Query {
@@ -41,5 +38,6 @@ export default `
 
   type Mutation {
     createPotentialVoter(data: PotentialVoterInput!): PotentialVoter
+    updatePotentialVoter(id: String!, data: UpdatePotentialVoterInput): PotentialVoter
   }
 `;

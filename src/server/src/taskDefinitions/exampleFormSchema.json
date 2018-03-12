@@ -1,0 +1,30 @@
+{
+  "formTitle": "This is form title for second task",
+  "submitButtonText": "Woohoo!",
+  "fields": [
+    {
+      "id": "beta",
+      "type": "text",
+      "widget": "textinput",
+      "validationType": "string",
+      "label": "This is beta label",
+      "placeholder": "Enter beta",
+      "validationTests": [
+        {
+          "method": "required",
+          "message": "Beta is required"
+        },
+        {
+          "method": "min",
+          "value": 5,
+          "message": "must have length greater than 5"
+        }
+      ],
+      "initialValue": "calazone"
+    },
+    {
+      "widget": "p",
+      "text": "lorem ipsum dolsom"
+    }
+  ]
+}

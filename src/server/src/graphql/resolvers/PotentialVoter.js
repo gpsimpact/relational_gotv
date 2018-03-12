@@ -36,5 +36,8 @@ export default {
     createPotentialVoter(root, args, ctx) {
       return ctx.models.potentialVoters.createPotentialVoter(args, ctx);
     },
+    updatePotentialVoter(root, args, ctx) {
+      return ctx.models.potentialVoters.updatePotentialVoter(args, ctx);
+    },
   },
 };

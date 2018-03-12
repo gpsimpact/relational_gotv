@@ -17,6 +17,7 @@ const POTENTIAL_VOTER_INFO = gql`
       nextTask {
         id
         form_schema
+        point_value
       }
     }
   }
