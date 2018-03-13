@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import POTENTIAL_VOTER_INFO from '../queries/potentialVoterInfo';
 import UPDATE_TASK from '../mutations/updateTask';
 import { graphql, compose } from 'react-apollo';
-import { withRouter } from 'react-router-dom';
-import { Row, Col } from 'reactstrap';
+import { withRouter, Link } from 'react-router-dom';
+import { Row, Col, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import VoterProfile from './VoterProfile';
 import VoterSearch from './VoterSearch';
 import SchemaForm from './SchemaForm';
@@ -18,7 +18,17 @@ export class PvIndex extends PureComponent {
     }
     return (
       <div>
-        <Row style={{ paddingTop: 20 }}>
+        <Row style={{ paddingTop: 40 }}>
+          <Col>
+            <Breadcrumb>
+              <BreadcrumbItem>
+                <Link to="/u">Home</Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem active>Potential Voter</BreadcrumbItem>
+            </Breadcrumb>
+          </Col>
+        </Row>
+        <Row>
           <Col>
             <h2>
               {potentialVoterInfo.first_name} {potentialVoterInfo.last_name} -{' '}
@@ -26,7 +36,7 @@ export class PvIndex extends PureComponent {
             </h2>
           </Col>
         </Row>
-        <Row>
+        <Row style={{ paddingTop: 20 }}>
           <Col>
             {potentialVoterInfo.state_file_id ? (
               <VoterProfile state_file_id={potentialVoterInfo.state_file_id} />
@@ -36,7 +46,7 @@ export class PvIndex extends PureComponent {
           </Col>
         </Row>
         {potentialVoterInfo.nextTask && potentialVoterInfo.state_file_id ? (
-          <Row style={{ paddingTop: 30 }}>
+          <Row style={{ paddingTop: 20 }}>
             <Col>
               <SchemaForm
                 key={potentialVoterInfo.nextTask.id}

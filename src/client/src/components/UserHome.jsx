@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { hasOrgAccess } from '../utils/auth';
 import PvTable from './PVtable';
 import NewPvForm from './NewPvForm';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 class UserHome extends PureComponent {
   render() {
@@ -12,12 +12,19 @@ class UserHome extends PureComponent {
     }
     return (
       <div>
-        <Row>
+        <Row style={{ paddingTop: 40 }}>
+          <Col>
+            <Breadcrumb>
+              <BreadcrumbItem active>Home</BreadcrumbItem>
+            </Breadcrumb>
+          </Col>
+        </Row>
+        <Row style={{ paddingTop: 20 }}>
           <Col>
             <PvTable org_id={this.props.match.params.orgSlug} />
           </Col>
         </Row>
-        <Row>
+        <Row style={{ paddingTop: 20 }}>
           <Col>
             <NewPvForm org_id={this.props.match.params.orgSlug} />
           </Col>

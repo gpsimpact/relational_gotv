@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Table } from 'reactstrap';
+import { Table, Card, CardHeader, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { withRouter } from 'react-router-dom';
 import { faSquare, faCheckSquare } from '@fortawesome/fontawesome-pro-light';
@@ -46,37 +46,45 @@ export class PvTable extends Component {
     const points = map(myPotentialVoters, pv => pv.voPoints + pv.taskPoints);
     const totalPoints = points.reduce((a, b) => a + b, 0);
     return (
-      <Table hover size="md">
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>City</th>
-            <th>Registered</th>
-            <th>Available Tasks</th>
-            <th>Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          {myPotentialVoters.map(potentialVoter => (
-            <PvTableRow
-              data={potentialVoter}
-              key={potentialVoter.id}
-              push={this.props.history.push}
-            />
-          ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <th />
-            <th />
-            <th />
-            <th />
-            <th />
-            <th>{totalPoints}</th>
-          </tr>
-        </tfoot>
-      </Table>
+      <Card>
+        <CardHeader>
+          <CardTitle>Your List</CardTitle>
+          <CardSubtitle>Click on a person.</CardSubtitle>
+        </CardHeader>
+        <CardBody>
+          <Table hover size="md">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>City</th>
+                <th>Registered</th>
+                <th>Available Tasks</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {myPotentialVoters.map(potentialVoter => (
+                <PvTableRow
+                  data={potentialVoter}
+                  key={potentialVoter.id}
+                  push={this.props.history.push}
+                />
+              ))}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th />
+                <th />
+                <th />
+                <th />
+                <th />
+                <th>{totalPoints}</th>
+              </tr>
+            </tfoot>
+          </Table>
+        </CardBody>
+      </Card>
     );
   }
 }
