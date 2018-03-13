@@ -14,11 +14,11 @@ const VOTER_SEARCH = gql`
       city
       state
       zipcode
-      dob_iso8601
+      dob
       vo_ab_requested
-      vo_ab_requested_iso8601
+      vo_ab_requested_date
       vo_voted
-      vo_voted_iso8601
+      vo_voted_date
       vo_voted_method
     }
   }

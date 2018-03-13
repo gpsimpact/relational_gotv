@@ -44,7 +44,7 @@ export class VoterSearchResults extends PureComponent {
                       <td>{voter.city}</td>
                       <td>{voter.state}</td>
                       <td>{voter.zipcode}</td>
-                      <td>{differenceInCalendarYears(new Date(), parse(voter.dob_iso8601))}</td>
+                      <td>{differenceInCalendarYears(new Date(), parse(voter.dob))}</td>
                       <td>
                         <AssociateVoterButton
                           pv_id={this.props.pv_id}

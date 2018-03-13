@@ -3,6 +3,7 @@ import { Button, Card, CardBody, CardHeader, CardTitle, CardSubtitle } from 'rea
 import { Formik } from 'formik';
 import Yup from 'yup';
 import TextInput from './elements/TextInput';
+import SelectInput from './elements/SelectInput';
 
 class SchemaForm extends PureComponent {
   render() {
@@ -94,6 +95,20 @@ class SchemaForm extends PureComponent {
                     );
                   } else if (field.widget === 'p') {
                     return <p key={idx}>{field.text}</p>;
+                  } else if (field.widget === 'select') {
+                    return (
+                      <SelectInput
+                        key={idx}
+                        id={field.id}
+                        label={field.label}
+                        options={field.options}
+                        placeholder={field.placeholder}
+                        error={touched[field.id] && errors[field.id]}
+                        value={values[field.id]}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                    );
                   }
                   return null;
                 })}
