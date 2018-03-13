@@ -8,11 +8,11 @@ export default `
     city: String
     state: String
     zipcode: String
-    dob_iso8601: String
+    dob: isoDate
     vo_ab_requested: Boolean
-    vo_ab_requested_iso8601: String
+    vo_ab_requested_date: isoDate
     vo_voted: Boolean
-    vo_voted_iso8601: String
+    vo_voted_date: isoDate
     vo_voted_method: String
   }
 

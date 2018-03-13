@@ -13,11 +13,11 @@ exports.up = function(knex) {
         table.string('city');
         table.string('state');
         table.string('zipcode');
-        table.string('dob_iso8601');
+        table.date('dob');
         table.boolean('vo_ab_requested').defaultTo(false);
-        table.string('vo_ab_requested_iso8601');
+        table.date('vo_ab_requested_date');
         table.boolean('vo_voted').defaultTo(false);
-        table.string('vo_voted_iso8601');
+        table.date('vo_voted_date');
         table.string('vo_voted_method');
       });
     }

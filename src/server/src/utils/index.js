@@ -99,17 +99,17 @@ export const generateFakeVoters = (num, seed) => {
         city: faker.address.city(),
         state: faker.address.state(),
         zipcode: faker.address.zipCode(),
-        dob_iso8601: faker.date
+        dob: faker.date
           .between('1917-01-01', '1999-02-01')
           .toISOString()
           .substring(0, 10),
         vo_ab_requested: faker.random.boolean(),
-        vo_ab_requested_iso8601: faker.date
+        vo_ab_requested_date: faker.date
           .recent()
           .toISOString()
           .substring(0, 10),
         vo_voted: faker.random.boolean(),
-        vo_voted_iso8601: faker.date
+        vo_voted_date: faker.date
           .recent()
           .toISOString()
           .substring(0, 10),
