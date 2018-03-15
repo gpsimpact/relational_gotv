@@ -22,7 +22,7 @@ export default {
           {
             method: 'min',
             value: 2,
-            message: 'must have length greater than 5',
+            message: 'must have length greater than 2',
           },
         ],
         initialValue: '',

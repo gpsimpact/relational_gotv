@@ -8,7 +8,7 @@ export default {
         text: 'Which one of these options do you prefer?',
       },
       {
-        id: 'favBluth',
+        id: 'pickOne',
         widget: 'select',
         validationType: 'string',
         label: 'This is a Select example. Pick one.',
