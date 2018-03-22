@@ -19,7 +19,7 @@ export class RemoveAssociateVoterButton extends Component {
           this.props.associateVoter(this.props.pv_id, null);
         }}
       >
-        Disassociate
+        Wrong Voter
       </Button>
     );
   }

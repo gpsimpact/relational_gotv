@@ -45,9 +45,10 @@ export class PvIndex extends PureComponent {
             )}
           </Col>
         </Row>
-        {potentialVoterInfo.nextTask && potentialVoterInfo.state_file_id ? (
-          <Row style={{ paddingTop: 20 }}>
-            <Col>
+
+        <Row style={{ paddingTop: 20 }}>
+          <Col>
+            {potentialVoterInfo.nextTask && potentialVoterInfo.state_file_id ? (
               <SchemaForm
                 key={potentialVoterInfo.nextTask.id}
                 taskId={potentialVoterInfo.nextTask.id}
@@ -62,9 +63,11 @@ export class PvIndex extends PureComponent {
                   )
                 }
               />
-            </Col>
-          </Row>
-        ) : null}
+            ) : (
+              <h2>There are currently no available tasks associated with this voter</h2>
+            )}
+          </Col>
+        </Row>
       </div>
     );
   }

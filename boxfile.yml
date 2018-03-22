@@ -3,6 +3,8 @@ run.config:
   engine.config:
     runtime: nodejs-8.9
   fs_watch: true
+  extra_packages:
+    - nginx
   extra_steps:
     - 'cd src/server && yarn install && cd ..'
     - 'cd src/client && yarn install && cd ..'
@@ -14,9 +16,18 @@ run.config:
     - src/client/package.json
     - src/server/package.json
 
+deploy.config:
+  extra_steps:
+    - yarn build
+  before_live:
+    web.app:
+      - 'cd src/server && yarn db:migrate && cd ..'
+
 # add front end client web component
 web.app:
-  start: yarn start
+  start:
+    nginx: nginx -c /app/config/nginx.conf
+    node: yarn start
   routes:
     - /
 

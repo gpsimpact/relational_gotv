@@ -15,7 +15,7 @@ export class VoterSearch extends PureComponent {
     first_name: this.props.potential_voter.first_name,
     last_name: this.props.potential_voter.last_name,
     city: this.props.potential_voter.city,
-    state: 'Kansas',
+    state: 'KS',
   };
   render() {
     return (

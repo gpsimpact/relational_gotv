@@ -17,7 +17,7 @@ export class AssociateButton extends Component {
           this.props.associateVoter(this.props.pv_id, this.props.voter_id);
         }}
       >
-        Associate
+        This is them
       </Button>
     );
   }

@@ -32,7 +32,7 @@ const REGISTRATION_MUTATION = gql`
 
 const RegistrationForm = ({ org_id, submit, pushRoute }) => (
   <div>
-    <h2 className="text-center">Register to be an Ambassador.</h2>
+    <h2 className="text-center">Register to be an Volunteer.</h2>
     <Formik
       initialValues={{
         first_name: '',

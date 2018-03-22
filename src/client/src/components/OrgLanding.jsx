@@ -7,6 +7,8 @@ import { Row, Col, Container } from 'reactstrap';
 // import { Formik } from 'formik';
 // import TextInput from './elements/TextInput';
 import RegistrationForm from './RegistrationForm';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faPhone, faAt } from '@fortawesome/fontawesome-pro-light';
 
 const ORG_DETAILS = gql`
   query GetOrgInfo($slug: String!) {
@@ -47,9 +49,9 @@ class OrgLanding extends Component {
               <h2>For more information contact:</h2>
               <p>
                 {organizationInfo.contact_name} <br />
-                <i className="fas fa-phone" />{' '}
+                <FontAwesomeIcon icon={faPhone} />{' '}
                 <span style={{ paddingLeft: 20 }}>{organizationInfo.contact_phone}</span> <br />
-                <i className="fas fa-at" />
+                <FontAwesomeIcon icon={faAt} />
                 <span style={{ paddingLeft: 20 }}>{organizationInfo.contact_email}</span>
               </p>
             </Col>

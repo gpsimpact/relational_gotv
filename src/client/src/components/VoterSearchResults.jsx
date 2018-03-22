@@ -84,6 +84,10 @@ export class VoterSearchResults extends PureComponent {
               </small>
             </h3>
             <p>
+              Try searching again. Remember that people may register under a different version of
+              their name.
+            </p>
+            <p>
               If you can not find a likely match it is possible your contact is unregistered to
               vote. Include lots of instructions here about how to register them.
             </p>
