@@ -36,7 +36,8 @@ describe('Voter File', () => {
               last_name_starts_with: "${voters[0].last_name}",
               city_starts_with: "${voters[0].city}",
               state_is: "${voters[0].state}" 
-            }
+            },
+            order: first_name_ASC
           ) {
             items {
               state_file_id
@@ -63,7 +64,7 @@ describe('Voter File', () => {
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
-    // console.log(JSON.stringify(result, null, '\t'));
+    console.log(JSON.stringify(result, null, '\t'));
     expect(result.data.voters.items.length).toBeGreaterThanOrEqual(1);
     expect(
       find(result.data.voters.items, { state_file_id: voters[0].state_file_id })

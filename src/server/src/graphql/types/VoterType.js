@@ -122,42 +122,9 @@ export default `
     response_metadata: Response_Metadata
   }
 
-  
-
   type Query {
-    voters(where: VoterWhereInput, page: Pagination ): votersResults!
+    voters(where: VoterWhereInput, page: Pagination, order: VoterOrderByInput ): votersResults!
     voter(where: VoterWhereUniqueInput ): Voter
   }
 
-`;
-
-const cutting_board = `
-  ### ALL ABOVE IS EXPERIEMENTAL. COMMENTING OUT WORKING VERSION BELOW
-
-  input VoterSearchWhereInput {
-    state_file_id: String
-    last_name: String
-    city: String
-    state: String
-  }
-
-  input VoterSearchWhereLikeInput {
-   first_name: String
-  }
-
-  #input VoterSearchWhereInInput {
-  #  state_file_id: String
-  #}
-
-  input VoterSearchInput {
-    # exact match search
-    where: VoterSearchWhereInput
-    # Uses case insensitive partial string matching
-    whereLike: VoterSearchWhereLikeInput
-  }
-
-  type Query {
-    voters(where: VoterSearchWhereInput, whereLike: VoterSearchWhereLikeInput ): [Voter]
-    voter(where: VoterSearchWhereInput ): Voter
-  }
 `;

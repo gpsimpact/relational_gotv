@@ -3,31 +3,22 @@ import { mapTo } from '../utils';
 import { map } from 'lodash';
 import { filterQuery } from '../db/filterQuery';
 import { paginator } from '../db/paginator';
+import { orderer } from '../db/order';
 
 class VoterConnector {
   constructor({ sqlDb }) {
     this.sqlDb = sqlDb;
   }
 
-  voterMultiSearch = async (where, page) => {
+  voterMultiSearch = async (where, order, page) => {
     let query = this.sqlDb.table('voter_file');
     query = filterQuery(query, where);
 
     // smart defaults
-    page = Object.assign({}, { order: 'first_name_ASC', limit: 2 }, page);
-
-    let paginated = await paginator(query, page);
+    page = Object.assign({}, { limit: 25 }, page);
+    const ordered = orderer(query, order);
+    let paginated = await paginator(ordered, page, 'state_file_id');
     return paginated;
-
-    // if (where) {
-    //   query.where(where);
-    // }
-    // if (whereLike) {
-    //   map(whereLike, (value, key) => {
-    //     query.where(key, 'ilike', value);
-    //   });
-    // }
-    // return query.select();
   };
 
   voterSingleSearch = (where, whereLike) => {
