@@ -1,19 +1,15 @@
-import { hasPermission } from '../utils';
-import { InsufficientPermissionsError, InsufficientIdFieldsError } from '../errors';
-import { omit } from 'lodash';
-
 class VoterModel {
-  voterMultiSearch = async ({ where, whereLike }, ctx) => {
+  voterMultiSearch = async ({ where, page }, ctx) => {
     ctx.ensureIsAuthenticated();
-    return await ctx.connectors.voters.voterMultiSearch(where, whereLike);
+    return await ctx.connectors.voters.voterMultiSearch(where, page);
   };
 
-  voterSingleSearch = async ({ where }, ctx) => {
+  voterSingleSearch = async ({ where, page }, ctx) => {
     ctx.ensureIsAuthenticated();
     if (where.state_file_id) {
       return await ctx.connectors.voters.voterById.load(where.state_file_id);
     }
-    return await ctx.connectors.voters.voterSingleSearch(where);
+    return await ctx.connectors.voters.voterSingleSearch(where, page);
   };
 }
 
