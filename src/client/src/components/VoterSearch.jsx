@@ -12,9 +12,9 @@ import { Button, Row, Col, Card, CardBody, CardHeader, CardTitle, CardSubtitle }
 
 export class VoterSearch extends PureComponent {
   state = {
-    first_name: this.props.potential_voter.first_name,
-    last_name: this.props.potential_voter.last_name,
-    city: this.props.potential_voter.city,
+    first_name: this.props.potential_voter.first_name.trim(),
+    last_name: this.props.potential_voter.last_name.trim(),
+    city: this.props.potential_voter.city.trim(),
     state: 'KS',
   };
   render() {
@@ -37,7 +37,11 @@ export class VoterSearch extends PureComponent {
                 values,
                 { setSubmitting, setErrors /* setValues and other goodies */ }
               ) => {
-                this.setState({ ...values });
+                this.setState({
+                  first_name: values.first_name.trim(),
+                  last_name: values.last_name.trim(),
+                  city: values.city.trim(),
+                });
                 setSubmitting(false);
               }}
               render={({

@@ -22,7 +22,7 @@ const NewPvForm = ({ org_id, submit }) => (
         city: Yup.string().required('City is required'),
       })}
       onSubmit={(values, { setSubmitting, setErrors /* setValues and other goodies */ }) => {
-        submit(values.first_name, values.last_name, values.city, org_id).then(
+        submit(values.first_name.trim(), values.last_name.trim(), values.city.trim(), org_id).then(
           () => {
             setSubmitting(false);
             // pushRoute('/login');

@@ -17,7 +17,7 @@ export class VoterSearchResults extends PureComponent {
       return <p>Error!</p>;
     }
 
-    if (voters.length > 0) {
+    if (voters.items.length > 0) {
       return (
         <div>
           <Row style={{ paddingTop: 20 }}>
@@ -36,7 +36,7 @@ export class VoterSearchResults extends PureComponent {
                   </tr>
                 </thead>
                 <tbody>
-                  {voters.map(voter => (
+                  {voters.items.map(voter => (
                     <tr key={voter.state_file_id}>
                       <td>{voter.first_name}</td>
                       <td>{voter.last_name}</td>
