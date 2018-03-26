@@ -48,7 +48,10 @@ class Login extends Component {
               onSubmit={(values, { props, setSubmitting, setErrors }) => {
                 this.props
                   .mutate({
-                    variables: { email: values.email, password: values.password },
+                    variables: {
+                      email: values.email.toLowerCase().trim(), // force for case insensitivity
+                      password: values.password,
+                    },
                   })
                   .then(({ data }) => {
                     setSubmitting(false);

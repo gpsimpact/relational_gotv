@@ -53,7 +53,13 @@ const RegistrationForm = ({ org_id, submit, pushRoute }) => (
           .required('You must confirm your password.'),
       })}
       onSubmit={(values, { setSubmitting, setErrors /* setValues and other goodies */ }) => {
-        submit(values.first_name, values.last_name, values.email, values.password, org_id).then(
+        submit(
+          values.first_name,
+          values.last_name,
+          values.email.toLowerCase().trim(),
+          values.password,
+          org_id
+        ).then(
           () => {
             setSubmitting(false);
             pushRoute('/login');
