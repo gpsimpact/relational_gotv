@@ -22,7 +22,7 @@ describe('Voter File', () => {
     const users = generateFakeUsers(1, 1);
     const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
     const voters = [
-      { state_file_id: 'alpha', first_name: 'alpha', last_name: 'alpha', city: 'alpha' },
+      { state_file_id: 'alpha', first_name: 'theta', last_name: 'alpha', city: 'alpha' },
       { state_file_id: 'beta', first_name: 'beta', last_name: 'beta', city: 'beta' },
       { state_file_id: 'charlie', first_name: 'charlie', last_name: 'charlie', city: 'charlie' },
       { state_file_id: 'delta', first_name: 'delta', last_name: 'delta', city: 'delta' },
@@ -61,12 +61,12 @@ describe('Voter File', () => {
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.voters.items.length).toBeGreaterThanOrEqual(1);
-    expect(result.data.voters.items[0]).toEqual(voters[0]);
+    expect(result.data.voters.items.length).toBe(2);
+    expect(result.data.voters.items[0]).toEqual(voters[1]);
     expect(result.data.voters.response_metadata.next_cursor).not.toBeUndefined();
   });
 
-  test.only('cursor pagination works as expected', async () => {
+  test('cursor pagination works as expected', async () => {
     const users = generateFakeUsers(1, 1);
     const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
     const voters = [
@@ -90,7 +90,7 @@ describe('Voter File', () => {
     const query = `
       query {
           voters(
-            after: "eyJvcmRlckJ5IjpbeyJzb3J0IjoiZmlyc3RfbmFtZSIsImRpcmVjdGlvbiI6IkFTQyJ9LHsic29ydCI6Imxhc3RfbmFtZSIsImRpcmVjdGlvbiI6IkRFU0MifSx7InNvcnQiOiJzdGF0ZV9maWxlX2lkIiwiZGlyZWN0aW9uIjoiQVNDIn1dLCJ2YWx1ZXMiOlsiY2hhcmxpZSIsImNoYXJsaWUiLCJjaGFybGllIl19",
+            after: "eyJvcmRlckJ5IjpbeyJzb3J0IjoiZmlyc3RfbmFtZSIsImRpcmVjdGlvbiI6IkFTQyJ9LHsic29ydCI6Imxhc3RfbmFtZSIsImRpcmVjdGlvbiI6IkRFU0MifSx7InNvcnQiOiJzdGF0ZV9maWxlX2lkIiwiZGlyZWN0aW9uIjoiQVNDIn0seyJzb3J0Ijoic3RhdGVfZmlsZV9pZCIsImRpcmVjdGlvbiI6IkFTQyJ9XSwidmFsdWVzIjpbImRlbHRhIiwiZGVsdGEiLCJkZWx0YSIsImRlbHRhIl19",
             limit: 2
           ) {
             items {
@@ -108,9 +108,9 @@ describe('Voter File', () => {
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
-    console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.voters.items.length).toBeGreaterThanOrEqual(1);
-    expect(result.data.voters.items[0]).toEqual(voters[2]);
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(result.data.voters.items.length).toBe(2);
+    expect(result.data.voters.items[0]).toEqual(voters[3]);
     expect(result.data.voters.response_metadata.next_cursor).not.toBeUndefined();
   });
 });

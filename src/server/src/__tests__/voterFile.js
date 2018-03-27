@@ -37,7 +37,7 @@ describe('Voter File', () => {
               city_starts_with: "${voters[0].city}",
               state_is: "${voters[0].state}" 
             },
-            order: first_name_ASC
+            orderBy: [{sort: first_name, direction: ASC}],
           ) {
             items {
               state_file_id

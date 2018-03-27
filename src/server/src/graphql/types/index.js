@@ -7,6 +7,7 @@ import voterType from './VoterType';
 import taskType from './TaskType';
 import scalarJSONtype from './ScalarJSONType';
 import ScalarISODatesType from './ScalarISODatesType';
+import PaginationType from './PaginationType';
 
 const types = [
   organizationType,
@@ -17,6 +18,7 @@ const types = [
   taskType,
   scalarJSONtype,
   ScalarISODatesType,
+  PaginationType,
 ];
 
 // NOTE: 2nd param is optional, and defaults to false

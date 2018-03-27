@@ -100,18 +100,11 @@ export default `
     state_file_id: String
   }
 
-  # Comes from Dan Schafer at https://github.com/graphql/graphql-relay-js/issues/20
-
   input VoterOrdering {
     sort: VoterSort!
     direction: Direction! = ASC
   }
-  enum Direction { ASC, DESC }
   enum VoterSort { first_name, last_name }
-
-  type Response_Metadata {
-    next_cursor: String
-  }
 
   type votersResults {
     items: [Voter!]
