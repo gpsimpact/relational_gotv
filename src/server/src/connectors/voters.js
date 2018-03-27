@@ -10,14 +10,14 @@ class VoterConnector {
     this.sqlDb = sqlDb;
   }
 
-  voterMultiSearch = async (where, order, page) => {
+  voterMultiSearch = async (where, orderBy, limit, after) => {
     let query = this.sqlDb.table('voter_file');
     query = filterQuery(query, where);
 
     // smart defaults
-    page = Object.assign({}, { limit: 25 }, page);
-    const ordered = orderer(query, order);
-    let paginated = await paginator(ordered, page, 'state_file_id');
+    limit = limit || 25;
+    // const ordered = orderer(query, order);
+    let paginated = await paginator(this.sqlDb, query, orderBy, limit, after, 'state_file_id');
     return paginated;
   };
 

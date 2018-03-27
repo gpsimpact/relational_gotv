@@ -1,7 +1,7 @@
 class VoterModel {
-  voterMultiSearch = async ({ where, page, order }, ctx) => {
+  voterMultiSearch = async ({ where, orderBy, limit, after }, ctx) => {
     ctx.ensureIsAuthenticated();
-    return await ctx.connectors.voters.voterMultiSearch(where, order, page);
+    return await ctx.connectors.voters.voterMultiSearch(where, orderBy, limit, after);
   };
 
   voterSingleSearch = async ({ where, page }, ctx) => {

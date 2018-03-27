@@ -100,18 +100,14 @@ export default `
     state_file_id: String
   }
 
-  enum VoterOrderByInput {
-    last_name_ASC
-    last_name_DESC
-    first_name_ASC
-    first_name_DESC
-  }
+  # Comes from Dan Schafer at https://github.com/graphql/graphql-relay-js/issues/20
 
-  input Pagination {
-    cursor: String
-    limit: Int
-    order: VoterOrderByInput
+  input VoterOrdering {
+    sort: VoterSort!
+    direction: Direction! = ASC
   }
+  enum Direction { ASC, DESC }
+  enum VoterSort { first_name, last_name }
 
   type Response_Metadata {
     next_cursor: String
@@ -123,8 +119,22 @@ export default `
   }
 
   type Query {
-    voters(where: VoterWhereInput, page: Pagination, order: VoterOrderByInput ): votersResults!
+    voters(where: VoterWhereInput, orderBy: [VoterOrdering!], limit: Int, after: String ): votersResults!
     voter(where: VoterWhereUniqueInput ): Voter
   }
 
+`;
+
+const trashbin = `
+  enum VoterOrderByInput {
+    last_name_ASC
+    last_name_DESC
+    first_name_ASC
+    first_name_DESC
+  }
+
+  input Pagination {
+    cursor: String
+    limit: Int
+  }
 `;
