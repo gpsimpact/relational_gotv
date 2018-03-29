@@ -4,6 +4,7 @@ export default `
 
   type Response_Metadata {
     next_cursor: String
+    fromCache: Boolean
   }
 
 `;

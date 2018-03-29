@@ -1,4 +1,5 @@
 import sqlDb from './db';
+import redisDb from './redisClient';
 import UserConnector from './connectors/users';
 import OrganizationPermissionsConnector from './connectors/organizationPermissions';
 import OrganizationConnector from './connectors/organization';
@@ -26,7 +27,7 @@ class MakeContext {
       potentialVoters: { ...new PotentialVotersConnector({ sqlDb }) },
       voters: { ...new VoterConnector({ sqlDb }) },
       tasks: { ...new TaskConnector({ sqlDb }) },
-      page: { ...new PageConnector({ sqlDb }) },
+      page: { ...new PageConnector({ sqlDb, redisDb }) },
     };
 
     this.models = {

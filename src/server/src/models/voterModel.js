@@ -12,6 +12,7 @@ class VoterModel {
       orderBy,
       limit,
       after,
+      ttl: 120,
     };
     // return await ctx.connectors.voters.voterMultiSearch(where, orderBy, limit, after);
     return await ctx.connectors.page.pageLoader.load(generateDeterministicCacheId(fetchPayload));

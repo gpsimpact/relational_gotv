@@ -1,5 +1,6 @@
 import { graphql } from 'graphql';
 import db from '../db';
+import redisDb from '../redisClient';
 import schema from '../graphql/schema';
 import faker from 'faker';
 import MakeContext from '../Context';
@@ -13,6 +14,7 @@ beforeEach(
       db.raw('TRUNCATE TABLE voter_file CASCADE'),
       db.raw('TRUNCATE TABLE users CASCADE'),
       db.raw('TRUNCATE TABLE organizations CASCADE'),
+      redisDb.flushallAsync(),
     ])
 );
 afterAll(async () => await db.destroy());
@@ -53,6 +55,7 @@ describe('Voter File', () => {
             },
             response_metadata {
               next_cursor
+              fromCache
             }
           }
         }
@@ -60,7 +63,7 @@ describe('Voter File', () => {
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
-    // console.log(JSON.stringify(result, null, '\t'));
+    console.log(JSON.stringify(result, null, '\t'));
     expect(result.data.voters.items.length).toBe(2);
     expect(result.data.voters.items[0]).toEqual(voters[1]);
     expect(result.data.voters.response_metadata.next_cursor).not.toBeUndefined();

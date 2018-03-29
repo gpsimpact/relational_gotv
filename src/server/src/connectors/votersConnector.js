@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader';
 import { mapTo } from '../utils';
-import { map } from 'lodash';
+// import { map } from 'lodash';
 // import { filterQuery } from '../db/filterQuery';
 // import { paginator } from '../db/paginator';
 // import { orderer } from '../db/order';
@@ -9,30 +9,6 @@ class VoterConnector {
   constructor({ sqlDb }) {
     this.sqlDb = sqlDb;
   }
-
-  // voterMultiSearch = async (where, orderBy, limit, after) => {
-  //   let query = this.sqlDb.table('voter_file');
-  //   query = filterQuery(query, where);
-
-  //   // smart defaults
-  //   limit = limit || 25;
-  //   // const ordered = orderer(query, order);
-  //   let paginated = await paginator(this.sqlDb, query, orderBy, limit, after, 'state_file_id');
-  //   return paginated;
-  // };
-
-  // voterSingleSearch = (where, whereLike) => {
-  //   const query = this.sqlDb.table('voter_file');
-  //   if (where) {
-  //     query.where(where);
-  //   }
-  //   if (whereLike) {
-  //     map(whereLike, (value, key) => {
-  //       query.where(key, 'ilike', value);
-  //     });
-  //   }
-  //   return query.select().first();
-  // };
 
   voterById = new DataLoader(keys =>
     this.sqlDb
