@@ -13,6 +13,7 @@ import VoterModel from './models/voterModel';
 import TaskConnector from './connectors/tasksConnector';
 import TaskModel from './models/taskModel';
 import PageConnector from './connectors/pageConnector';
+import PointsModel from './models/pointsModel';
 import { UnauthorizedError } from './errors';
 
 class MakeContext {
@@ -36,6 +37,7 @@ class MakeContext {
       potentialVoters: { ...new PotentialVotersModel() },
       voters: { ...new VoterModel() },
       tasks: { ...new TaskModel() },
+      points: { ...new PointsModel() },
     };
   }
 

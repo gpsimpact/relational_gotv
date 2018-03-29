@@ -7,6 +7,7 @@ import VoterResolver from './VoterResolver';
 import ScalarJSONResolver from './ScalarJSONResolver';
 import ScalarISODatesResolver from './ScalarISODatesResolver';
 import TaskResolver from './TaskResolver';
+import PointsResolver from './PointsResolver';
 
 const resolvers = [
   OrganizationResolver,
@@ -17,6 +18,7 @@ const resolvers = [
   ScalarJSONResolver,
   ScalarISODatesResolver,
   TaskResolver,
+  PointsResolver,
 ];
 
 export default mergeResolvers(resolvers);

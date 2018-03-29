@@ -4,6 +4,7 @@ import schema from '../graphql/schema';
 import faker from 'faker';
 import MakeContext from '../Context';
 import { find } from 'lodash';
+import redisDb from '../redisClient';
 import { generateFakeUsers, generateFakeVoters } from '../utils';
 
 beforeAll(async () => await db.migrate.latest({ directory: 'src/db/migrations' }));
@@ -13,6 +14,7 @@ beforeEach(
       db.raw('TRUNCATE TABLE voter_file CASCADE'),
       db.raw('TRUNCATE TABLE users CASCADE'),
       db.raw('TRUNCATE TABLE organizations CASCADE'),
+      redisDb.flushallAsync(),
     ])
 );
 afterAll(async () => await db.destroy());

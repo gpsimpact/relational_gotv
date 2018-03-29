@@ -8,6 +8,7 @@ import taskType from './TaskType';
 import scalarJSONtype from './ScalarJSONType';
 import ScalarISODatesType from './ScalarISODatesType';
 import PaginationType from './PaginationType';
+import PointsType from './PointsType';
 
 const types = [
   organizationType,
@@ -19,6 +20,7 @@ const types = [
   scalarJSONtype,
   ScalarISODatesType,
   PaginationType,
+  PointsType,
 ];
 
 // NOTE: 2nd param is optional, and defaults to false
