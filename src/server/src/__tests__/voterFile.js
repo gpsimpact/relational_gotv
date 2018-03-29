@@ -64,7 +64,7 @@ describe('Voter File', () => {
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
-    console.log(JSON.stringify(result, null, '\t'));
+    // console.log(JSON.stringify(result, null, '\t'));
     expect(result.data.voters.items.length).toBeGreaterThanOrEqual(1);
     expect(
       find(result.data.voters.items, { state_file_id: voters[0].state_file_id })

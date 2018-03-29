@@ -1,7 +1,20 @@
+import { generateDeterministicCacheId } from '../utils';
+
 class VoterModel {
   voterMultiSearch = async ({ where, orderBy, limit, after }, ctx) => {
     ctx.ensureIsAuthenticated();
-    return await ctx.connectors.voters.voterMultiSearch(where, orderBy, limit, after);
+    const fetchPayload = {
+      table: {
+        name: 'voter_file',
+        uniqueColumn: 'state_file_id',
+      },
+      where,
+      orderBy,
+      limit,
+      after,
+    };
+    // return await ctx.connectors.voters.voterMultiSearch(where, orderBy, limit, after);
+    return await ctx.connectors.page.pageLoader.load(generateDeterministicCacheId(fetchPayload));
   };
 
   voterSingleSearch = async ({ where, page }, ctx) => {

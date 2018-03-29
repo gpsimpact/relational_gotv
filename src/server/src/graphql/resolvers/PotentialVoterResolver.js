@@ -25,11 +25,11 @@ export default {
     },
   },
   Query: {
-    myPotentialVoters(root, args, ctx) {
-      return ctx.models.potentialVoters.userPVsWithinOrg(args, ctx);
+    potentialVoters(root, args, ctx) {
+      return ctx.models.potentialVoters.pvMultiSearch(args, ctx);
     },
-    potentialVoterInfo(root, args, ctx) {
-      return ctx.models.potentialVoters.getPvInfo(args, ctx);
+    potentialVoter(root, args, ctx) {
+      return ctx.models.potentialVoters.singlePv(args, ctx);
     },
   },
   Mutation: {

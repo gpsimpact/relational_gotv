@@ -5,6 +5,9 @@ export const paginator = async (db, query, orderBy, limit, after, uniqueColumn) 
   // treat original query as subquery (includes filters)
   const paginationQuery = db.select().from(query.clone().as('filters'));
 
+  orderBy = orderBy || [];
+  limit = limit || 25;
+
   if (after) {
     const decodedCursor = JSON.parse(base64.decode(after));
     // override orderBY

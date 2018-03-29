@@ -5,12 +5,13 @@ import OrganizationConnector from './connectors/organization';
 import sendEmail from './connectors/email';
 import UserModel from './models/users';
 import OrganizationPermissionModel from './models/organizationPermissions';
-import PotentialVotersConnector from './connectors/potentialVoters';
-import PotentialVotersModel from './models/potentialVoters';
-import VoterConnector from './connectors/voters';
+import PotentialVotersConnector from './connectors/potentialVotersConnector';
+import PotentialVotersModel from './models/potentialVotersModel';
+import VoterConnector from './connectors/votersConnector';
 import VoterModel from './models/voterModel';
 import TaskConnector from './connectors/tasksConnector';
 import TaskModel from './models/taskModel';
+import PageConnector from './connectors/pageConnector';
 import { UnauthorizedError } from './errors';
 
 class MakeContext {
@@ -25,6 +26,7 @@ class MakeContext {
       potentialVoters: { ...new PotentialVotersConnector({ sqlDb }) },
       voters: { ...new VoterConnector({ sqlDb }) },
       tasks: { ...new TaskConnector({ sqlDb }) },
+      page: { ...new PageConnector({ sqlDb }) },
     };
 
     this.models = {

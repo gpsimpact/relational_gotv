@@ -22,10 +22,8 @@ const PvTableRow = ({ data, push }) => (
     <td>{data && data.last_name}</td>
     <td>{data && data.city}</td>
     <td>{data && data.state_file_id ? <CheckBox checked /> : <CheckBox />}</td>
-    <td>
-      {data && data.countAvailableTasks} / {data && data.countCompletedTasks}
-    </td>
-    <td>{data ? data.voPoints || 0 + data.taskPoints || 0 : 0}</td>
+    <td>{data && data.countAvailableTasks}</td>
+    <td>{data ? (data.voPoints || 0) + (data.taskPoints || 0) : 0}</td>
   </tr>
 );
 
@@ -79,7 +77,7 @@ export class PvTable extends Component {
                 <th />
                 <th />
                 <th />
-                <th>{totalPoints}</th>
+                <th>TODO: new API method to calculate total points</th>
               </tr>
             </tfoot>
           </Table>

@@ -30,7 +30,8 @@ export class VoterProfile extends PureComponent {
       <Card>
         <CardHeader>
           <CardTitle>
-            {voter.first_name} {voter.middle_name.charAt(0)}. {voter.last_name}
+            {voter.first_name} {voter.middle_name ? `${voter.middle_name.charAt(0)}.` : null}{' '}
+            {voter.last_name}
           </CardTitle>
           <CardSubtitle>
             {voter.home_address} {voter.city}, {voter.state} {voter.zipcode}

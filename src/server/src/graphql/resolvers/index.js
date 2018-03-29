@@ -2,7 +2,7 @@ import { mergeResolvers } from 'merge-graphql-schemas';
 import OrganizationResolver from './OrganizationResolver';
 import StatusResolver from './StatusResolver';
 import UserResolver from './UserResolver';
-import PotentialVoterResolver from './PotentialVoter';
+import PotentialVoterResolver from './PotentialVoterResolver';
 import VoterResolver from './VoterResolver';
 import ScalarJSONResolver from './ScalarJSONResolver';
 import ScalarISODatesResolver from './ScalarISODatesResolver';

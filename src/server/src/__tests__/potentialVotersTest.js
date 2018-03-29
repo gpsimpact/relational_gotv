@@ -38,22 +38,26 @@ describe('Potential Voters', () => {
     };
     const query = `
       query {
-          myPotentialVoters(
-            org_id: "${org1.id}"
+          potentialVoters(
+            where: {
+              org_id_is: "${org1.id}"
+            } 
           ) {
-            first_name
-            last_name
-            city
-            user_email
-            org_id
-            state_file_id
+            items {
+              first_name
+              last_name
+              city
+              user_email
+              org_id
+              state_file_id
+            }
           }
         }
     `;
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
-    expect(result.data.myPotentialVoters.length).toBe(pvs.length);
+    expect(result.data.potentialVoters.items.length).toBe(pvs.length);
   });
 
   test('user without ambassador permissions can not query for their PVS', async () => {
@@ -68,22 +72,27 @@ describe('Potential Voters', () => {
     };
     const query = `
       query {
-          myPotentialVoters(
-            org_id: "${org1.id}"
+          potentialVoters(
+            where: {
+              org_id_is: "${org1.id}"
+            }
           ) {
-            first_name
-            last_name
-            city
-            user_email
-            org_id
-            state_file_id
+            items {
+              first_name
+              last_name
+              city
+              user_email
+              org_id
+              state_file_id
+            }
           }
         }
     `;
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
-    expect(find(result.errors, { message: 'Insufficient permissions.' })).not.toBeUndefined();
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(result.data.potentialVoters.items.length).toBe(0);
   });
 
   test('user can create a new pv', async () => {
@@ -277,7 +286,6 @@ describe('Potential Voters', () => {
       user: { email: users[0].email, permissions: userPerms },
     });
     const results = await graphql(schema, query, rootValue, context);
-    // console.log(JSON.stringify(results, null, '\t'));
     expect(find(results.errors, { message: 'Insufficient permissions.' })).not.toBeUndefined();
   });
 
@@ -293,8 +301,10 @@ describe('Potential Voters', () => {
     };
     const query = `
       query {
-          potentialVoterInfo(
-            id: "${pvs[0].id}"
+          potentialVoter(
+            where: {
+              id: "${pvs[0].id}"
+            }
           ) {
             id
             first_name
@@ -309,7 +319,8 @@ describe('Potential Voters', () => {
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
-    expect(result.data.potentialVoterInfo).toEqual(pvs[0]);
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(result.data.potentialVoter).toEqual(pvs[0]);
   });
 
   test('User cant query for a single PV if its not assigned to their email', async () => {
@@ -324,8 +335,10 @@ describe('Potential Voters', () => {
     };
     const query = `
       query {
-          potentialVoterInfo(
-            id: "${pvs[0].id}"
+          potentialVoter(
+            where: {
+              id: "${pvs[0].id}"
+            }
           ) {
             id
             first_name
@@ -356,8 +369,10 @@ describe('Potential Voters', () => {
     };
     const query = `
       query {
-          potentialVoterInfo(
-            id: "${pvs[0].id}"
+          potentialVoter(
+            where: {
+              id: "${pvs[0].id}"
+            }
           ) {
             id
             first_name
@@ -410,8 +425,10 @@ describe('Potential Voters', () => {
     };
     const query = `
       query {
-          potentialVoterInfo(
-            id: "${pvs[0].id}"
+          potentialVoter(
+            where: {
+              id: "${pvs[0].id}"
+            }
           ) {
             nextTask {
               id
@@ -429,7 +446,7 @@ describe('Potential Voters', () => {
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.potentialVoterInfo.nextTask.id).toBe(tasks[1].id);
+    expect(result.data.potentialVoter.nextTask.id).toBe(tasks[1].id);
   });
 
   test('PV query returns task counts', async () => {
@@ -477,8 +494,10 @@ describe('Potential Voters', () => {
     };
     const query = `
       query {
-          potentialVoterInfo(
-            id: "${pvs[0].id}"
+          potentialVoter(
+            where: {
+              id: "${pvs[0].id}"
+            }
           ) {
             countCompletedTasks
             countAvailableTasks
@@ -489,8 +508,8 @@ describe('Potential Voters', () => {
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.potentialVoterInfo.countCompletedTasks).toBe(2);
-    expect(result.data.potentialVoterInfo.countAvailableTasks).toBe(1);
+    expect(result.data.potentialVoter.countCompletedTasks).toBe(2);
+    expect(result.data.potentialVoter.countAvailableTasks).toBe(1);
   });
 
   test('PV query returns points fields', async () => {
@@ -544,8 +563,10 @@ describe('Potential Voters', () => {
     };
     const query = `
       query {
-          potentialVoterInfo(
-            id: "${pvs[0].id}"
+          potentialVoter(
+            where: {
+              id: "${pvs[0].id}"
+            }
           ) {
             voPoints
             taskPoints
@@ -556,7 +577,7 @@ describe('Potential Voters', () => {
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.potentialVoterInfo.voPoints).toBe(40);
-    expect(result.data.potentialVoterInfo.taskPoints).toBe(63);
+    expect(result.data.potentialVoter.voPoints).toBe(40);
+    expect(result.data.potentialVoter.taskPoints).toBe(63);
   });
 });

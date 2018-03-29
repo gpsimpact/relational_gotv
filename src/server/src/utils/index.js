@@ -1,6 +1,8 @@
 import faker from 'faker';
 import { includes, has } from 'lodash';
 import { InsufficientPermissionsError } from '../errors';
+import stringify from 'json-stable-stringify';
+import base64 from 'base-64';
 
 export function mapTo(keys, keyFn) {
   return rows => {
@@ -131,3 +133,6 @@ export const hasPermission = (viewer, service, requiredPermission, throwOnFail =
   }
   return true;
 };
+
+export const generateDeterministicCacheId = args => base64.encode(stringify(args));
+export const decodeDeterministicCacheId = cacheId => JSON.parse(base64.decode(cacheId));
