@@ -5,7 +5,7 @@ import { graphql } from 'react-apollo';
 import TextInput from './elements/TextInput';
 import { Button, Row, Col, Card, CardHeader, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import Yup from 'yup';
-import MY_POTENTIAL_VOTERS from '../queries/myPotentialVoters';
+import MY_POTENTIAL_VOTERS from '../queries/potentialVoters';
 import NEW_POTENTIAL_VOTER from '../mutations/newPotentialVoter';
 
 const NewPvForm = ({ org_id, submit }) => (
@@ -109,7 +109,7 @@ const NewPvFormWithData = graphql(NEW_POTENTIAL_VOTER, {
         refetchQueries: [
           {
             query: MY_POTENTIAL_VOTERS,
-            variables: { org_id: org_id },
+            variables: { org_id: org_id, limit: 5 },
           },
         ],
       }),

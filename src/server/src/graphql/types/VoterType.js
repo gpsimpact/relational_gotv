@@ -108,7 +108,7 @@ export default `
 
   type votersResults {
     items: [Voter!]
-    response_metadata: Response_Metadata
+    pageInfo: PageInfo
   }
 
   type Query {

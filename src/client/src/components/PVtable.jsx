@@ -1,48 +1,144 @@
 import React, { Component } from 'react';
-// import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Table, Card, CardHeader, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
+import { Card, CardHeader, CardBody, CardTitle, CardSubtitle, Row, Col } from 'reactstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { withRouter } from 'react-router-dom';
-import { faSquare, faCheckSquare } from '@fortawesome/fontawesome-pro-light';
-import MY_POTENTIAL_VOTERS from '../queries/myPotentialVoters';
-import { map } from 'lodash';
+import { faBadgeCheck, faExclamation } from '@fortawesome/fontawesome-pro-solid';
+import { InfiniteLoader, AutoSizer, List } from 'react-virtualized';
+import MY_POTENTIAL_VOTERS from '../queries/potentialVoters';
+import '../styles/rvtables.css';
 
-const CheckBox = ({ checked }) => {
-  return checked ? (
-    <FontAwesomeIcon icon={faCheckSquare} size="2x" />
-  ) : (
-    <FontAwesomeIcon icon={faSquare} size="2x" style={{ color: 'darkgrey' }} />
-  );
+const configObject = {
+  options: props => {
+    let after = props.nextCursor;
+    return {
+      variables: { limit: 5, after: after, org_id: props.org_id },
+    };
+  },
+  force: true,
+  props: ({ ownProps, data }) => {
+    const { loading, potentialVoters, fetchMore, error } = data;
+    /******************************************************************************************************************
+     *  This callback function is called to load more rows from GraphQL Server.
+     ******************************************************************************************************************/
+    const loadMoreRows = () => {
+      // console.log('!!!!! Loading more!');
+      return fetchMore({
+        variables: {
+          limit: 5,
+          after: potentialVoters.pageInfo.nextCursor,
+          org_id: ownProps.org_id,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          const newItems = fetchMoreResult.potentialVoters.items;
+          fetchMoreResult.potentialVoters.items = [
+            ...previousResult.potentialVoters.items,
+            ...newItems,
+          ];
+          return fetchMoreResult;
+        },
+      });
+    };
+    /******************************************************************************************************************
+     *  props to be passed to subsequent children.
+     ******************************************************************************************************************/
+    return {
+      loading,
+      error,
+      potentialVoters,
+      loadMoreRows,
+    };
+  },
 };
 
-const PvTableRow = ({ data, push }) => (
-  <tr onClick={() => push(`/u/pv/${data.id}`)}>
-    <td>{data && data.first_name}</td>
-    <td>{data && data.last_name}</td>
-    <td>{data && data.city}</td>
-    <td>{data && data.state_file_id ? <CheckBox checked /> : <CheckBox />}</td>
-    <td>{data && data.countAvailableTasks}</td>
-    <td>{data ? (data.voPoints || 0) + (data.taskPoints || 0) : 0}</td>
-  </tr>
-);
+let virtualizingList = [];
 
 export class PvTable extends Component {
-  render() {
-    const { data: { loading, error, myPotentialVoters } } = this.props;
+  constructor(props) {
+    super(props);
+    // const { loadMoreRows, potentialVoters } = this.props;
 
+    this._isRowLoaded = this._isRowLoaded.bind(this);
+    this._rowRenderer = this._rowRenderer.bind(this);
+    this._noRowsRenderer = this._noRowsRenderer.bind(this);
+  }
+  /******************************************************************************************************************
+   *  Used in InfiniteLoader to track the loaded state of each row.
+   ******************************************************************************************************************/
+  _isRowLoaded({ index }) {
+    return !!virtualizingList[index];
+  }
+  /******************************************************************************************************************
+   *  Used in List to render each row.
+   ******************************************************************************************************************/
+  _rowRenderer({ key, index, style, push }) {
+    let content;
+    // console.log(this.props);
+    if (index < virtualizingList.length) {
+      content = virtualizingList[index];
+    } else {
+      content = (
+        // <LinearProgress mode="indeterminate" />
+        <div>Loading.....</div>
+      );
+    }
+    return (
+      <div key={key} style={style}>
+        <div className="PvBox" onClick={() => this.props.history.push(`/u/pv/${content.id}`)}>
+          <Row>
+            <Col xs="1" className="d-flex justify-content-center align-items-center">
+              {content.state_file_id ? (
+                <FontAwesomeIcon icon={faBadgeCheck} size="5x" />
+              ) : (
+                <FontAwesomeIcon icon={faExclamation} size="5x" style={{ color: '#c0392b' }} />
+              )}
+            </Col>
+            <Col>
+              <Row>
+                <Col>
+                  <h2>
+                    {content.first_name} {content.last_name}
+                  </h2>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  {content.state_file_id ? (
+                    <p>
+                      You have {content.countAvailableTasks} available tasks for{' '}
+                      {content.first_name}!
+                    </p>
+                  ) : (
+                    <p>
+                      {content.first_name} is not matched to a voter registration record. Match them
+                      or help them register to vote!
+                    </p>
+                  )}
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </div>
+      </div>
+    );
+  }
+
+  /******************************************************************************************************************
+   *  When no rows are returned
+   ******************************************************************************************************************/
+  _noRowsRenderer() {
+    return <h2>Create your first list member below.</h2>;
+  }
+
+  render() {
+    const { loading, error, potentialVoters, loadMoreRows } = this.props;
+    virtualizingList = potentialVoters && potentialVoters.items ? potentialVoters.items : [];
     if (loading) {
       return <p>Loading...</p>;
     } else if (error) {
       return <p>Error!</p>;
     }
-    // Replace this with an api method..
-    // let totalPoints = 0;
-    // myPotentialVoters.map(pv => {
-    //   totalPoints = totalPoints + pv.voPoints + pv.taskPoints;
-    // });
-    const points = map(myPotentialVoters, pv => pv.voPoints + pv.taskPoints);
-    const totalPoints = points.reduce((a, b) => a + b, 0);
+    // console.dir(this.props);
     return (
       <Card>
         <CardHeader>
@@ -50,45 +146,37 @@ export class PvTable extends Component {
           <CardSubtitle>Click on a person.</CardSubtitle>
         </CardHeader>
         <CardBody>
-          <Table hover size="md">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>City</th>
-                <th>Registered</th>
-                <th>Available Tasks</th>
-                <th>Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              {myPotentialVoters.map(potentialVoter => (
-                <PvTableRow
-                  data={potentialVoter}
-                  key={potentialVoter.id}
-                  push={this.props.history.push}
-                />
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <th />
-                <th />
-                <th />
-                <th />
-                <th />
-                <th>TODO: new API method to calculate total points</th>
-              </tr>
-            </tfoot>
-          </Table>
+          <AutoSizer disableHeight>
+            {({ width }) => (
+              <InfiniteLoader
+                isRowLoaded={this._isRowLoaded}
+                loadMoreRows={loadMoreRows}
+                rowCount={potentialVoters.pageInfo.totalCount}
+              >
+                {({ onRowsRendered, registerChild }) => (
+                  <div>
+                    <List
+                      height={400}
+                      onRowsRendered={onRowsRendered}
+                      noRowsRenderer={this._noRowsRenderer}
+                      ref={registerChild}
+                      rowCount={potentialVoters.items.length}
+                      rowHeight={140}
+                      rowRenderer={this._rowRenderer}
+                      width={width}
+                      overscanRowCount={5}
+                    />
+                  </div>
+                )}
+              </InfiniteLoader>
+            )}
+          </AutoSizer>
         </CardBody>
       </Card>
     );
   }
 }
 
-const PvTableWithData = graphql(MY_POTENTIAL_VOTERS, {
-  options: props => ({ variables: { org_id: props.org_id } }),
-})(withRouter(PvTable));
+const PvTableWithData = graphql(MY_POTENTIAL_VOTERS, configObject)(withRouter(PvTable));
 
 export default PvTableWithData;

@@ -53,9 +53,10 @@ describe('Voter File', () => {
               last_name
               city
             },
-            response_metadata {
-              next_cursor
+            pageInfo {
+              nextCursor
               fromCache
+              totalCount
             }
           }
         }
@@ -63,10 +64,11 @@ describe('Voter File', () => {
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
-    console.log(JSON.stringify(result, null, '\t'));
+    // console.log(JSON.stringify(result, null, '\t'));
     expect(result.data.voters.items.length).toBe(2);
     expect(result.data.voters.items[0]).toEqual(voters[1]);
-    expect(result.data.voters.response_metadata.next_cursor).not.toBeUndefined();
+    expect(result.data.voters.pageInfo.nextCursor).not.toBeUndefined();
+    expect(result.data.voters.pageInfo.totalCount).toBe(voters.length);
   });
 
   test('cursor pagination works as expected', async () => {
@@ -102,8 +104,8 @@ describe('Voter File', () => {
               last_name
               city
             },
-            response_metadata {
-              next_cursor
+            pageInfo {
+              nextCursor
             }
           }
         }
@@ -114,6 +116,6 @@ describe('Voter File', () => {
     // console.log(JSON.stringify(result, null, '\t'));
     expect(result.data.voters.items.length).toBe(2);
     expect(result.data.voters.items[0]).toEqual(voters[3]);
-    expect(result.data.voters.response_metadata.next_cursor).not.toBeUndefined();
+    expect(result.data.voters.pageInfo.nextCursor).not.toBeUndefined();
   });
 });

@@ -10,7 +10,7 @@ import SchemaForm from './SchemaForm';
 
 export class PvIndex extends PureComponent {
   render() {
-    const { data: { loading, error, potentialVoterInfo } } = this.props;
+    const { data: { loading, error, potentialVoter } } = this.props;
     if (loading) {
       return <p>Loading...</p>;
     } else if (error) {
@@ -31,43 +31,43 @@ export class PvIndex extends PureComponent {
         <Row>
           <Col>
             <h2>
-              {potentialVoterInfo.first_name} {potentialVoterInfo.last_name} -{' '}
-              {potentialVoterInfo.city}
+              {potentialVoter.first_name} {potentialVoter.last_name} - {potentialVoter.city}
             </h2>
           </Col>
         </Row>
         <Row style={{ paddingTop: 20 }}>
           <Col>
-            {potentialVoterInfo.state_file_id ? (
-              <VoterProfile state_file_id={potentialVoterInfo.state_file_id} />
+            {potentialVoter.state_file_id ? (
+              <VoterProfile state_file_id={potentialVoter.state_file_id} />
             ) : (
-              <VoterSearch potential_voter={potentialVoterInfo} />
+              <VoterSearch potential_voter={potentialVoter} />
             )}
           </Col>
         </Row>
-
-        <Row style={{ paddingTop: 20 }}>
-          <Col>
-            {potentialVoterInfo.nextTask && potentialVoterInfo.state_file_id ? (
-              <SchemaForm
-                key={potentialVoterInfo.nextTask.id}
-                taskId={potentialVoterInfo.nextTask.id}
-                schema={potentialVoterInfo.nextTask.form_schema}
-                point_value={potentialVoterInfo.nextTask.point_value}
-                submitFn={values =>
-                  this.props.submit(
-                    potentialVoterInfo.nextTask.id,
-                    'COMPLETE',
-                    values,
-                    potentialVoterInfo.id
-                  )
-                }
-              />
-            ) : (
-              <h2>There are currently no available tasks associated with this voter</h2>
-            )}
-          </Col>
-        </Row>
+        {potentialVoter.state_file_id ? (
+          <Row style={{ paddingTop: 20 }}>
+            <Col>
+              {potentialVoter.nextTask ? (
+                <SchemaForm
+                  key={potentialVoter.nextTask.id}
+                  taskId={potentialVoter.nextTask.id}
+                  schema={potentialVoter.nextTask.form_schema}
+                  point_value={potentialVoter.nextTask.point_value}
+                  submitFn={values =>
+                    this.props.submit(
+                      potentialVoter.nextTask.id,
+                      'COMPLETE',
+                      values,
+                      potentialVoter.id
+                    )
+                  }
+                />
+              ) : (
+                <h2>There are currently no available tasks associated with this voter</h2>
+              )}
+            </Col>
+          </Row>
+        ) : null}
       </div>
     );
   }

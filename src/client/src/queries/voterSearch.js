@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 const VOTER_SEARCH = gql`
-  query voterSearch($first_name: String, $last_name: String, $city: String, $state: String) {
+  query voters($first_name: String, $last_name: String, $city: String, $state: String) {
     voters(
       where: {
         first_name_starts_with: $first_name
@@ -25,6 +25,10 @@ const VOTER_SEARCH = gql`
         vo_voted
         vo_voted_date
         vo_voted_method
+      }
+      pageInfo {
+        nextCursor
+        totalCount
       }
     }
   }

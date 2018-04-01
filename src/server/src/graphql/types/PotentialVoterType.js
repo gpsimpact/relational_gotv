@@ -154,7 +154,7 @@ export default `
 
   type PotentialVotersResults {
     items: [PotentialVoter!]
-    response_metadata: Response_Metadata
+    pageInfo: PageInfo
   }
 
   type Query {

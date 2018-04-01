@@ -19,7 +19,7 @@ class PotentialVotersConnector {
     let data;
     if (cachedDataRaw) {
       data = JSON.parse(cachedDataRaw);
-      data.response_metadata.fromCache = true;
+      data.pageInfo.fromCache = true;
     } else {
       // if not present, continue below to load from db
       const fetchPayload = decodeDeterministicCacheId(key);
@@ -40,7 +40,7 @@ class PotentialVotersConnector {
         await this.redisDb.setAsync(key, JSON.stringify(data), 'EX', fetchPayload.ttl);
       }
     }
-    data.response_metadata.fromCache = false;
+    data.pageInfo.fromCache = false;
     return data;
   };
 

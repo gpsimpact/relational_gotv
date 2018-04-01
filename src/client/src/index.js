@@ -13,6 +13,7 @@ import { createHttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { setContext } from 'apollo-link-context';
 import './styles/index.css';
+import 'react-virtualized/styles.css'; // only needs to be imported once
 import 'bootstrap/dist/css/bootstrap.css';
 
 // // Pass your GraphQL endpoint to uri

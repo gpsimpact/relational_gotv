@@ -35,8 +35,7 @@ export const paginator = async (db, query, orderBy, limit, after, uniqueColumn) 
     paginationQuery.limit(limit + 1);
   }
 
-  // fetch items
-  let items = await paginationQuery;
+  let [items, [countResults]] = await Promise.all([paginationQuery, query.count()]);
 
   // encode cursor if necessary
   let encodedCursor;
@@ -56,8 +55,9 @@ export const paginator = async (db, query, orderBy, limit, after, uniqueColumn) 
 
   return {
     items,
-    response_metadata: {
-      next_cursor: encodedCursor,
+    pageInfo: {
+      nextCursor: encodedCursor,
+      totalCount: countResults.count,
     },
   };
 };

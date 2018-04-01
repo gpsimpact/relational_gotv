@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 const POTENTIAL_VOTER_INFO = gql`
-  query potentialVoterInfo($id: String!) {
-    potentialVoterInfo(id: $id) {
+  query potentialVoter($id: String!) {
+    potentialVoter(where: { id: $id }) {
       id
       first_name
       last_name

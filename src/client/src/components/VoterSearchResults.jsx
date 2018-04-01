@@ -2,70 +2,166 @@ import React, { PureComponent } from 'react';
 import VOTER_SEARCH from '../queries/voterSearch';
 import { graphql } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
-import { Row, Col, Table } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import { parse, differenceInCalendarYears } from 'date-fns';
 import AssociateVoterButton from './AssociateVoterButton';
+// import { faBadgeCheck, faExclamation } from '@fortawesome/fontawesome-pro-solid';
+// import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { InfiniteLoader, AutoSizer, List } from 'react-virtualized';
+
 // import VoterProfile from './VoterProfile';
 // import VoterSearch from './VoterSearch';
 
+const configObject = {
+  options: props => {
+    let after = props.nextCursor;
+    return {
+      variables: {
+        limit: 10,
+        after: after,
+        first_name: props.first_name,
+        last_name: props.last_name,
+        city: props.city,
+        state: props.state,
+      },
+    };
+  },
+  force: true,
+  props: ({ ownProps, data }) => {
+    const { loading, voters, fetchMore, error } = data;
+    /******************************************************************************************************************
+     *  This callback function is called to load more rows from GraphQL Server.
+     ******************************************************************************************************************/
+    const loadMoreRows = () => {
+      // console.log('!!!!! Loading more!');
+      return fetchMore({
+        variables: {
+          limit: 10,
+          first_name: ownProps.first_name,
+          last_name: ownProps.last_name,
+          city: ownProps.city,
+          state: ownProps.state,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          const newItems = fetchMoreResult.voters.items;
+          fetchMoreResult.voters.items = [...previousResult.voters.items, ...newItems];
+          return fetchMoreResult;
+        },
+      });
+    };
+    /******************************************************************************************************************
+     *  props to be passed to subsequent children.
+     ******************************************************************************************************************/
+    return {
+      loading,
+      error,
+      voters,
+      loadMoreRows,
+    };
+  },
+};
+
+let virtualizingList = [];
+
 export class VoterSearchResults extends PureComponent {
+  constructor(props) {
+    super(props);
+    // const { loadMoreRows, potentialVoters } = this.props;
+
+    this._isRowLoaded = this._isRowLoaded.bind(this);
+    this._rowRenderer = this._rowRenderer.bind(this);
+    this._noRowsRenderer = this._noRowsRenderer.bind(this);
+  }
+  /******************************************************************************************************************
+   *  Used in InfiniteLoader to track the loaded state of each row.
+   ******************************************************************************************************************/
+  _isRowLoaded({ index }) {
+    return !!virtualizingList[index];
+  }
+  /******************************************************************************************************************
+   *  Used in List to render each row.
+   ******************************************************************************************************************/
+  _rowRenderer({ key, index, style, push }) {
+    let content;
+    if (index < virtualizingList.length) {
+      content = virtualizingList[index];
+      return (
+        <div key={key} style={style}>
+          <div className="VoterSearchResultContainer">
+            <Row>
+              <Col>
+                <h3>
+                  {content.first_name} {content.last_name}
+                  <small style={{ paddingLeft: 10 }} className="text-muted">
+                    {content.home_address} {content.city}, {content.state} {content.zip} -{' '}
+                    {differenceInCalendarYears(new Date(), parse(content.dob))} years old
+                  </small>
+                  <div className="float-right">
+                    <AssociateVoterButton
+                      pv_id={this.props.pv_id}
+                      voter_id={content.state_file_id}
+                    />
+                  </div>
+                </h3>
+              </Col>
+            </Row>
+          </div>
+        </div>
+      );
+    }
+    return (
+      // <LinearProgress mode="indeterminate" />
+      <div key={key} style={style}>
+        Loading.....
+      </div>
+    );
+  }
+
+  /******************************************************************************************************************
+   *  When no rows are returned
+   ******************************************************************************************************************/
+  _noRowsRenderer() {
+    return <h2>Create your first list member below.</h2>;
+  }
   render() {
-    const { data: { loading, error, voters } } = this.props;
+    // const { loading, error, voters } = this.props;
+    const { loading, error, voters, loadMoreRows } = this.props;
+    virtualizingList = voters && voters.items ? voters.items : [];
     if (loading) {
       return <p>Loading...</p>;
     } else if (error) {
       return <p>Error!</p>;
     }
-
     if (voters.items.length > 0) {
       return (
         <div>
           <Row style={{ paddingTop: 20 }}>
             <Col>
-              <Table hover size="md">
-                <thead>
-                  <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Home Address</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Zip</th>
-                    <th>Age</th>
-                    <th />
-                  </tr>
-                </thead>
-                <tbody>
-                  {voters.items.map(voter => (
-                    <tr key={voter.state_file_id}>
-                      <td>{voter.first_name}</td>
-                      <td>{voter.last_name}</td>
-                      <td>{voter.home_address}</td>
-                      <td>{voter.city}</td>
-                      <td>{voter.state}</td>
-                      <td>{voter.zipcode}</td>
-                      <td>{differenceInCalendarYears(new Date(), parse(voter.dob))}</td>
-                      <td>
-                        <AssociateVoterButton
-                          pv_id={this.props.pv_id}
-                          voter_id={voter.state_file_id}
+              <AutoSizer disableHeight>
+                {({ width }) => (
+                  <InfiniteLoader
+                    isRowLoaded={this._isRowLoaded}
+                    loadMoreRows={loadMoreRows}
+                    rowCount={voters.pageInfo.totalCount}
+                  >
+                    {({ onRowsRendered, registerChild }) => (
+                      <div>
+                        <List
+                          height={400}
+                          onRowsRendered={onRowsRendered}
+                          noRowsRenderer={this._noRowsRenderer}
+                          ref={registerChild}
+                          rowCount={voters.items.length}
+                          rowHeight={50}
+                          rowRenderer={this._rowRenderer}
+                          width={width}
+                          overscanRowCount={5}
                         />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th />
-                    <th />
-                    <th />
-                    <th />
-                    <th />
-                    <th />
-                    <th />
-                  </tr>
-                </tfoot>
-              </Table>
+                      </div>
+                    )}
+                  </InfiniteLoader>
+                )}
+              </AutoSizer>
             </Col>
           </Row>
         </div>
@@ -108,15 +204,8 @@ export class VoterSearchResults extends PureComponent {
   }
 }
 
-const VoterSearchResultsWithData = graphql(VOTER_SEARCH, {
-  options: props => ({
-    variables: {
-      first_name: `${props.first_name}%`,
-      last_name: props.last_name,
-      city: props.city,
-      state: props.state,
-    },
-  }),
-})(withRouter(VoterSearchResults));
+const VoterSearchResultsWithData = graphql(VOTER_SEARCH, configObject)(
+  withRouter(VoterSearchResults)
+);
 
 export default VoterSearchResultsWithData;

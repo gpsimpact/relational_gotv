@@ -60,7 +60,7 @@ export default `
 
   type PointResults {
     items: [PointProfile!]
-    response_metadata: Response_Metadata
+    pageInfo: PageInfo
   }
 
   type Query {

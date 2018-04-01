@@ -57,8 +57,8 @@ describe('Voter File', () => {
               vo_voted_date
               vo_voted_method
             },
-            response_metadata {
-              next_cursor
+            pageInfo {
+              nextCursor
             }
           }
         }
@@ -109,8 +109,8 @@ describe('Voter File', () => {
               vo_voted_date
               vo_voted_method
             }
-            response_metadata {
-              next_cursor
+            pageInfo {
+              nextCursor
             }
           }
         }
