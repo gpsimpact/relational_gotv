@@ -39,3 +39,9 @@ export const hasOrgAccess = orgId => {
   const decoded = decode(token);
   return has(decoded.permissions, orgId);
 };
+
+export const getUserEmail = () => {
+  const token = getToken();
+  const decoded = decode(token);
+  return decoded.email;
+};

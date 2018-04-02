@@ -88,17 +88,17 @@ export class PvTable extends Component {
           <Row>
             <Col xs="1" className="d-flex justify-content-center align-items-center">
               {content.state_file_id ? (
-                <FontAwesomeIcon icon={faBadgeCheck} size="5x" />
+                <FontAwesomeIcon icon={faBadgeCheck} size="3x" />
               ) : (
-                <FontAwesomeIcon icon={faExclamation} size="5x" style={{ color: '#c0392b' }} />
+                <FontAwesomeIcon icon={faExclamation} size="3x" style={{ color: '#c0392b' }} />
               )}
             </Col>
             <Col>
               <Row>
                 <Col>
-                  <h2>
+                  <h4>
                     {content.first_name} {content.last_name}
-                  </h2>
+                  </h4>
                 </Col>
               </Row>
               <Row>
@@ -161,7 +161,7 @@ export class PvTable extends Component {
                       noRowsRenderer={this._noRowsRenderer}
                       ref={registerChild}
                       rowCount={potentialVoters.items.length}
-                      rowHeight={140}
+                      rowHeight={120}
                       rowRenderer={this._rowRenderer}
                       width={width}
                       overscanRowCount={5}

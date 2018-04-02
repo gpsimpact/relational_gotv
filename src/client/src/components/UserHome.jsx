@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { hasOrgAccess } from '../utils/auth';
 import PvTable from './PVtable';
 import NewPvForm from './NewPvForm';
+import PointsProfile from './PointsProfile';
 import { Row, Col, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 class UserHome extends PureComponent {
@@ -20,8 +21,11 @@ class UserHome extends PureComponent {
           </Col>
         </Row>
         <Row style={{ paddingTop: 20 }}>
-          <Col>
+          <Col xs={9}>
             <PvTable org_id={this.props.match.params.orgSlug} />
+          </Col>
+          <Col xs={3}>
+            <PointsProfile org_id={this.props.match.params.orgSlug} />
           </Col>
         </Row>
         <Row style={{ paddingTop: 20 }}>

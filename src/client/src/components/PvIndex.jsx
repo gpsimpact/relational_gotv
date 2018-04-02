@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import POTENTIAL_VOTER_INFO from '../queries/potentialVoterInfo';
+import POINTS_PROFILE_USER_ORG_LIMITED from '../queries/pointsProfileUserOrgLimited';
 import UPDATE_TASK from '../mutations/updateTask';
 import { graphql, compose } from 'react-apollo';
 import { withRouter, Link } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { Row, Col, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import VoterProfile from './VoterProfile';
 import VoterSearch from './VoterSearch';
 import SchemaForm from './SchemaForm';
+import { getUserEmail } from '../utils/auth';
 
 export class PvIndex extends PureComponent {
   render() {
@@ -58,7 +60,8 @@ export class PvIndex extends PureComponent {
                       potentialVoter.nextTask.id,
                       'COMPLETE',
                       values,
-                      potentialVoter.id
+                      potentialVoter.id,
+                      potentialVoter.org_id
                     )
                   }
                 />
@@ -80,7 +83,7 @@ const PvIndexWithData = compose(
   graphql(UPDATE_TASK, {
     // options: props => ({ variables: { id, status, form_data } }),
     props: ({ mutate }) => ({
-      submit: (id, status, form_data, pvid) =>
+      submit: (id, status, form_data, pvid, org_id) =>
         Promise.resolve(
           mutate({
             variables: { id, status, form_data },
@@ -88,6 +91,10 @@ const PvIndexWithData = compose(
               {
                 query: POTENTIAL_VOTER_INFO,
                 variables: { id: pvid },
+              },
+              {
+                query: POINTS_PROFILE_USER_ORG_LIMITED,
+                variables: { email: getUserEmail(), org_id },
               },
             ],
           })
