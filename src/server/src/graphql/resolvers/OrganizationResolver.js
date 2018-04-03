@@ -8,8 +8,11 @@ export default {
     },
   },
   Query: {
-    organizationInfo(root, args, ctx) {
-      return ctx.connectors.organization.organizationBySlug.load(args.slug);
+    organizations(root, args, ctx) {
+      return ctx.models.organizationalInfo.orgMultiSearch(args, ctx);
+    },
+    organization(root, args, ctx) {
+      return ctx.models.organizationalInfo.orgSingle(args, ctx);
     },
   },
 };

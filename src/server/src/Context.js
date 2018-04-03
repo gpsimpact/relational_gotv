@@ -2,10 +2,11 @@ import sqlDb from './db';
 import redisDb from './redisClient';
 import UserConnector from './connectors/users';
 import OrganizationPermissionsConnector from './connectors/organizationPermissions';
-import OrganizationConnector from './connectors/organization';
+import OrganizationConnector from './connectors/organizationConnector';
 import sendEmail from './connectors/email';
 import UserModel from './models/users';
 import OrganizationPermissionModel from './models/organizationPermissions';
+import OrganizationalInfoModel from './models/organizationInfoModel';
 import PotentialVotersConnector from './connectors/potentialVotersConnector';
 import PotentialVotersModel from './models/potentialVotersModel';
 import VoterConnector from './connectors/votersConnector';
@@ -34,6 +35,7 @@ class MakeContext {
     this.models = {
       user: { ...new UserModel() },
       organizationPermissions: { ...new OrganizationPermissionModel() },
+      organizationalInfo: { ...new OrganizationalInfoModel() },
       potentialVoters: { ...new PotentialVotersModel() },
       voters: { ...new VoterModel() },
       tasks: { ...new TaskModel() },

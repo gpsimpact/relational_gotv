@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
-// import { Route } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-// import PropTypes from 'prop-types';
 import { Row, Col, Container } from 'reactstrap';
-// import { Formik } from 'formik';
-// import TextInput from './elements/TextInput';
 import RegistrationForm from './RegistrationForm';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faPhone, faAt } from '@fortawesome/fontawesome-pro-light';
+import { Link } from 'react-router-dom';
 
 const ORG_DETAILS = gql`
   query GetOrgInfo($slug: String!) {
-    organizationInfo(slug: $slug) {
+    organization(where: { slug: $slug }) {
       id
       name
       cta
@@ -26,11 +23,20 @@ const ORG_DETAILS = gql`
 
 class OrgLanding extends Component {
   render() {
-    const { data: { loading, error, organizationInfo } } = this.props;
+    const { data: { loading, error, organization } } = this.props;
     if (loading) {
       return <p>Loading...</p>;
     } else if (error) {
       return <p>Error!</p>;
+    }
+    if (!organization) {
+      return (
+        <div>
+          <h2>
+            Sorry, this org doesn't exist. Try one listed <Link to="/">here</Link>
+          </h2>
+        </div>
+      );
     }
     return (
       <Container>
@@ -38,25 +44,25 @@ class OrgLanding extends Component {
           <Row>
             <Col>
               <h1 className="text-center" style={{ paddingTop: 20 }}>
-                Welcome to {organizationInfo.name} organizational portal.
+                Welcome to {organization.name} organizational portal.
               </h1>
             </Col>
           </Row>
           <Row style={{ paddingTop: 20 }}>
             <Col>
               <p className="">Each org will have its's own call to action! Like:</p>
-              <p>{organizationInfo.cta}</p>
+              <p>{organization.cta}</p>
               <h2>For more information contact:</h2>
               <p>
-                {organizationInfo.contact_name} <br />
+                {organization.contact_name} <br />
                 <FontAwesomeIcon icon={faPhone} />{' '}
-                <span style={{ paddingLeft: 20 }}>{organizationInfo.contact_phone}</span> <br />
+                <span style={{ paddingLeft: 20 }}>{organization.contact_phone}</span> <br />
                 <FontAwesomeIcon icon={faAt} />
-                <span style={{ paddingLeft: 20 }}>{organizationInfo.contact_email}</span>
+                <span style={{ paddingLeft: 20 }}>{organization.contact_email}</span>
               </p>
             </Col>
             <Col>
-              <RegistrationForm org_id={organizationInfo.id} pushRoute={this.props.history.push} />
+              <RegistrationForm org_id={organization.id} pushRoute={this.props.history.push} />
             </Col>
           </Row>
         </div>

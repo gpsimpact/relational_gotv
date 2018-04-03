@@ -3,6 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { isLoggedIn, extractOrgs } from '../utils/auth';
 import UserHome from './UserHome';
 import PvIndex from './PvIndex';
+import OrgChooser from './OrgChooser';
+import FourOhFour from './404';
 
 const UserRoutes = () => {
   if (isLoggedIn()) {
@@ -14,13 +16,14 @@ const UserRoutes = () => {
           path="/u/"
           render={() => {
             if (orgs.length > 1) {
-              return <div>SomeYetUnmadeChooserComponent </div>;
+              return <OrgChooser orgs={orgs} />;
             }
             return <Redirect to={`/u/${orgs[0]}`} />;
           }}
         />
         <Route exact path="/u/:orgSlug" component={UserHome} />
         <Route exact path="/u/pv/:pvid" component={PvIndex} />
+        <Route component={FourOhFour} />
       </Switch>
     );
   }
