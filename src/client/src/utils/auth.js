@@ -41,7 +41,15 @@ export const hasOrgAccess = orgId => {
 };
 
 export const getUserEmail = () => {
+  if (!isLoggedIn()) return null;
   const token = getToken();
   const decoded = decode(token);
   return decoded.email;
 };
+
+// export const getUsername = () => {
+//   const token = getToken();
+//   const decoded = decode(token);
+//   console.log(decoded);
+//   return { firstName: decoded.firstName, lastName: decoded.lastName };
+// };

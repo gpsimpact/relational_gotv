@@ -4,7 +4,7 @@ import { isLoggedIn, extractOrgs } from '../utils/auth';
 import UserHome from './UserHome';
 import PvIndex from './PvIndex';
 import OrgChooser from './OrgChooser';
-import FourOhFour from './404';
+// import FourOhFour from './404';
 
 const UserRoutes = () => {
   if (isLoggedIn()) {
@@ -23,7 +23,6 @@ const UserRoutes = () => {
         />
         <Route exact path="/u/:orgSlug" component={UserHome} />
         <Route exact path="/u/pv/:pvid" component={PvIndex} />
-        <Route component={FourOhFour} />
       </Switch>
     );
   }

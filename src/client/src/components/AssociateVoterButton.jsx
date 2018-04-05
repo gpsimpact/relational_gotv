@@ -5,8 +5,8 @@ import { graphql } from 'react-apollo';
 // import { withRouter } from 'react-router-dom';
 // import { faSquare, faCheckSquare } from '@fortawesome/fontawesome-pro-light';
 // import MY_POTENTIAL_VOTERS from '../queries/myPotentialVoters';
-import POTENTIAL_VOTER_INFO from '../queries/potentialVoterInfo';
-import ASSOCIATE_PV_VOTER from '../mutations/associatePvWithVoter';
+import POTENTIAL_VOTER_INFO from '../data/queries/potentialVoterInfo';
+import ASSOCIATE_PV_VOTER from '../data/mutations/associatePvWithVoter';
 import { Button } from 'reactstrap';
 
 export class AssociateButton extends Component {

@@ -7,12 +7,11 @@ import { Route, Switch } from 'react-router-dom';
 // import { Formik } from 'formik';
 // import TextInput from './elements/TextInput';
 import OrgLanding from './OrgLanding';
-import FourOhFour from './404';
+// import FourOhFour from './404';
 
 const OrgRoutes = () => (
   <Switch>
     <Route path="/org/:slug" component={OrgLanding} />
-    <Route component={FourOhFour} />
   </Switch>
 );
 

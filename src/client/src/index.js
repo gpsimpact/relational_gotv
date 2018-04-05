@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
+import App from './views/App';
 // import ApolloClient from 'apollo-boost';
 // import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter } from 'react-router-dom';
@@ -14,7 +14,7 @@ import { onError } from 'apollo-link-error';
 import { setContext } from 'apollo-link-context';
 import './styles/index.css';
 import 'react-virtualized/styles.css'; // only needs to be imported once
-import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap/dist/css/bootstrap.css';
 
 // // Pass your GraphQL endpoint to uri
 // const client = new ApolloClient({
@@ -35,9 +35,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 const errorLink = onError(({ networkError, graphQLErrors }) => {
   if (graphQLErrors) {
     graphQLErrors.map(({ message, locations, path }) =>
+      // eslint-disable-next-line no-console
       console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
     );
   }
+  // eslint-disable-next-line no-console
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
