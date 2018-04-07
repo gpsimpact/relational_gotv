@@ -1,6 +1,12 @@
 import React from 'react';
-import './FormElements.css';
+import PropTypes from 'prop-types';
 
-const InputFeedback = ({ error }) => (error ? <div className="input-feedback">{error}</div> : null);
+const InputFeedback = ({ error, errorText }) =>
+  error ? <div className="help is-danger">{errorText}</div> : null;
+
+InputFeedback.propTypes = {
+  error: PropTypes.bool,
+  errorText: PropTypes.string,
+};
 
 export default InputFeedback;

@@ -71,7 +71,7 @@ class MainNav extends PureComponent {
                 <div
                   className="button is-primary is-outlined"
                   onClick={() => {
-                    this.props.history.push('/Login');
+                    this.props.history.push('/auth/login');
                   }}
                 >
                   Log In
