@@ -108,6 +108,7 @@ class UserModel {
       html: content.html,
       txt: content.txt,
     };
+    // eslint-disable-next-line no-console
     ctx.connectors.sendEmail(messageData).catch(err => console.log(err));
     return 'ok';
   };
@@ -138,6 +139,7 @@ class UserModel {
       html: content.html,
       txt: content.txt,
     };
+    // eslint-disable-next-line no-console
     ctx.connectors.sendEmail(messageData).catch(err => console.log(err));
     return 'ok';
   };

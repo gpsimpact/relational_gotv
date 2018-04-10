@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-const FormError = ({ error }) => {
-  if (error) {
-    return <div className="alert alert-danger">{error}</div>;
+class FormError extends PureComponent {
+  state = {
+    open: true,
+  };
+  render() {
+    if (!this.state.open) return null;
+    return (
+      <div className="notification is-danger">
+        <button onClick={() => this.setState({ open: !this.state.open })} className="delete" />
+        {this.props.error}
+      </div>
+    );
   }
-  return null;
-};
+}
 
 FormError.propTypes = {
   error: PropTypes.string,
-};
-
-FormError.defaultProps = {
-  error: null,
 };
 
 export default FormError;

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Routes } from './routes';
-import MainNav from './mainNav';
+import MainNav from './MainNav';
 // import Main from './Main';
 // import NavBar from './NavBar';
 import { isLoggedIn, getUserEmail } from '../utils/auth';

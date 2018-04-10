@@ -3,23 +3,11 @@ import classnames from 'classnames';
 import InputFeedback from './InputFeedback';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle, faCheck } from '@fortawesome/fontawesome-pro-solid';
-import { has } from 'lodash';
 import PropTypes from 'prop-types';
 
 class TextInput extends PureComponent {
   render() {
-    const {
-      type,
-      id,
-      label,
-      error,
-      value,
-      onChange,
-      className,
-      touched,
-      errorText,
-      ...props
-    } = this.props;
+    const { type, id, label, error, value, onChange, className, touched, ...props } = this.props;
     const classes = classnames(
       'input',
       {
@@ -40,7 +28,7 @@ class TextInput extends PureComponent {
             onChange={onChange}
             {...props}
           />
-          {has(touched, id) ? (
+          {touched ? (
             <span className="icon is-small is-right">
               {error ? (
                 <FontAwesomeIcon icon={faExclamationTriangle} />
@@ -50,7 +38,7 @@ class TextInput extends PureComponent {
             </span>
           ) : null}
         </div>
-        <InputFeedback error={error} errorText={errorText} />
+        <InputFeedback error={error} />
       </div>
     );
   }
@@ -60,12 +48,11 @@ TextInput.propTypes = {
   type: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  error: PropTypes.bool,
-  errorText: PropTypes.string,
+  error: PropTypes.string,
   value: PropTypes.any,
   onChange: PropTypes.func.isRequired,
   className: PropTypes.string,
-  touched: PropTypes.object,
+  touched: PropTypes.bool,
 };
 
 export default TextInput;

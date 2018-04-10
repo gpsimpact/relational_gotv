@@ -2,63 +2,49 @@ import { Formik } from 'formik';
 import querystring from 'querystring';
 import React, { PureComponent } from 'react';
 import { Mutation } from 'react-apollo';
-import { withRouter, Link, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Yup from 'yup';
 import TextInput from '../../components/elements/TextInput';
 import FormError from '../../components/elements/FormError';
-import LOGIN_MUTATION from '../../data/mutations/login';
-import { setToken, isLoggedIn } from '../../utils/auth';
+import RESET_PASS_MUTATION from '../../data/mutations/resetPassword';
+// import { setToken } from '../../utils/auth';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { map } from 'lodash';
 
-class Login extends PureComponent {
+class ForgotPassword extends PureComponent {
+  state = {
+    alertOpen: false,
+  };
   render() {
-    if (isLoggedIn()) {
-      return <Redirect to="/u/" />;
-    }
     return (
-      <Mutation mutation={LOGIN_MUTATION}>
-        {login => (
+      <Mutation mutation={RESET_PASS_MUTATION}>
+        {resetPassword => (
           <div className="columns is-centered">
             <div className="column is-5-tablet is-4-desktop is-3-widescreen">
               <Formik
                 initialValues={{
-                  email: '',
                   password: '',
+                  password_confirm: '',
                 }}
                 validationSchema={Yup.object().shape({
-                  email: Yup.string()
-                    .email('Must be a properly formatted email address')
-                    .required('Email is required'),
                   password: Yup.string().required('password is required'),
+                  password_confirm: Yup.string()
+                    .oneOf([Yup.ref('password'), null], 'Passwords do not match!')
+                    .required('You must confirm your password.'),
                 })}
                 onSubmit={(values, { setSubmitting, setErrors }) => {
-                  login({
-                    variables: {
-                      email: values.email.toLowerCase().trim(), // force for case insensitivity
-                      password: values.password,
-                    },
+                  let qs = querystring.parse(this.props.location.search.slice(1));
+                  return resetPassword({
+                    variables: { token: qs.token, newPassword: values.password },
                   })
-                    .then(({ data }) => {
+                    .then(() => {
                       setSubmitting(false);
-                      if (data.login.token) {
-                        setToken(data.login.token);
-                        let qs = querystring.parse(this.props.location.search.slice(1));
-                        if (qs && qs.next) {
-                          window.location = qs.next;
-                        } else {
-                          window.location = '/u/';
-                        }
-                      } else {
-                        const errors = ['Incorrect Email or Password'];
-                        setErrors({ email: ' ', password: ' ', form: errors });
-                      }
+                      this.setState({ alertOpen: true });
                     })
                     .catch(error => {
                       setSubmitting(false);
-                      const errors = ['Incorrect Email or Password'];
-                      setErrors({ email: ' ', password: ' ', form: errors });
-                      // eslint-disable-next-line no-console
+                      setErrors({ email: ' ', password: ' ', form: error });
+                      //eslint-disable-next-line no-console
                       console.log('there was an error sending the query', error);
                     });
                 }}
@@ -73,32 +59,39 @@ class Login extends PureComponent {
                 }) => (
                   <form onSubmit={handleSubmit} className="box">
                     {map(errors.form, error => <FormError key={error} error={error} />)}
+                    {this.state.alertOpen ? (
+                      <div className="notification is-success">
+                        <button
+                          onClick={() => this.setState({ alertOpen: !this.state.alertOpen })}
+                          className="delete"
+                        />
+                        Success! Please click Login above to continue.
+                      </div>
+                    ) : null}
                     <div className="field has-text-centered">
-                      <h4 className="is-size-4 has-text-weight-bold">LOGIN</h4>
+                      <h4 className="is-size-4 has-text-weight-bold">Forgot Password?</h4>
                     </div>
                     <TextInput
-                      id="email"
-                      label="Email"
-                      type="email"
-                      placeholder="Email"
+                      id="password"
+                      type="password"
+                      label="Password"
+                      placeholder="Enter your new password"
+                      error={touched.password && errors.password}
+                      value={values.password}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.email}
-                      error={touched.email && errors.email}
-                      touched={touched.email}
+                    />
+                    <TextInput
+                      id="password_confirm"
+                      type="password"
+                      label="Password Again"
+                      placeholder="Confirm your new password"
+                      error={touched.password_confirm && errors.password_confirm}
+                      value={values.password_confirm}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                     />
 
-                    <TextInput
-                      id="password"
-                      label="Password"
-                      type="password"
-                      placeholder="Password"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.password}
-                      error={touched.password && errors.password}
-                      touched={touched.password}
-                    />
                     <div className="field ">
                       <div className="control">
                         <button
@@ -107,13 +100,10 @@ class Login extends PureComponent {
                           color="primary"
                           disabled={isSubmitting}
                         >
-                          Login
+                          Reset Password
                         </button>
                       </div>
                     </div>
-                    <p>
-                      <Link to="/auth/forgot">Forgot Password?</Link>
-                    </p>
                   </form>
                 )}
               />
@@ -125,8 +115,8 @@ class Login extends PureComponent {
   }
 }
 
-Login.propTypes = {
+ForgotPassword.propTypes = {
   location: ReactRouterPropTypes.location.isRequired,
 };
 
-export default withRouter(Login);
+export default withRouter(ForgotPassword);

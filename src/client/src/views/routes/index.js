@@ -1,8 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
 import FourOhFour from './404';
-import HomePage from '../homePage';
+import HomePage from '../HomePage';
 import Auth from '../auth';
+import OrgLanding from '../OrgLanding';
 // import Login from '../auth/Login';
 // import ForgotPassword from '../../components/ForgotPassword';
 // import ResetPassword from '../../components/ResetPassword';
@@ -13,6 +14,7 @@ export const Routes = (
     <Switch>
       <Route exact path="/" component={HomePage} />
       <Route path="/auth" component={Auth} />
+      <Route path="/org/:slug" component={OrgLanding} />
       <Route component={FourOhFour} />
     </Switch>
   </div>

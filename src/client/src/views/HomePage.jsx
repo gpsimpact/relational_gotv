@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
-import ALL_ORGS from '../../data/queries/allOrgs';
+import ALL_ORGS from '../data/queries/allOrgs';
 
 class HomePage extends PureComponent {
   render() {

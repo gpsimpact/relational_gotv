@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faUserCircle, faEdit, faSignOut } from '@fortawesome/fontawesome-pro-light';
 import PropTypes from 'prop-types';
-import { logout } from '../../utils/auth';
+import { logout } from '../utils/auth';
 import { withRouter, Link } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
