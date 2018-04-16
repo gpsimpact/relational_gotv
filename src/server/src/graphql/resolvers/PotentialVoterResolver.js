@@ -23,6 +23,10 @@ export default {
       const data = await ctx.connectors.tasks.taskPointsById.load(root.id);
       return data && data.total_task_points ? data.total_task_points : 0;
     },
+    voterFileRecord: async (root, args, ctx) => {
+      if (!root.state_file_id) return {};
+      return ctx.connectors.voters.voterById.load(root.state_file_id);
+    },
   },
   Query: {
     potentialVoters(root, args, ctx) {

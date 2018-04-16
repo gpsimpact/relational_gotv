@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 const ORG_DETAILS = gql`
-  query GetOrgInfo($slug: String!) {
-    organization(where: { slug: $slug }) {
+  query GetOrgInfo($where: OrganizationWhereUniqueInput!) {
+    organization(where: $where) {
       id
       name
       cta

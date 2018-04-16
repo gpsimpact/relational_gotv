@@ -56,16 +56,20 @@ describe('Tasks', () => {
             id
             status
             form_data
+            potential_voter{
+              id
+            }
           }
         }
     `;
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context, { form_data: fake_form_data });
-    // console.log(JSON.stringify(result, null, '\t'));
+    console.log(JSON.stringify(result, null, '\t'));
     expect(result.data.updateTask.id).toBe(tasks[0].id);
     expect(result.data.updateTask.status).toBe('COMPLETE');
     expect(result.data.updateTask.form_data).toEqual(fake_form_data);
+    expect(result.data.updateTask.potential_voter.id).toBe(pvs[0].id);
     // also check DB values
     const dbRecord = await db
       .table('tasks')
@@ -142,7 +146,6 @@ describe('Tasks', () => {
             city
             user_email
             org_id
-            state_file_id
           }
         }
     `;

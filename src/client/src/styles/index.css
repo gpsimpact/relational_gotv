@@ -13009,3 +13009,11 @@ label.panel-block {
 .footer {
   background-color: whitesmoke;
   padding: 3rem 1.5rem 6rem; }
+
+.pvMediaBox:hover {
+  transition: box-shadow .3s;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  cursor: pointer; }
+
+.infiniteList:focus {
+  outline: 0; }

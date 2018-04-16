@@ -11,7 +11,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 class OrgLanding extends PureComponent {
   render() {
     return (
-      <Query query={ORG_DETAILS} variables={{ slug: this.props.match.params.slug }}>
+      <Query query={ORG_DETAILS} variables={{ where: { slug: this.props.match.params.slug } }}>
         {({ loading, error, data: { organization } }) => {
           if (loading) return <div className="loader" />;
           if (error) return <p>Error!</p>;
@@ -65,7 +65,10 @@ class OrgLanding extends PureComponent {
                         ) : (
                           <div>
                             {hasOrgAccess(organization.id) ? (
-                              <Link className="button is-primary is-large" to={`/u`}>
+                              <Link
+                                className="button is-primary is-large"
+                                to={`/u/${organization.id}`}
+                              >
                                 Go To Dashboard!
                               </Link>
                             ) : (

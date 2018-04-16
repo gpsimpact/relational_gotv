@@ -58,7 +58,6 @@ export const generateFakePVs = (num, seed, user_email, org_id) => {
         city: faker.address.city(),
         user_email,
         org_id,
-        state_file_id: faker.random.number().toString(),
       });
     });
   return fakePVs;

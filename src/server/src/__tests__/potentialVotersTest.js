@@ -49,7 +49,6 @@ describe('Potential Voters', () => {
               city
               user_email
               org_id
-              state_file_id
             }
           }
         }
@@ -83,7 +82,6 @@ describe('Potential Voters', () => {
               city
               user_email
               org_id
-              state_file_id
             }
           }
         }
@@ -120,7 +118,6 @@ describe('Potential Voters', () => {
             city
             user_email
             org_id
-            state_file_id
           }
         }
     `;
@@ -163,7 +160,6 @@ describe('Potential Voters', () => {
             city
             user_email
             org_id
-            state_file_id
           }
         }
     `;
@@ -198,7 +194,6 @@ describe('Potential Voters', () => {
             city
             user_email
             org_id
-            state_file_id
           }
         }
     `;
@@ -240,7 +235,6 @@ describe('Potential Voters', () => {
             city
             user_email
             org_id
-            state_file_id
           }
         }
     `;
@@ -277,7 +271,6 @@ describe('Potential Voters', () => {
             city
             user_email
             org_id
-            state_file_id
           }
         }
     `;
@@ -312,7 +305,6 @@ describe('Potential Voters', () => {
             city
             user_email
             org_id
-            state_file_id
           }
         }
     `;
@@ -321,6 +313,48 @@ describe('Potential Voters', () => {
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
     expect(result.data.potentialVoter).toEqual(pvs[0]);
+  });
+
+  test('User can query for a single PV including voter data', async () => {
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
+    const voters = generateFakeVoters(1, 133);
+    await db('voter_file').insert(voters);
+    // associate voter id with pv
+    pvs[0].state_file_id = voters[0].state_file_id;
+    await db('users').insert(users[0]);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+
+    const userPerms = {
+      [org1.id]: ['AMBASSADOR'],
+    };
+    const query = `
+      query {
+          potentialVoter(
+            where: {
+              id: "${pvs[0].id}"
+            }
+          ) {
+            id
+            first_name
+            last_name
+            city
+            user_email
+            org_id
+            voterFileRecord {
+              state_file_id
+              first_name
+            }
+          }
+        }
+    `;
+    const rootValue = {};
+    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    const result = await graphql(schema, query, rootValue, context);
+    expect(result.data.potentialVoter.voterFileRecord.id).toEqual(voters[0].id);
+    expect(result.data.potentialVoter.voterFileRecord.first_name).toEqual(voters[0].first_name);
   });
 
   test('User cant query for a single PV if its not assigned to their email', async () => {
@@ -346,7 +380,6 @@ describe('Potential Voters', () => {
             city
             user_email
             org_id
-            state_file_id
           }
         }
     `;
@@ -380,7 +413,6 @@ describe('Potential Voters', () => {
             city
             user_email
             org_id
-            state_file_id
           }
         }
     `;

@@ -48,7 +48,7 @@ app.use(
       console.error(e);
       req.user = null;
     }
-
+    // console.log('!!!!! GQL SERVER REQUEST', req.body.query, req.body.variables);
     const options = {
       schema,
       context: new MakeContext(req),

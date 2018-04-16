@@ -6,12 +6,12 @@ export default `
     city: String!
     user_email: String!
     org_id: String!
-    state_file_id: String
     nextTask: Task
     countCompletedTasks: Int
     countAvailableTasks: Int
     voPoints: Int
     taskPoints: Int
+    voterFileRecord: Voter
   }
 
   input PotentialVoterInput {

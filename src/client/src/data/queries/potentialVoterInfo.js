@@ -9,11 +9,15 @@ const POTENTIAL_VOTER_INFO = gql`
       city
       user_email
       org_id
-      state_file_id
       countCompletedTasks
       countAvailableTasks
       voPoints
       taskPoints
+      voterFileRecord {
+        state_file_id
+        first_name
+        last_name
+      }
       nextTask {
         id
         form_schema

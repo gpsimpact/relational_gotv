@@ -12,10 +12,13 @@ class TaskModel {
     }
     // proceed with update
     const editedTaskRecord = await ctx.connectors.tasks.updateTaskById(id, { status, form_data });
-    return await ctx.connectors.tasks.taskById
+    const newTaskStatus = await ctx.connectors.tasks.taskById
       .clear(id)
       .prime(id, editedTaskRecord[0])
       .load(id);
+    // this may be unnecesarry, but might delete the cache of pvRecord to force new nextTask query
+    // todo
+    return { ...newTaskStatus, potential_voter: pvRecord.id };
   };
 }
 

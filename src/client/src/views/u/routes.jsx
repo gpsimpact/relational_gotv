@@ -1,12 +1,11 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import { isLoggedIn, extractOrgs } from '../utils/auth';
+import { Route, Switch, Redirect } from 'react-router';
+import FourOhFour from '../routes/404';
+import { isLoggedIn, extractOrgs } from '../../utils/auth';
+import UserAllowedOrgs from './UserAllowedOrgs';
 import UserHome from './UserHome';
-import PvIndex from './PvIndex';
-import OrgChooser from './OrgChooser';
-// import FourOhFour from './404';
 
-const UserRoutes = () => {
+export const Routes = () => {
   if (isLoggedIn()) {
     const orgs = extractOrgs();
     return (
@@ -16,17 +15,18 @@ const UserRoutes = () => {
           path="/u/"
           render={() => {
             if (orgs.length > 1) {
-              return <OrgChooser orgs={orgs} />;
+              return <UserAllowedOrgs orgs={orgs} />;
             }
             return <Redirect to={`/u/${orgs[0]}`} />;
           }}
         />
         <Route exact path="/u/:orgSlug" component={UserHome} />
-        <Route exact path="/u/pv/:pvid" component={PvIndex} />
+        <Route component={FourOhFour} />
       </Switch>
     );
   }
   return <Redirect to="/login" />;
 };
 
-export default UserRoutes;
+// <Route exact path="/u/:orgSlug" component={UserHome} />
+//   <Route exact path="/u/pv/:pvid" component={PvIndex} />
