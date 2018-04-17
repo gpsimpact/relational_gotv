@@ -65,7 +65,7 @@ describe('Tasks', () => {
     const rootValue = {};
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context, { form_data: fake_form_data });
-    console.log(JSON.stringify(result, null, '\t'));
+    // console.log(JSON.stringify(result, null, '\t'));
     expect(result.data.updateTask.id).toBe(tasks[0].id);
     expect(result.data.updateTask.status).toBe('COMPLETE');
     expect(result.data.updateTask.form_data).toEqual(fake_form_data);

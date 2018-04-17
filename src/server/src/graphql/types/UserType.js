@@ -15,7 +15,7 @@ input RegisterUserInput {
 type UserProfile {
   first_name: String
   last_name: String
-  email: String!
+  email: String
   email_verified: Boolean
 }
 

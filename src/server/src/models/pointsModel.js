@@ -1,4 +1,4 @@
-import { generateDeterministicCacheId } from '../utils';
+import { generateDeterministicCacheId, hasPermission } from '../utils';
 // import { InsufficientPermissionsError } from '../errors';
 import { map, assign } from 'lodash';
 // import { newPVtasks } from '../taskDefinitions';
@@ -23,14 +23,21 @@ class PotentialVoterModel {
 
     // console.log(results);
 
-    results.items = map(results.items, result => {
+    results.items = map(results.items, async result => {
+      const userRecord = await ctx.connectors.user.userByEmail.load(result.user_email);
+      // the user is not an admin, then do not return any email that is not their own.
+      if (
+        userRecord.email !== ctx.user.email &&
+        !hasPermission(ctx.user, result.org_id, 'ADMIN', false)
+      ) {
+        userRecord.email = null;
+      }
+
       return assign({}, result, {
         organization: ctx.connectors.organization.organizationById.load(result.org_id),
-        user: ctx.connectors.user.userByEmail.load(result.user_email),
+        user: userRecord,
       });
     });
-
-    // NEED TO GIVE SOME THOUGHT TO SECURITY HERE.. Probably should not expose user email to non-admin. opening issue
 
     return results;
   };
