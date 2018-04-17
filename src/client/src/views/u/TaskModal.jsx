@@ -8,6 +8,8 @@ import POINTS_PROFILE_USER_ORG_LIMITED from '../../data/queries/pointsProfileUse
 import { getUserEmail } from '../../utils/auth';
 import { withRouter } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faThumbsUp } from '@fortawesome/fontawesome-pro-solid';
 
 class TaskModal extends PureComponent {
   render() {
@@ -52,6 +54,9 @@ class TaskModal extends PureComponent {
                       />
                     ) : (
                       <div>
+                        <div className="has-text-centered	">
+                          <FontAwesomeIcon icon={faThumbsUp} size="10x" />
+                        </div>
                         <h2>
                           You&apos;ve completed all the currently assigned tasks for this voter!
                         </h2>
