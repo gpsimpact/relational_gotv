@@ -4,6 +4,9 @@ import VoterSearchForm from './VoterSearchForm';
 import VoterSearchResults from './VoterSearchResults';
 import PropTypes from 'prop-types';
 import { isEqual } from 'lodash';
+import { Query } from 'react-apollo';
+import DATA_DATES from '../../data/queries/dataDates';
+import { parse, distanceInWordsToNow } from 'date-fns';
 
 class VoterSearchModal extends Component {
   state = {
@@ -16,21 +19,6 @@ class VoterSearchModal extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    // if (nextProps.first_name !== this.props.first_name) {
-    //   this.setState({ first_name: nextProps.first_name });
-    // }
-    // if (nextProps.last_name !== this.props.last_name) {
-    //   this.setState({ last_name: nextProps.last_name });
-    // }
-    // if (nextProps.city !== this.props.city) {
-    //   this.setState({ city: nextProps.city });
-    // }
-    // if (nextProps.state !== this.props.state) {
-    //   this.setState({ state: nextProps.state });
-    // }
-    // if (nextProps.pv_id !== this.props.pv_id) {
-    //   this.setState({ pv_id: nextProps.pv_id });
-    // }
     if (!isEqual(nextProps.potentialVoter, this.props.potentialVoter)) {
       this.setState({
         potentialVoter: nextProps.potentialVoter,
@@ -53,6 +41,19 @@ class VoterSearchModal extends Component {
             <button className="delete" aria-label="close" onClick={() => this.props.close()} />
           </header>
           <section className="modal-card-body">
+            <Query query={DATA_DATES}>
+              {({ loading, error, data: { dataDates } }) => {
+                if (loading) return <div className="loader" />;
+                if (error) return <p>Error!</p>;
+                return (
+                  <div className="notification is-warning">
+                    Voter information is complete as of{' '}
+                    {distanceInWordsToNow(parse(dataDates.voterFileDate))} ago. We tend to update
+                    data once per month so check back soon if you can not find a match yet.
+                  </div>
+                );
+              }}
+            </Query>
             <VoterSearchForm
               first_name={this.state.potentialVoter.first_name}
               last_name={this.state.potentialVoter.last_name}

@@ -8,6 +8,7 @@ import ScalarJSONResolver from './ScalarJSONResolver';
 import ScalarISODatesResolver from './ScalarISODatesResolver';
 import TaskResolver from './TaskResolver';
 import PointsResolver from './PointsResolver';
+import FileDateResolver from './FileDateResolver';
 
 const resolvers = [
   OrganizationResolver,
@@ -19,6 +20,7 @@ const resolvers = [
   ScalarISODatesResolver,
   TaskResolver,
   PointsResolver,
+  FileDateResolver,
 ];
 
 export default mergeResolvers(resolvers);

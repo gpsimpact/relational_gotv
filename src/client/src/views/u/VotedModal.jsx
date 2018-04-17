@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
+import DATA_DATES from '../../data/queries/dataDates';
+import { parse, distanceInWordsToNow } from 'date-fns';
 
 class VotedModal extends Component {
   render() {
@@ -16,6 +19,28 @@ class VotedModal extends Component {
           </header>
           <section className="modal-card-body">
             <div className="content">
+              <Query query={DATA_DATES}>
+                {({ loading, error, data: { dataDates } }) => {
+                  if (loading) return <div className="loader" />;
+                  if (error) return <p>Error!</p>;
+                  return (
+                    <div className="notification is-warning">
+                      {dataDates.EARLY_VOTE_DATA_DATE ? (
+                        <div>
+                          Data about who has voted is complete as of{' '}
+                          {distanceInWordsToNow(parse(dataDates.EARLY_VOTE_DATA_DATE))}.{' '}
+                        </div>
+                      ) : (
+                        <div>
+                          Data about who has voted will not be available until 20 days out from the
+                          General election when early vote information is published. Check back
+                          after 10/17/2018
+                        </div>
+                      )}
+                    </div>
+                  );
+                }}
+              </Query>
               <h4>
                 {potentialVoter.first_name} {potentialVoter.last_name} has{' '}
                 {potentialVoter.voterFileRecord.vo_voted ? 'NOT' : null} voted in the General 2018

@@ -9,6 +9,7 @@ import scalarJSONtype from './ScalarJSONType';
 import ScalarISODatesType from './ScalarISODatesType';
 import PaginationType from './PaginationType';
 import PointsType from './PointsType';
+import FileDateType from './FileDateType';
 
 const types = [
   organizationType,
@@ -21,6 +22,7 @@ const types = [
   ScalarISODatesType,
   PaginationType,
   PointsType,
+  FileDateType,
 ];
 
 // NOTE: 2nd param is optional, and defaults to false
