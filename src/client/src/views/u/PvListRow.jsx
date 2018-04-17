@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { faExclamation } from '@fortawesome/fontawesome-pro-solid';
+import { faExclamation, faEdit } from '@fortawesome/fontawesome-pro-solid';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -8,9 +8,19 @@ class PvListRow extends PureComponent {
   render() {
     const { content } = this.props;
     return (
-      <div>
+      <div className="pv-controls">
         <nav className="level">
           <div className="level-left">
+            <div className="level-item edit-button">
+              <a
+                className="button is-danger is-outlined"
+                onClick={() => this.props.openPvEditModal(content)}
+              >
+                <span className="icon is-small">
+                  <FontAwesomeIcon icon={faEdit} />
+                </span>
+              </a>
+            </div>
             <div className="level-item">
               <div className="content">
                 <strong>
@@ -111,6 +121,7 @@ PvListRow.propTypes = {
   openVoteByMailModal: PropTypes.func.isRequired,
   openVotedModal: PropTypes.func.isRequired,
   openTaskModal: PropTypes.func.isRequired,
+  openPvEditModal: PropTypes.func.isRequired,
 };
 
 export default PvListRow;

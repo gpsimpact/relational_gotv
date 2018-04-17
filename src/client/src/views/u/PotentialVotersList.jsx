@@ -11,6 +11,7 @@ import LinkedVoterFileRecordReviewModal from './LinkedVoterFileRecordReviewModal
 import VoteByMailModal from './VoteByMailModal';
 import VotedModal from './VotedModal';
 import TaskModal from './TaskModal';
+import PvEditModal from './PvEditModal';
 // import { queries, fragments } from '../../data/queries';
 
 class PotentialVotersList extends PureComponent {
@@ -22,6 +23,7 @@ class PotentialVotersList extends PureComponent {
       voteByMailModalOpen: false,
       taskModalOpen: false,
       votedModalOpen: false,
+      pvEditModalOpen: false,
       selectedPotentialVoter: null,
     };
 
@@ -33,6 +35,8 @@ class PotentialVotersList extends PureComponent {
     this._openVotedModal = this._openVotedModal.bind(this);
     this._openTaskModal = this._openTaskModal.bind(this);
     this._closeTaskModal = this._closeTaskModal.bind(this);
+    this._openPvEditModal = this._openPvEditModal.bind(this);
+    this._closePvEditModal = this._closePvEditModal.bind(this);
   }
 
   _openVoterSearchModal = potentialVoter => {
@@ -101,6 +105,20 @@ class PotentialVotersList extends PureComponent {
   _closeTaskModal = () => {
     this.setState({
       taskModalOpen: false,
+      selectedPotentialVoter: null,
+    });
+  };
+
+  _openPvEditModal = potentialVoter => {
+    this.setState({
+      pvEditModalOpen: true,
+      selectedPotentialVoter: potentialVoter,
+    });
+  };
+
+  _closePvEditModal = () => {
+    this.setState({
+      pvEditModalOpen: false,
       selectedPotentialVoter: null,
     });
   };
@@ -192,6 +210,7 @@ class PotentialVotersList extends PureComponent {
                                     openVoteByMailModal={this._openVoteByMailModal}
                                     openVotedModal={this._openVotedModal}
                                     openTaskModal={this._openTaskModal}
+                                    openPvEditModal={this._openPvEditModal}
                                   />
                                 </div>
                               );
@@ -231,6 +250,11 @@ class PotentialVotersList extends PureComponent {
                       open={this.state.taskModalOpen}
                       potentialVoter={this.state.selectedPotentialVoter}
                       close={this._closeTaskModal}
+                    />
+                    <PvEditModal
+                      open={this.state.pvEditModalOpen}
+                      potentialVoter={this.state.selectedPotentialVoter}
+                      close={this._closePvEditModal}
                     />
                   </div>
                 ) : null}
