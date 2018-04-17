@@ -65,7 +65,7 @@ class Register extends PureComponent {
                           .oneOf([Yup.ref('password'), null], 'Passwords do not match!')
                           .required('You must confirm your password.'),
                       })}
-                      onSubmit={(values, { setSubmitting /* setValues and other goodies */ }) => {
+                      onSubmit={(values, { setSubmitting, setErrors }) => {
                         registerUser({
                           variables: {
                             first_name: values.first_name,
@@ -80,9 +80,20 @@ class Register extends PureComponent {
                             this.props.history.push('/auth/login');
                             // pushRoute('/login');
                           },
-                          errors => {
-                            //eslint-disable-next-line no-console
-                            console.log(errors);
+                          error => {
+                            setSubmitting(false);
+                            const displayErrors = [];
+                            if (
+                              error.message ===
+                              'GraphQL error: This email address is already associated with an account.'
+                            ) {
+                              displayErrors.push(
+                                'This email address is already associated with an account. Try logging in instead.'
+                              );
+                            }
+                            setErrors({ email: ' ', password: ' ', form: displayErrors });
+                            // eslint-disable-next-line no-console
+                            console.log('there was an error sending the query', error);
                           }
                         );
                       }}
