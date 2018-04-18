@@ -1,9 +1,9 @@
-#Relational gotv project
+# Relational gotv project
 
 This project is made possible with generous support from The Mainstream Coalition. https://www.mainstreamcoalition.org/
 
 
-##To run locally:
+## To run locally:
 * Install / configure nanobox client http://nanobox.io
 * duplicate example.env to .env and customize
 * load environmental variables with `nanobox evar load local .env`
@@ -11,20 +11,24 @@ This project is made possible with generous support from The Mainstream Coalitio
 * run `yarn dev` to start dev server of both client(react) and api server
 
 
-##Features:
+## Features:
 * Partnering organizations each have a profile page to encourage users to register:
 ![Org Profile](http://client-static-assets.s3.amazonaws.com/rgotv/org_profile.png)
+
 * Users can easily add their lists of friends / contacts whom they are going to GOTV
 ![Contact List](http://client-static-assets.s3.amazonaws.com/rgotv/add_contacts.png)
+
 * User can match their friends to the voter file
 ![Voter File Match](http://client-static-assets.s3.amazonaws.com/rgotv/match_to_voter_file.png)
+
 * Monitor Voted status and vote by mail status
 ![Voted dialogue](http://client-static-assets.s3.amazonaws.com/rgotv/voted.png)
 ![VBM dialogue](http://client-static-assets.s3.amazonaws.com/rgotv/vbm.png)
+
 * Users can be assigned tasks to complete for each contact and earn points
 ![Tasks](http://client-static-assets.s3.amazonaws.com/rgotv/tasks.png)
 
-Tasks are defined by a simple schema:
+**Tasks are defined by a simple schema:**
 ```
 {
   form_schema: {
