@@ -211,6 +211,46 @@ describe('Potential Voters', () => {
     expect(dbPVs.last_name).toBe(pvs[0].last_name);
   });
 
+  test('user can mark a PV as deleted', async () => {
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
+    await db('users').insert(users[0]);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+    const userPerms = {
+      [org1.id]: ['AMBASSADOR'],
+    };
+    const query = `
+      mutation {
+          updatePotentialVoter(
+            id: "${pvs[0].id}" 
+            data: {
+              deleted: true
+            }
+          ) {
+            id
+            first_name
+            last_name
+            city
+            user_email
+            org_id
+          }
+        }
+    `;
+    const rootValue = {};
+    const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
+    //eslint-disable-next-line no-unused-vars
+    const results = await graphql(schema, query, rootValue, context);
+    // console.log(JSON.stringify(results, null, '\t'));
+    const dbPVs = await db('potential_voters')
+      .where({
+        id: pvs[0].id,
+      })
+      .first();
+    expect(dbPVs.deleted).toBe(true);
+  });
+
   test('user can NOT modify a PV not assigned to them.', async () => {
     const users = generateFakeUsers(1, 1);
     const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };

@@ -30,10 +30,10 @@ describe('Forgot Password', () => {
     expect(sendEmail).toHaveBeenCalled();
     expect(sendEmail.mock.calls[0][0].to).toBe(users[0].email);
     expect(sendEmail.mock.calls[0][0].html).toEqual(
-      expect.stringContaining(`${base_url}/passwordReset?token=${resetPasswordToken}`)
+      expect.stringContaining(`${base_url}/auth/reset-password?token=${resetPasswordToken}`)
     );
     expect(sendEmail.mock.calls[0][0].txt).toEqual(
-      expect.stringContaining(`${base_url}/passwordReset?token=${resetPasswordToken}`)
+      expect.stringContaining(`${base_url}/auth/reset-password?token=${resetPasswordToken}`)
     );
   });
 

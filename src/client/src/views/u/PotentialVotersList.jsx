@@ -12,6 +12,7 @@ import VoteByMailModal from './VoteByMailModal';
 import VotedModal from './VotedModal';
 import TaskModal from './TaskModal';
 import PvEditModal from './PvEditModal';
+import DeleteModal from './DeleteModal';
 // import { queries, fragments } from '../../data/queries';
 
 class PotentialVotersList extends PureComponent {
@@ -24,102 +25,25 @@ class PotentialVotersList extends PureComponent {
       taskModalOpen: false,
       votedModalOpen: false,
       pvEditModalOpen: false,
+      deleteModalOpen: false,
       selectedPotentialVoter: null,
     };
 
-    this._openVoterSearchModal = this._openVoterSearchModal.bind(this);
-    this._closeVoterSearchModal = this._closeVoterSearchModal.bind(this);
-    this._closeVoterReviewModal = this._closeVoterReviewModal.bind(this);
-    this._openVoterReviewModal = this._openVoterReviewModal.bind(this);
-    this._closeVotedModal = this._closeVotedModal.bind(this);
-    this._openVotedModal = this._openVotedModal.bind(this);
-    this._openTaskModal = this._openTaskModal.bind(this);
-    this._closeTaskModal = this._closeTaskModal.bind(this);
-    this._openPvEditModal = this._openPvEditModal.bind(this);
-    this._closePvEditModal = this._closePvEditModal.bind(this);
+    this._openModal = this._openModal.bind(this);
+    this._closeModal = this._closeModal.bind(this);
   }
 
-  _openVoterSearchModal = potentialVoter => {
+  _openModal = (modalName, potentialVoter) => {
     this.setState({
-      voterSearchModalOpen: true,
+      [modalName]: true,
       selectedPotentialVoter: potentialVoter,
     });
   };
 
-  _closeVoterSearchModal = () => {
+  _closeModal = (modalName, potentialVoter) => {
     this.setState({
-      voterSearchModalOpen: false,
-      selectedPotentialVoter: null,
-    });
-  };
-
-  _openVoterReviewModal = potentialVoter => {
-    this.setState({
-      voterReviewModalOpen: true,
+      [modalName]: false,
       selectedPotentialVoter: potentialVoter,
-    });
-  };
-
-  _closeVoterReviewModal = () => {
-    this.setState({
-      voterReviewModalOpen: false,
-      selectedPotentialVoter: null,
-    });
-  };
-
-  _openVoteByMailModal = potentialVoter => {
-    this.setState({
-      voteByMailModalOpen: true,
-      selectedPotentialVoter: potentialVoter,
-    });
-  };
-
-  _closeVoteByMailModal = () => {
-    this.setState({
-      voteByMailModalOpen: false,
-      selectedPotentialVoter: null,
-    });
-  };
-
-  _openVotedModal = potentialVoter => {
-    this.setState({
-      votedModalOpen: true,
-      selectedPotentialVoter: potentialVoter,
-    });
-  };
-
-  _closeVotedModal = () => {
-    this.setState({
-      votedModalOpen: false,
-      selectedPotentialVoter: null,
-    });
-  };
-
-  _openTaskModal = potentialVoter => {
-    this.setState({
-      taskModalOpen: true,
-      selectedPotentialVoter: potentialVoter,
-    });
-  };
-
-  _closeTaskModal = () => {
-    this.setState({
-      taskModalOpen: false,
-      selectedPotentialVoter: null,
-    });
-  };
-
-  _openPvEditModal = potentialVoter => {
-    this.setState({
-      pvEditModalOpen: true,
-      selectedPotentialVoter: potentialVoter,
-    });
-  };
-
-  _closePvEditModal = () => {
-    this.setState({
-      pvEditModalOpen: false,
-      selectedPotentialVoter: null,
     });
   };
 
@@ -205,12 +129,25 @@ class PotentialVotersList extends PureComponent {
                                   <PvListRow
                                     id={content.id}
                                     content={content}
-                                    openVoterSearchModal={this._openVoterSearchModal}
-                                    openVoterReviewModal={this._openVoterReviewModal}
-                                    openVoteByMailModal={this._openVoteByMailModal}
-                                    openVotedModal={this._openVotedModal}
-                                    openTaskModal={this._openTaskModal}
-                                    openPvEditModal={this._openPvEditModal}
+                                    openVoterSearchModal={() =>
+                                      this._openModal('voterSearchModalOpen', content)
+                                    }
+                                    openVoterReviewModal={() =>
+                                      this._openModal('voterReviewModalOpen', content)
+                                    }
+                                    openVoteByMailModal={() =>
+                                      this._openModal('voteByMailModalOpen', content)
+                                    }
+                                    openVotedModal={() =>
+                                      this._openModal('votedModalOpen', content)
+                                    }
+                                    openTaskModal={() => this._openModal('taskModalOpen', content)}
+                                    openPvEditModal={() =>
+                                      this._openModal('pvEditModalOpen', content)
+                                    }
+                                    openDeleteModal={() =>
+                                      this._openModal('deleteModalOpen', content)
+                                    }
                                   />
                                 </div>
                               );
@@ -229,32 +166,37 @@ class PotentialVotersList extends PureComponent {
                     <VoterSearchModal
                       open={this.state.voterSearchModalOpen}
                       potentialVoter={this.state.selectedPotentialVoter}
-                      close={this._closeVoterSearchModal}
+                      close={() => this._closeModal('voterSearchModalOpen')}
                     />
                     <LinkedVoterFileRecordReviewModal
                       open={this.state.voterReviewModalOpen}
                       potentialVoter={this.state.selectedPotentialVoter}
-                      close={this._closeVoterReviewModal}
+                      close={() => this._closeModal('voterReviewModalOpen')}
                     />
                     <VoteByMailModal
                       open={this.state.voteByMailModalOpen}
                       potentialVoter={this.state.selectedPotentialVoter}
-                      close={this._closeVoteByMailModal}
+                      close={() => this._closeModal('voteByMailModalOpen')}
                     />
                     <VotedModal
                       open={this.state.votedModalOpen}
                       potentialVoter={this.state.selectedPotentialVoter}
-                      close={this._closeVotedModal}
+                      close={() => this._closeModal('votedModalOpen')}
                     />
                     <TaskModal
                       open={this.state.taskModalOpen}
                       potentialVoter={this.state.selectedPotentialVoter}
-                      close={this._closeTaskModal}
+                      close={() => this._closeModal('taskModalOpen')}
                     />
                     <PvEditModal
                       open={this.state.pvEditModalOpen}
                       potentialVoter={this.state.selectedPotentialVoter}
-                      close={this._closePvEditModal}
+                      close={() => this._closeModal('pvEditModalOpen')}
+                    />
+                    <DeleteModal
+                      open={this.state.deleteModalOpen}
+                      potentialVoter={this.state.selectedPotentialVoter}
+                      close={() => this._closeModal('deleteModalOpen')}
                     />
                   </div>
                 ) : null}

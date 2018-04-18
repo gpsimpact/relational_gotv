@@ -12,6 +12,7 @@ export default `
     voPoints: Int
     taskPoints: Int
     voterFileRecord: Voter
+    deleted: Boolean
   }
 
   input PotentialVoterInput {
@@ -29,6 +30,7 @@ export default `
     last_name: String
     city: String
     state_file_id: String
+    deleted: Boolean
   }
 
 
@@ -140,6 +142,8 @@ export default `
     state_file_id_not_starts_with: String
     state_file_id_ends_with: String
     state_file_id_not_ends_with: String
+
+    deleted_is: Boolean
   }
 
   input PotentialVoterWhereUniqueInput {

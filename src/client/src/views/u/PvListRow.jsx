@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { faExclamation, faEdit } from '@fortawesome/fontawesome-pro-solid';
+import { faExclamation, faEdit, faTrashAlt } from '@fortawesome/fontawesome-pro-solid';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -12,12 +12,16 @@ class PvListRow extends PureComponent {
         <nav className="level">
           <div className="level-left">
             <div className="level-item edit-button">
-              <a
-                className="button is-danger is-outlined"
-                onClick={() => this.props.openPvEditModal(content)}
-              >
+              <a className="button is-danger is-outlined" onClick={this.props.openPvEditModal}>
                 <span className="icon is-small">
                   <FontAwesomeIcon icon={faEdit} />
+                </span>
+              </a>
+            </div>
+            <div className="level-item edit-button">
+              <a className="button is-danger is-outlined" onClick={this.props.openDeleteModal}>
+                <span className="icon is-small">
+                  <FontAwesomeIcon icon={faTrashAlt} />
                 </span>
               </a>
             </div>
@@ -36,10 +40,7 @@ class PvListRow extends PureComponent {
               <div className="level-item">
                 <div className="field is-grouped is-grouped-multiline">
                   <div className="control">
-                    <div
-                      className="tags has-addons"
-                      onClick={() => this.props.openVoterReviewModal(content)}
-                    >
+                    <div className="tags has-addons" onClick={this.props.openVoterReviewModal}>
                       <span className="tag">
                         <abbr title="Has this contact been matched to the voter file?">Voter?</abbr>
                       </span>
@@ -48,10 +49,7 @@ class PvListRow extends PureComponent {
                   </div>
 
                   <div className="control">
-                    <div
-                      className="tags has-addons"
-                      onClick={() => this.props.openVoteByMailModal(content)}
-                    >
+                    <div className="tags has-addons" onClick={this.props.openVoteByMailModal}>
                       <span className="tag">
                         <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
                       </span>
@@ -60,10 +58,7 @@ class PvListRow extends PureComponent {
                   </div>
 
                   <div className="control">
-                    <div
-                      className="tags has-addons"
-                      onClick={() => this.props.openTaskModal(content)}
-                    >
+                    <div className="tags has-addons" onClick={this.props.openTaskModal}>
                       <span className="tag">
                         <abbr title="The count of available tasks for that contact.">TODO:</abbr>
                       </span>
@@ -79,10 +74,7 @@ class PvListRow extends PureComponent {
                   </div>
 
                   <div className="control">
-                    <div
-                      className="tags has-addons"
-                      onClick={() => this.props.openVotedModal(content)}
-                    >
+                    <div className="tags has-addons" onClick={this.props.openVotedModal}>
                       <span className="tag">
                         <abbr title="Has this contact cast a ballot in the Nov. 2018 general election?">
                           Voted?
@@ -95,10 +87,7 @@ class PvListRow extends PureComponent {
               </div>
             ) : (
               <div className="level-item">
-                <a
-                  className="button is-small is-danger"
-                  onClick={() => this.props.openVoterSearchModal({ ...content })}
-                >
+                <a className="button is-small is-danger" onClick={this.props.openVoterSearchModal}>
                   <span className="icon is-small">
                     <FontAwesomeIcon icon={faExclamation} />
                   </span>{' '}
@@ -122,6 +111,7 @@ PvListRow.propTypes = {
   openVotedModal: PropTypes.func.isRequired,
   openTaskModal: PropTypes.func.isRequired,
   openPvEditModal: PropTypes.func.isRequired,
+  openDeleteModal: PropTypes.func.isRequired,
 };
 
 export default PvListRow;

@@ -5,7 +5,6 @@ import faker from 'faker';
 import MakeContext from '../Context';
 import { find } from 'lodash';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { generateFakeUsers } from '../utils';
 
 beforeAll(async () => await db.migrate.latest({ directory: 'src/db/migrations' }));

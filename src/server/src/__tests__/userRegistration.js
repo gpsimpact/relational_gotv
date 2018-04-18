@@ -141,6 +141,7 @@ describe('User Registration', () => {
 
     const rootValue = {};
     const context = new MakeContext({ user: null });
+    //eslint-disable-next-line no-unused-vars
     const result = await graphql(schema, query, rootValue, context);
     const dbUserPermissionRecord = await db('permissions')
       .first()

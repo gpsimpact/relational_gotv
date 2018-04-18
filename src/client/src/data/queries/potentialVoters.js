@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 const MY_POTENTIAL_VOTERS = gql`
   query potentialVoters($org_id: String!, $limit: Int!, $after: String) {
     potentialVoters(
-      where: { org_id_is: $org_id }
+      where: { org_id_is: $org_id, deleted_is: false }
       orderBy: [{ sort: last_name, direction: ASC }, { sort: first_name, direction: ASC }]
       limit: $limit
       after: $after
