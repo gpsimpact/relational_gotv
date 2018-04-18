@@ -53,7 +53,14 @@ class PvListRow extends PureComponent {
                       <span className="tag">
                         <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
                       </span>
-                      <span className="tag is-danger">No</span>
+                      <span
+                        className={classNames('tag', {
+                          'is-danger': content.voterFileRecord.vo_ab_requested === false,
+                          'is-success': content.voterFileRecord.vo_ab_requested === true,
+                        })}
+                      >
+                        {content.voterFileRecord.vo_ab_requested ? 'Yes' : 'No'}
+                      </span>
                     </div>
                   </div>
 
@@ -80,7 +87,14 @@ class PvListRow extends PureComponent {
                           Voted?
                         </abbr>
                       </span>
-                      <span className="tag is-danger">No</span>
+                      <span
+                        className={classNames('tag', {
+                          'is-danger': content.voterFileRecord.vo_voted === false,
+                          'is-success': content.voterFileRecord.vo_voted === true,
+                        })}
+                      >
+                        {content.voterFileRecord.vo_voted ? 'Yes' : 'No'}
+                      </span>
                     </div>
                   </div>
                 </div>

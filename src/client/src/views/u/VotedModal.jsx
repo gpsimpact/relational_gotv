@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import DATA_DATES from '../../data/queries/dataDates';
-import { parse, distanceInWordsToNow } from 'date-fns';
+import { parse, distanceInWordsToNow, format } from 'date-fns';
 
 class VotedModal extends Component {
   render() {
@@ -43,13 +43,21 @@ class VotedModal extends Component {
               </Query>
               <h4>
                 {potentialVoter.first_name} {potentialVoter.last_name} has{' '}
-                {potentialVoter.voterFileRecord.vo_voted ? 'NOT' : null} voted in the General 2018
+                {potentialVoter.voterFileRecord.vo_voted ? null : 'NOT'} voted in the General 2018
                 election.
               </h4>
-              <p>
-                Voted status stuff here. Date & method voted or so on. For those who have not yet
-                voted, then some other info.
-              </p>
+              {potentialVoter.voterFileRecord.vo_voted ? (
+                <p>
+                  Hooray! {potentialVoter.first_name} voted on{' '}
+                  {format(parse(potentialVoter.voterFileRecord.vo_voted_date), 'MM/DD/YYYY')} via
+                  &quot;{potentialVoter.voterFileRecord.vo_voted_method}&quot;
+                </p>
+              ) : (
+                <p>
+                  We&apos;ve not yet seen data indicating that {potentialVoter.first_name} has
+                  voted. Encourage them to vote early via mail or in-person.
+                </p>
+              )}
             </div>
           </section>
         </div>

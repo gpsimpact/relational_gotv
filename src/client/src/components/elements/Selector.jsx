@@ -14,7 +14,6 @@ class Selector extends PureComponent {
             onBlur={this.props.onBlur}
             value={this.props.value}
           >
-            <option value="">Select dropdown</option>
             {this.props.options.map(option => (
               <option key={option.value} value={option.value}>
                 {option.label}
