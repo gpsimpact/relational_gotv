@@ -4,6 +4,7 @@ import FourOhFour from '../routes/404';
 import { isLoggedIn, extractOrgs } from '../../utils/auth';
 import UserAllowedOrgs from './UserAllowedOrgs';
 import UserHome from './UserHome';
+import Settings from './Settings';
 
 export const Routes = () => {
   if (isLoggedIn()) {
@@ -20,6 +21,7 @@ export const Routes = () => {
             return <Redirect to={`/u/${orgs[0]}`} />;
           }}
         />
+        <Route exact path="/u/settings" component={Settings} />
         <Route exact path="/u/:orgSlug" component={UserHome} />
         <Route component={FourOhFour} />
       </Switch>

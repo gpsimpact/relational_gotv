@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faUserCircle, faEdit, faSignOut } from '@fortawesome/fontawesome-pro-light';
+import { faUserCircle, faCog, faSignOut } from '@fortawesome/fontawesome-pro-light';
 import PropTypes from 'prop-types';
 import { logout } from '../utils/auth';
 import { withRouter, Link } from 'react-router-dom';
@@ -33,22 +33,18 @@ class MainNav extends PureComponent {
                 <div className="navbar-link">{this.props.email}</div>
                 <div className="navbar-dropdown">
                   <div className="navbar-dropdown">
-                    <a className="navbar-item">
-                      <div>
-                        <span className="icon is-small">
-                          <FontAwesomeIcon icon={faUserCircle} style={{ paddingRight: 5 }} />
-                        </span>
-                        Profile
-                      </div>
-                    </a>
-                    <a className="navbar-item">
-                      <div>
-                        <span className="icon is-small">
-                          <FontAwesomeIcon icon={faEdit} style={{ paddingRight: 5 }} />
-                        </span>
-                        Edit Profile
-                      </div>
-                    </a>
+                    <div
+                      className="navbar-item"
+                      onClick={() => {
+                        this.props.history.push('/u/settings');
+                      }}
+                    >
+                      <span className="icon is-small">
+                        <FontAwesomeIcon icon={faCog} style={{ paddingRight: 5 }} />
+                      </span>
+                      <span>Settings</span>
+                    </div>
+
                     <div
                       className="navbar-item"
                       onClick={() => {
