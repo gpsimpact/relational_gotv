@@ -30,10 +30,15 @@ class Register extends PureComponent {
         {({ loading, error, data }) => {
           if (loading) return <div className="loader" />;
           if (error) return <p>Error!</p>;
-          const org_options = map(data.organizations.items, org => ({
-            value: org.id,
-            label: org.name,
-          }));
+          const org_labels = {};
+          const org_options = map(data.organizations.items, org => {
+            org_labels[org.id] = org.name;
+            return {
+              value: org.id,
+              label: org.name,
+            };
+          });
+
           return (
             <Mutation mutation={REGISTRATION_MUTATION}>
               {registerUser => (
@@ -122,7 +127,11 @@ class Register extends PureComponent {
                               onBlur={handleBlur}
                               options={org_options}
                             />
-                          ) : null}
+                          ) : (
+                            <h5 className="is-size-6" style={{ paddingBottom: 10 }}>
+                              You are registering with organization: {org_labels[qs.org_id]}
+                            </h5>
+                          )}
 
                           <TextInput
                             id="first_name"
