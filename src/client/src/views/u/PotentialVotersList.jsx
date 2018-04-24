@@ -80,7 +80,7 @@ class PotentialVotersList extends PureComponent {
             }
             return (
               <div>
-                <h1 className="title">Your contacts:</h1>
+                <h1 className="title">You have added {potentialVoters.items.length} contacts:</h1>
                 <hr />
                 <AutoSizer disableHeight>
                   {({ width }) => (

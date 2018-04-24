@@ -25,6 +25,8 @@ class NewPotentialVoterForm extends PureComponent {
           data.potentialVoters.items.push(createPotentialVoter);
           // sort list alphabetically
           data.potentialVoters.items = sortBy(data.potentialVoters.items, ['last_name']);
+          // update total count
+          data.potentialVoters.pageInfo.totalCount = data.potentialVoters.items.length;
           store.writeQuery({
             query: MY_POTENTIAL_VOTERS,
             variables: { org_id: this.props.match.params.orgSlug, limit: 25 },
