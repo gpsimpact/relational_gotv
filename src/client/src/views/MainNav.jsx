@@ -29,6 +29,13 @@ class MainNav extends PureComponent {
           </div>
           <div className="navbar-end">
             {this.props.isLoggedIn ? (
+              <div className="navbar-item">
+                <Link className="button is-primary" to={`/u/`}>
+                  Go To Dashboard!
+                </Link>
+              </div>
+            ) : null}
+            {this.props.isLoggedIn ? (
               <div className="navbar-item has-dropdown is-hoverable">
                 <div className="navbar-link">{this.props.email}</div>
                 <div className="navbar-dropdown">
