@@ -65,11 +65,22 @@ class PotentialVotersList extends PureComponent {
             } else if (error) {
               return <p>Error!</p>;
             }
+            if (potentialVoters.items.length === 0) {
+              return (
+                <div className-="content">
+                  <h1 className="title">Get started by adding a contact.</h1>
+                  <p>
+                    Danny will write verbose instructions to be placed here as per{' '}
+                    <a href="https://github.com/gpsimpact/relational_gotv/issues/42">
+                      github issue #42
+                    </a>
+                  </p>
+                </div>
+              );
+            }
             return (
               <div>
-                <h1 className="title">
-                  You have added {potentialVoters.pageInfo.totalCount} contacts:
-                </h1>
+                <h1 className="title">Your contacts:</h1>
                 <hr />
                 <AutoSizer disableHeight>
                   {({ width }) => (
