@@ -11,13 +11,15 @@ class PvListRow extends PureComponent {
       <div className="pv-controls">
         <nav className="level">
           <div className="level-left">
-            <div className="level-item edit-button">
-              <a className="button is-danger is-outlined" onClick={this.props.openPvEditModal}>
-                <span className="icon is-small">
-                  <FontAwesomeIcon icon={faEdit} />
-                </span>
-              </a>
-            </div>
+            {content.voterFileRecord.state_file_id ? null : (
+              <div className="level-item edit-button">
+                <a className="button is-danger is-outlined" onClick={this.props.openPvEditModal}>
+                  <span className="icon is-small">
+                    <FontAwesomeIcon icon={faEdit} />
+                  </span>
+                </a>
+              </div>
+            )}
             <div className="level-item edit-button">
               <a className="button is-danger is-outlined" onClick={this.props.openDeleteModal}>
                 <span className="icon is-small">
