@@ -40,7 +40,10 @@ class PvListRow extends PureComponent {
               <div className="level-item">
                 <div className="field is-grouped is-grouped-multiline">
                   <div className="control">
-                    <div className="tags has-addons" onClick={this.props.openVoterReviewModal}>
+                    <div
+                      className="tags has-addons hover-hand"
+                      onClick={this.props.openVoterReviewModal}
+                    >
                       <span className="tag">
                         <abbr title="Has this contact been matched to a registered voter in the voter file?">
                           Registered?
@@ -51,7 +54,10 @@ class PvListRow extends PureComponent {
                   </div>
 
                   <div className="control">
-                    <div className="tags has-addons" onClick={this.props.openVoteByMailModal}>
+                    <div
+                      className="tags has-addons hover-hand"
+                      onClick={this.props.openVoteByMailModal}
+                    >
                       <span className="tag">
                         <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
                       </span>
@@ -67,7 +73,7 @@ class PvListRow extends PureComponent {
                   </div>
 
                   <div className="control">
-                    <div className="tags has-addons" onClick={this.props.openTaskModal}>
+                    <div className="tags has-addons hover-hand" onClick={this.props.openTaskModal}>
                       <span className="tag">
                         <abbr title="The count of available tasks for that contact.">TODO:</abbr>
                       </span>
@@ -83,7 +89,7 @@ class PvListRow extends PureComponent {
                   </div>
 
                   <div className="control">
-                    <div className="tags has-addons" onClick={this.props.openVotedModal}>
+                    <div className="tags has-addons hover-hand" onClick={this.props.openVotedModal}>
                       <span className="tag">
                         <abbr title="Has this contact cast a ballot in the Nov. 2018 general election?">
                           Voted?

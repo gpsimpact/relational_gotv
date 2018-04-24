@@ -13023,3 +13023,6 @@ label.panel-block {
 
 .pv-controls:hover .edit-button {
   display: inline; }
+
+.hover-hand:hover {
+  cursor: pointer; }
