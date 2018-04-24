@@ -18,7 +18,7 @@ class OrgSidebarInfo extends PureComponent {
           return (
             <div>
               <div className="content box">
-                <h4>For assitance contact:</h4>
+                <h4>For assistance contact:</h4>
                 <p>
                   {organization.contact_name} <br />
                   <FontAwesomeIcon icon={faPhone} />{' '}
