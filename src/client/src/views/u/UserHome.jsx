@@ -60,9 +60,11 @@ class UserHome extends PureComponent {
                 <small>
                   <dl>
                     <dt>
-                      <abbr title="Has this contact been matched to the voter file?">Voter?</abbr>
+                      <abbr title="Has this contact been matched to the voter file?">
+                        Registered?
+                      </abbr>
                     </dt>
-                    <dd>Has this contact been matched to the voter file?</dd>
+                    <dd>Has this contact been matched to a registered voter in the voter file?</dd>
                     <dt>
                       <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
                     </dt>

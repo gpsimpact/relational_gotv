@@ -42,7 +42,9 @@ class PvListRow extends PureComponent {
                   <div className="control">
                     <div className="tags has-addons" onClick={this.props.openVoterReviewModal}>
                       <span className="tag">
-                        <abbr title="Has this contact been matched to the voter file?">Voter?</abbr>
+                        <abbr title="Has this contact been matched to a registered voter in the voter file?">
+                          Registered?
+                        </abbr>
                       </span>
                       <span className="tag is-success">Yes</span>
                     </div>
