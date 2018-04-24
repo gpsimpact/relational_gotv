@@ -26,13 +26,26 @@ class PvListRow extends PureComponent {
               </a>
             </div>
             <div className="level-item">
-              <div className="content">
-                <strong>
-                  {content.first_name} {content.last_name}
-                </strong>
-                <br />
-                <small>{content.city}</small>
-              </div>
+              {content.voterFileRecord.state_file_id ? (
+                <div className="content">
+                  <strong>
+                    {content.voterFileRecord.first_name} {content.voterFileRecord.last_name}
+                  </strong>
+                  <br />
+                  <small>
+                    {content.voterFileRecord.home_address} - {content.voterFileRecord.city},{' '}
+                    {content.voterFileRecord.state} {content.voterFileRecord.zipcode}
+                  </small>
+                </div>
+              ) : (
+                <div className="content">
+                  <strong>
+                    {content.first_name} {content.last_name}
+                  </strong>
+                  <br />
+                  <small>{content.city}</small>
+                </div>
+              )}
             </div>
           </div>
           <div className="level-right">
