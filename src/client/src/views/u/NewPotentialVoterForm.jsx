@@ -9,7 +9,7 @@ import MY_POTENTIAL_VOTERS from '../../data/queries/potentialVoters';
 import NEW_POTENTIAL_VOTER from '../../data/mutations/newPotentialVoter';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import PropTypes from 'prop-types';
-import { map } from 'lodash';
+import { map, sortBy } from 'lodash';
 
 class NewPotentialVoterForm extends PureComponent {
   render() {
@@ -21,8 +21,10 @@ class NewPotentialVoterForm extends PureComponent {
             query: MY_POTENTIAL_VOTERS,
             variables: { limit: 25, org_id: this.props.match.params.orgSlug },
           });
-          // Push item to top of the list
-          data.potentialVoters.items.unshift(createPotentialVoter);
+          // add item to list
+          data.potentialVoters.items.push(createPotentialVoter);
+          // sort list alphabetically
+          data.potentialVoters.items = sortBy(data.potentialVoters.items, ['last_name']);
           store.writeQuery({
             query: MY_POTENTIAL_VOTERS,
             variables: { org_id: this.props.match.params.orgSlug, limit: 25 },
