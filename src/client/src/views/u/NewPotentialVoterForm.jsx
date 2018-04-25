@@ -64,9 +64,9 @@ class NewPotentialVoterForm extends PureComponent {
                 })
                 .catch(error => {
                   setSubmitting(false);
-                  setErrors({ email: ' ', password: ' ', form: error });
                   // eslint-disable-next-line no-console
                   console.log('there was an error sending the query', error);
+                  setErrors({ email: ' ', password: ' ', form: error });
                 });
             }}
             render={({

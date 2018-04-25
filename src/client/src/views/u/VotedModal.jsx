@@ -33,8 +33,8 @@ class VotedModal extends Component {
                       ) : (
                         <div>
                           Data about who has voted will not be available until 20 days out from the
-                          General election when early vote information is published. Check back
-                          after 10/17/2018
+                          Primary election when early vote information is published. Check back
+                          after 7/13/2018
                         </div>
                       )}
                     </div>

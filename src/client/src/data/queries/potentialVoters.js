@@ -27,11 +27,16 @@ const MY_POTENTIAL_VOTERS = gql`
           state
           zipcode
           dob
-          vo_ab_requested
-          vo_ab_requested_date
-          vo_voted
-          vo_voted_date
-          vo_voted_method
+          vo_ab_requested_primary
+          vo_ab_requested_date_primary
+          vo_voted_primary
+          vo_voted_date_primary
+          vo_voted_method_primary
+          vo_ab_requested_general
+          vo_ab_requested_date_general
+          vo_voted_general
+          vo_voted_date_general
+          vo_voted_method_general
         }
         nextTask {
           id

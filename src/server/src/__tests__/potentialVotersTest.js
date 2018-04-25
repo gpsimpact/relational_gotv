@@ -590,8 +590,10 @@ describe('Potential Voters', () => {
     const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
     const voters = generateFakeVoters(1, 133);
     // specify test voter condition. should equal 20 + 20 (not 100)
-    voters[0].vo_ab_requested = true;
-    voters[0].vo_voted = false;
+    voters[0].vo_ab_requested_primary = true;
+    voters[0].vo_voted_primary = false;
+    voters[0].vo_ab_requested_general = true;
+    voters[0].vo_voted_general = false;
     await db('voter_file').insert(voters);
     pvs[0].state_file_id = voters[0].state_file_id;
     const tasks = [
@@ -649,7 +651,7 @@ describe('Potential Voters', () => {
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.potentialVoter.voPoints).toBe(40);
+    expect(result.data.potentialVoter.voPoints).toBe(60);
     expect(result.data.potentialVoter.taskPoints).toBe(63);
   });
 });

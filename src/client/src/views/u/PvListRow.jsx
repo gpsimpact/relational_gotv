@@ -78,11 +78,11 @@ class PvListRow extends PureComponent {
                       </span>
                       <span
                         className={classNames('tag', {
-                          'is-danger': content.voterFileRecord.vo_ab_requested === false,
-                          'is-success': content.voterFileRecord.vo_ab_requested === true,
+                          'is-danger': content.voterFileRecord.vo_ab_requested_primary === false,
+                          'is-success': content.voterFileRecord.vo_ab_requested_primary === true,
                         })}
                       >
-                        {content.voterFileRecord.vo_ab_requested ? 'Yes' : 'No'}
+                        {content.voterFileRecord.vo_ab_requested_primary ? 'Yes' : 'No'}
                       </span>
                     </div>
                   </div>
@@ -106,17 +106,17 @@ class PvListRow extends PureComponent {
                   <div className="control">
                     <div className="tags has-addons hover-hand" onClick={this.props.openVotedModal}>
                       <span className="tag">
-                        <abbr title="Has this contact cast a ballot in the Nov. 2018 general election?">
+                        <abbr title="Has this contact cast a ballot in the Nov. 2018 primary election?">
                           Voted?
                         </abbr>
                       </span>
                       <span
                         className={classNames('tag', {
-                          'is-danger': content.voterFileRecord.vo_voted === false,
-                          'is-success': content.voterFileRecord.vo_voted === true,
+                          'is-danger': content.voterFileRecord.vo_voted_primary === false,
+                          'is-success': content.voterFileRecord.vo_voted_primary === true,
                         })}
                       >
-                        {content.voterFileRecord.vo_voted ? 'Yes' : 'No'}
+                        {content.voterFileRecord.vo_voted_primary ? 'Yes' : 'No'}
                       </span>
                     </div>
                   </div>

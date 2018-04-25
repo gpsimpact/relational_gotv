@@ -9,11 +9,16 @@ export default `
     state: String
     zipcode: String
     dob: isoDate
-    vo_ab_requested: Boolean
-    vo_ab_requested_date: isoDate
-    vo_voted: Boolean
-    vo_voted_date: isoDate
-    vo_voted_method: String
+    vo_ab_requested_primary: Boolean
+    vo_ab_requested_date_primary: isoDate
+    vo_voted_primary: Boolean
+    vo_voted_date_primary: isoDate
+    vo_voted_method_primary: String
+    vo_ab_requested_general: Boolean
+    vo_ab_requested_date_general: isoDate
+    vo_voted_general: Boolean
+    vo_voted_date_general: isoDate
+    vo_voted_method_general: String
   }
 
 

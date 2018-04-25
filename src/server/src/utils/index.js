@@ -104,17 +104,28 @@ export const generateFakeVoters = (num, seed) => {
           .between('1917-01-01', '1999-02-01')
           .toISOString()
           .substring(0, 10),
-        vo_ab_requested: faker.random.boolean(),
-        vo_ab_requested_date: faker.date
+        vo_ab_requested_primary: faker.random.boolean(),
+        vo_ab_requested_date_primary: faker.date
           .recent()
           .toISOString()
           .substring(0, 10),
-        vo_voted: faker.random.boolean(),
-        vo_voted_date: faker.date
+        vo_voted_primary: faker.random.boolean(),
+        vo_voted_date_primary: faker.date
           .recent()
           .toISOString()
           .substring(0, 10),
-        vo_voted_method: vote_methods[Math.floor(Math.random() * vote_methods.length)],
+        vo_voted_method_primary: vote_methods[Math.floor(Math.random() * vote_methods.length)],
+        vo_ab_requested_general: faker.random.boolean(),
+        vo_ab_requested_date_general: faker.date
+          .recent()
+          .toISOString()
+          .substring(0, 10),
+        vo_voted_general: faker.random.boolean(),
+        vo_voted_date_general: faker.date
+          .recent()
+          .toISOString()
+          .substring(0, 10),
+        vo_voted_method_general: vote_methods[Math.floor(Math.random() * vote_methods.length)],
       });
     });
   return fakeVoters;

@@ -14,11 +14,16 @@ exports.up = function(knex) {
         table.string('state');
         table.string('zipcode');
         table.date('dob');
-        table.boolean('vo_ab_requested').defaultTo(false);
-        table.date('vo_ab_requested_date');
-        table.boolean('vo_voted').defaultTo(false);
-        table.date('vo_voted_date');
-        table.string('vo_voted_method');
+        table.boolean('vo_ab_requested_primary').defaultTo(false);
+        table.date('vo_ab_requested_date_primary');
+        table.boolean('vo_voted_primary').defaultTo(false);
+        table.date('vo_voted_date_primary');
+        table.string('vo_voted_method_primary');
+        table.boolean('vo_ab_requested_general').defaultTo(false);
+        table.date('vo_ab_requested_date_general');
+        table.boolean('vo_voted_general').defaultTo(false);
+        table.date('vo_voted_date_general');
+        table.string('vo_voted_method_general');
       });
     }
   });

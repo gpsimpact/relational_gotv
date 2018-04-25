@@ -32,8 +32,8 @@ class VoteByMailModal extends Component {
                         </div>
                       ) : (
                         <div>
-                          Vote By Mail data will not be available until 20 days out from the General
-                          election. Check back after 10/17/2018
+                          Vote By Mail data will not be available until 20 days out from the Primary
+                          election. Check back after 7/13/2018
                         </div>
                       )}
                     </div>

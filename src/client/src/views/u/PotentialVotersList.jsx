@@ -67,7 +67,7 @@ class PotentialVotersList extends PureComponent {
             }
             if (potentialVoters.items.length === 0) {
               return (
-                <div className-="content">
+                <div className="content">
                   <h1 className="title">Get started by adding a contact.</h1>
                   <p>
                     Danny will write verbose instructions to be placed here as per{' '}

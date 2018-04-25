@@ -80,6 +80,7 @@ export class VoterSearchResults extends PureComponent {
                                 } else {
                                   content = <div>Loading.....</div>;
                                 }
+                                console.log(content);
                                 return (
                                   <div key={index} style={style}>
                                     <VoterSearchResultsRow

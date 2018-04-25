@@ -8,17 +8,29 @@ export default {
       }
       return root.dob;
     },
-    vo_ab_requested_date(root) {
-      if (typeof root.vo_ab_requested_date === 'string') {
-        return root.vo_ab_requested_date.split('T')[0];
+    vo_ab_requested_date_primary(root) {
+      if (typeof root.vo_ab_requested_date_primary === 'string') {
+        return root.vo_ab_requested_date_primary.split('T')[0];
       }
-      return root.vo_ab_requested_date;
+      return root.vo_ab_requested_date_primary;
     },
-    vo_voted_date(root) {
-      if (typeof root.vo_voted_date === 'string') {
-        return root.vo_voted_date.split('T')[0];
+    vo_voted_date_primary(root) {
+      if (typeof root.vo_voted_date_primary === 'string') {
+        return root.vo_voted_date_primary.split('T')[0];
       }
-      return root.vo_voted_date;
+      return root.vo_voted_date_primary;
+    },
+    vo_ab_requested_date_general(root) {
+      if (typeof root.vo_ab_requested_date_general === 'string') {
+        return root.vo_ab_requested_date_general.split('T')[0];
+      }
+      return root.vo_ab_requested_date_general;
+    },
+    vo_voted_date_general(root) {
+      if (typeof root.vo_voted_date_general === 'string') {
+        return root.vo_voted_date_general.split('T')[0];
+      }
+      return root.vo_voted_date_general;
     },
   },
   Query: {
