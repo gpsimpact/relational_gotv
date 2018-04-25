@@ -1,12 +1,18 @@
-// import redis from 'redis';
-// import bluebird from 'bluebird';
-// bluebird.promisifyAll(redis.RedisClient.prototype);
-// bluebird.promisifyAll(redis.Multi.prototype);
-
-// export default redis.createClient({ host: process.env.DATA_REDIS_HOST, port: 6379 });
-
 import Redis from 'ioredis';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 
-var redis = new Redis(6379, process.env.DATA_REDIS_HOST);
+const options = {
+  host: process.env.DATA_REDIS_HOST,
+  port: 6379,
+  retry_strategy: options => {
+    // reconnect after
+    return Math.max(options.attempt * 100, 3000);
+  },
+};
 
-export default redis;
+export const pubsub = new RedisPubSub({
+  publisher: new Redis(options),
+  subscriber: new Redis(options),
+});
+
+export default new Redis(options);
