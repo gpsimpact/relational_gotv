@@ -50,79 +50,97 @@ class PvListRow extends PureComponent {
               )}
             </div>
           </div>
-          <div className="level-right">
-            {content.voterFileRecord && content.voterFileRecord.state_file_id ? (
+
+          {content.voterFileRecord && content.voterFileRecord.state_file_id ? (
+            <div className="level-right">
               <div className="level-item">
                 <div className="field is-grouped is-grouped-multiline">
                   <div className="control">
-                    <div
-                      className="tags has-addons hover-hand"
-                      onClick={this.props.openVoterReviewModal}
-                    >
-                      <span className="tag">
-                        <abbr title="Has this contact been matched to a registered voter in the voter file?">
-                          Registered?
-                        </abbr>
-                      </span>
-                      <span className="tag is-success">Yes</span>
-                    </div>
+                    <a className="button is-outlined is-success">
+                      <div
+                        className="tags has-addons hover-hand"
+                        onClick={this.props.openVoterReviewModal}
+                      >
+                        <span className="tag">
+                          <abbr title="Has this contact been matched to a registered voter in the voter file?">
+                            Registered?
+                          </abbr>
+                        </span>
+                        <span className="tag is-success">Yes</span>
+                      </div>
+                    </a>
                   </div>
 
                   <div className="control">
-                    <div
-                      className="tags has-addons hover-hand"
-                      onClick={this.props.openVoteByMailModal}
-                    >
-                      <span className="tag">
-                        <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
-                      </span>
-                      <span
-                        className={classNames('tag', {
-                          'is-danger': content.voterFileRecord.vo_ab_requested_primary === false,
-                          'is-success': content.voterFileRecord.vo_ab_requested_primary === true,
-                        })}
+                    <a className="button is-outlined is-danger">
+                      <div
+                        className="tags has-addons hover-hand"
+                        onClick={this.props.openVoteByMailModal}
                       >
-                        {content.voterFileRecord.vo_ab_requested_primary ? 'Yes' : 'No'}
-                      </span>
-                    </div>
+                        <span className="tag">
+                          <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
+                        </span>
+                        <span
+                          className={classNames('tag', {
+                            'is-danger': content.voterFileRecord.vo_ab_requested_primary === false,
+                            'is-success': content.voterFileRecord.vo_ab_requested_primary === true,
+                          })}
+                        >
+                          {content.voterFileRecord.vo_ab_requested_primary ? 'Yes' : 'No'}
+                        </span>
+                      </div>
+                    </a>
                   </div>
 
                   <div className="control">
-                    <div className="tags has-addons hover-hand" onClick={this.props.openTaskModal}>
-                      <span className="tag">
-                        <abbr title="The count of available tasks for that contact.">TODO:</abbr>
-                      </span>
-                      <span
-                        className={classNames('tag', {
-                          'is-danger': content.countAvailableTasks > 0,
-                          'is-success': content.countAvailableTasks === 0,
-                        })}
+                    <a className="button is-outlined is-danger">
+                      <div
+                        className="tags has-addons hover-hand"
+                        onClick={this.props.openTaskModal}
                       >
-                        {content.countAvailableTasks}
-                      </span>
-                    </div>
+                        <span className="tag">
+                          <abbr title="The count of available tasks for that contact.">TODO:</abbr>
+                        </span>
+                        <span
+                          className={classNames('tag', {
+                            'is-danger': content.countAvailableTasks > 0,
+                            'is-success': content.countAvailableTasks === 0,
+                          })}
+                        >
+                          {content.countAvailableTasks}
+                        </span>
+                      </div>
+                    </a>
                   </div>
 
                   <div className="control">
-                    <div className="tags has-addons hover-hand" onClick={this.props.openVotedModal}>
-                      <span className="tag">
-                        <abbr title="Has this contact cast a ballot in the Nov. 2018 primary election?">
-                          Voted?
-                        </abbr>
-                      </span>
-                      <span
-                        className={classNames('tag', {
-                          'is-danger': content.voterFileRecord.vo_voted_primary === false,
-                          'is-success': content.voterFileRecord.vo_voted_primary === true,
-                        })}
+                    <a className="button is-outlined is-danger">
+                      <div
+                        className="tags has-addons hover-hand"
+                        onClick={this.props.openVotedModal}
                       >
-                        {content.voterFileRecord.vo_voted_primary ? 'Yes' : 'No'}
-                      </span>
-                    </div>
+                        <span className="tag">
+                          <abbr title="Has this contact cast a ballot in the Nov. 2018 primary election?">
+                            Voted?
+                          </abbr>
+                        </span>
+                        <span
+                          className={classNames('tag', {
+                            'is-danger': content.voterFileRecord.vo_voted_primary === false,
+                            'is-success': content.voterFileRecord.vo_voted_primary === true,
+                          })}
+                        >
+                          {content.voterFileRecord.vo_voted_primary ? 'Yes' : 'No'}
+                        </span>
+                      </div>
+                    </a>
                   </div>
                 </div>
               </div>
-            ) : (
+              {/*<div className="level-item">Points: {content.}/{content.}</div>*/}
+            </div>
+          ) : (
+            <div className="level-right">
               <div className="level-item">
                 <a className="button is-small is-danger" onClick={this.props.openVoterSearchModal}>
                   <span className="icon is-small">
@@ -131,8 +149,8 @@ class PvListRow extends PureComponent {
                   <span>Match to voter record</span>
                 </a>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </nav>
         <hr />
       </div>
