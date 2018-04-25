@@ -12,7 +12,7 @@ import redisDb from '../redisClient';
 beforeAll(async () => await db.migrate.latest({ directory: 'src/db/migrations' }));
 beforeEach(
   async () =>
-    await Promise.all([db.raw('TRUNCATE TABLE organizations CASCADE'), redisDb.flushallAsync()])
+    await Promise.all([db.raw('TRUNCATE TABLE organizations CASCADE'), redisDb.flushall()])
 );
 afterAll(async () => await db.destroy());
 

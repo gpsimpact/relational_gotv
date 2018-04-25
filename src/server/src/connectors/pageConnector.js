@@ -15,7 +15,7 @@ class PotentialVotersConnector {
   loadSinglePage = async key => {
     // it would be easy to cache with redis here...
     // attempt to load key from redis
-    const cachedDataRaw = await this.redisDb.getAsync(key);
+    const cachedDataRaw = await this.redisDb.get(key);
     let data;
     if (cachedDataRaw) {
       data = JSON.parse(cachedDataRaw);
@@ -37,7 +37,7 @@ class PotentialVotersConnector {
       );
       // after db load, store in redis. fetchPayload would need TTL value
       if (fetchPayload.ttl) {
-        await this.redisDb.setAsync(key, JSON.stringify(data), 'EX', fetchPayload.ttl);
+        await this.redisDb.set(key, JSON.stringify(data), 'EX', fetchPayload.ttl);
       }
     }
     data.pageInfo.fromCache = false;

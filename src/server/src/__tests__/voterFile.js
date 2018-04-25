@@ -14,7 +14,7 @@ beforeEach(
       db.raw('TRUNCATE TABLE voter_file CASCADE'),
       db.raw('TRUNCATE TABLE users CASCADE'),
       db.raw('TRUNCATE TABLE organizations CASCADE'),
-      redisDb.flushallAsync(),
+      redisDb.flushall(),
     ])
 );
 afterAll(async () => await db.destroy());
