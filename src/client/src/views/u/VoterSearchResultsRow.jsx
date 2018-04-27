@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { parse, differenceInCalendarYears } from 'date-fns';
+import { parse, differenceInYears } from 'date-fns';
 import AssociateVoterButton from './AssociateVoterButton';
 
 class VoterSearchResultsRow extends PureComponent {
@@ -18,7 +18,7 @@ class VoterSearchResultsRow extends PureComponent {
                 <br />
                 <small>
                   {content.home_address} - {content.city}, {content.state} {content.zip} -{' '}
-                  {differenceInCalendarYears(new Date(), parse(content.dob))} years old
+                  {differenceInYears(new Date(), parse(content.dob))} years old
                 </small>
               </div>
             </div>

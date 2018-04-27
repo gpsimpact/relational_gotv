@@ -2,13 +2,7 @@ import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import MY_POTENTIAL_VOTERS from '../../data/queries/potentialVoters';
-import {
-  InfiniteLoader,
-  AutoSizer,
-  List,
-  CellMeasurer,
-  CellMeasurerCache,
-} from 'react-virtualized';
+import { InfiniteLoader, AutoSizer, List, CellMeasurerCache } from 'react-virtualized';
 import VoterSearchModal from './VoterSearchModal';
 import { uniqBy } from 'lodash';
 import PvListRow from './PvListRow';
