@@ -16,7 +16,7 @@ export class VoterSearchForm extends PureComponent {
             state: 'KS',
           }}
           validationSchema={Yup.object().shape({
-            first_name: Yup.string().required('First name is required'),
+            // first_name: Yup.string().required('First name is required'),
             last_name: Yup.string().required('Last name is required'),
             city: Yup.string().required('City is required'),
           })}
