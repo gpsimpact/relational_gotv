@@ -11,6 +11,8 @@ const UPDATE_PV = gql`
       org_id
       countCompletedTasks
       countAvailableTasks
+      pointsEarned
+      pointsPotential
       voterFileRecord {
         state_file_id
         first_name

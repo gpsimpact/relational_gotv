@@ -74,7 +74,14 @@ class PvListRow extends PureComponent {
                       className="tags has-addons hover-hand"
                       onClick={this.props.openVoteByMailModal}
                     >
-                      <span className="tag is-white tag-button-danger">
+                      <span
+                        className={classNames('tag', 'is-white', {
+                          'tag-button-danger':
+                            content.voterFileRecord.vo_ab_requested_primary === false,
+                          'tag-button-success':
+                            content.voterFileRecord.vo_ab_requested_primary === true,
+                        })}
+                      >
                         <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
                       </span>
                       <span
@@ -90,7 +97,12 @@ class PvListRow extends PureComponent {
 
                   <div className="control">
                     <div className="tags has-addons hover-hand" onClick={this.props.openTaskModal}>
-                      <span className="tag is-white tag-button-danger">
+                      <span
+                        className={classNames('tag', 'is-white', {
+                          'tag-button-danger': content.countAvailableTasks > 0,
+                          'tag-button-success': content.countAvailableTasks === 0,
+                        })}
+                      >
                         <abbr title="The count of available tasks for that contact.">TODO:</abbr>
                       </span>
                       <span
@@ -106,7 +118,12 @@ class PvListRow extends PureComponent {
 
                   <div className="control">
                     <div className="tags has-addons hover-hand" onClick={this.props.openVotedModal}>
-                      <span className="tag is-white tag-button-danger">
+                      <span
+                        className={classNames('tag', 'is-white', {
+                          'tag-button-danger': content.voterFileRecord.vo_voted_primary === false,
+                          'tag-button-success': content.voterFileRecord.vo_voted_primary === true,
+                        })}
+                      >
                         <abbr title="Has this contact cast a ballot in the Nov. 2018 primary election?">
                           Voted?
                         </abbr>

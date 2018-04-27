@@ -11,7 +11,8 @@ const POTENTIAL_VOTER_INFO = gql`
       org_id
       countCompletedTasks
       countAvailableTasks
-      voPoints
+      pointsEarned
+      pointsPotential
       taskPoints
       voterFileRecord {
         state_file_id
