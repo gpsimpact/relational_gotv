@@ -13026,3 +13026,17 @@ label.panel-block {
 
 .hover-hand:hover {
   cursor: pointer; }
+
+.tag-button-success {
+  border: 1px solid #23d160; }
+
+.tag-button-success:hover {
+  background-color: #23d160 !important;
+  color: white !important; }
+
+.tag-button-danger {
+  border: 1px solid #ff3860; }
+
+.tag-button-danger:hover {
+  background-color: #ff3860 !important;
+  color: white !important; }

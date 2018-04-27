@@ -9,6 +9,9 @@ import schema from '../graphql/schema';
 import MakeContext from '../Context';
 import buildEmail from '../email';
 import jwt from 'jsonwebtoken';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { execute, subscribe } from 'graphql';
+import { createServer } from 'http';
 
 // APOLLO OPTICS SERVICE - TEMPORARILY DISABLED UNTIL API IS MORE COMPLETE
 // const engine = new Engine({
@@ -25,6 +28,7 @@ import jwt from 'jsonwebtoken';
 // engine.start();
 
 const app = express();
+const PORT = 3000;
 
 app.use(compression());
 // app.use(engine.expressMiddleware());
@@ -60,7 +64,13 @@ app.use(
     return options;
   })
 );
-app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+app.use(
+  '/graphiql',
+  graphiqlExpress({
+    endpointURL: '/graphql',
+    subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`,
+  })
+);
 
 // serve static react assets
 app.use(express.static('/app/src/client/build'));
@@ -69,6 +79,32 @@ app.use(express.static('/app/src/client/build'));
 app.get('*', (req, res) => {
   res.sendFile('/app/src/client/build/index.html');
   // res.sendFile(path.join(__dirname + 'src/client/build/index.html'));
+});
+
+const ws = createServer(app);
+ws.listen(PORT, () => {
+  // eslint-disable-next-line no-console
+  console.log(`Apollo Server is now running on http://localhost:${PORT}`);
+  // Set up the WebSocket for handling GraphQL subscriptions
+  new SubscriptionServer(
+    {
+      execute,
+      subscribe,
+      schema,
+      onConnect: (connectionParams, webSocket) => {
+        if (connectionParams.authToken) {
+          return jwt.verify(connectionParams.authToken, process.env.JWT_SECRET).then(user => ({
+            user,
+          }));
+        }
+        throw new Error('Missing auth token!');
+      },
+    },
+    {
+      server: ws,
+      path: '/subscriptions',
+    }
+  );
 });
 
 export default app;

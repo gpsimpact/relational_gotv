@@ -37,7 +37,8 @@
     "mailgun-js": "^0.16.0",
     "merge-graphql-schemas": "^1.5.0",
     "path": "^0.12.7",
-    "pg": "^7.4.1"
+    "pg": "^7.4.1",
+    "subscriptions-transport-ws": "^0.9.8"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

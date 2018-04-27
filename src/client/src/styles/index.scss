@@ -41,3 +41,21 @@
 .hover-hand:hover {
   cursor: pointer;
 }
+
+.tag-button-success {
+  border: 1px solid $success;
+}
+
+.tag-button-success:hover {
+  background-color: $success !important;
+  color: $white !important;
+}
+
+.tag-button-danger {
+  border: 1px solid $danger;
+}
+
+.tag-button-danger:hover {
+  background-color: $danger !important;
+  color: $white !important;
+}

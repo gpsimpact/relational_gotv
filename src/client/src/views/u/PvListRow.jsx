@@ -56,84 +56,70 @@ class PvListRow extends PureComponent {
               <div className="level-item">
                 <div className="field is-grouped is-grouped-multiline">
                   <div className="control">
-                    <a className="button is-outlined is-success">
-                      <div
-                        className="tags has-addons hover-hand"
-                        onClick={this.props.openVoterReviewModal}
-                      >
-                        <span className="tag">
-                          <abbr title="Has this contact been matched to a registered voter in the voter file?">
-                            Registered?
-                          </abbr>
-                        </span>
-                        <span className="tag is-success">Yes</span>
-                      </div>
-                    </a>
+                    <div
+                      className="tags has-addons hover-hand"
+                      onClick={this.props.openVoterReviewModal}
+                    >
+                      <span className="tag is-white tag-button-success">
+                        <abbr title="Has this contact been matched to a registered voter in the voter file?">
+                          Registered?
+                        </abbr>
+                      </span>
+                      <span className="tag is-success">Yes</span>
+                    </div>
                   </div>
 
                   <div className="control">
-                    <a className="button is-outlined is-danger">
-                      <div
-                        className="tags has-addons hover-hand"
-                        onClick={this.props.openVoteByMailModal}
+                    <div
+                      className="tags has-addons hover-hand"
+                      onClick={this.props.openVoteByMailModal}
+                    >
+                      <span className="tag is-white tag-button-danger">
+                        <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
+                      </span>
+                      <span
+                        className={classNames('tag', {
+                          'is-danger': content.voterFileRecord.vo_ab_requested_primary === false,
+                          'is-success': content.voterFileRecord.vo_ab_requested_primary === true,
+                        })}
                       >
-                        <span className="tag">
-                          <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
-                        </span>
-                        <span
-                          className={classNames('tag', {
-                            'is-danger': content.voterFileRecord.vo_ab_requested_primary === false,
-                            'is-success': content.voterFileRecord.vo_ab_requested_primary === true,
-                          })}
-                        >
-                          {content.voterFileRecord.vo_ab_requested_primary ? 'Yes' : 'No'}
-                        </span>
-                      </div>
-                    </a>
+                        {content.voterFileRecord.vo_ab_requested_primary ? 'Yes' : 'No'}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="control">
-                    <a className="button is-outlined is-danger">
-                      <div
-                        className="tags has-addons hover-hand"
-                        onClick={this.props.openTaskModal}
+                    <div className="tags has-addons hover-hand" onClick={this.props.openTaskModal}>
+                      <span className="tag is-white tag-button-danger">
+                        <abbr title="The count of available tasks for that contact.">TODO:</abbr>
+                      </span>
+                      <span
+                        className={classNames('tag', {
+                          'is-danger': content.countAvailableTasks > 0,
+                          'is-success': content.countAvailableTasks === 0,
+                        })}
                       >
-                        <span className="tag">
-                          <abbr title="The count of available tasks for that contact.">TODO:</abbr>
-                        </span>
-                        <span
-                          className={classNames('tag', {
-                            'is-danger': content.countAvailableTasks > 0,
-                            'is-success': content.countAvailableTasks === 0,
-                          })}
-                        >
-                          {content.countAvailableTasks}
-                        </span>
-                      </div>
-                    </a>
+                        {content.countAvailableTasks}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="control">
-                    <a className="button is-outlined is-danger">
-                      <div
-                        className="tags has-addons hover-hand"
-                        onClick={this.props.openVotedModal}
+                    <div className="tags has-addons hover-hand" onClick={this.props.openVotedModal}>
+                      <span className="tag is-white tag-button-danger">
+                        <abbr title="Has this contact cast a ballot in the Nov. 2018 primary election?">
+                          Voted?
+                        </abbr>
+                      </span>
+                      <span
+                        className={classNames('tag', {
+                          'is-danger': content.voterFileRecord.vo_voted_primary === false,
+                          'is-success': content.voterFileRecord.vo_voted_primary === true,
+                        })}
                       >
-                        <span className="tag">
-                          <abbr title="Has this contact cast a ballot in the Nov. 2018 primary election?">
-                            Voted?
-                          </abbr>
-                        </span>
-                        <span
-                          className={classNames('tag', {
-                            'is-danger': content.voterFileRecord.vo_voted_primary === false,
-                            'is-success': content.voterFileRecord.vo_voted_primary === true,
-                          })}
-                        >
-                          {content.voterFileRecord.vo_voted_primary ? 'Yes' : 'No'}
-                        </span>
-                      </div>
-                    </a>
+                        {content.voterFileRecord.vo_voted_primary ? 'Yes' : 'No'}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

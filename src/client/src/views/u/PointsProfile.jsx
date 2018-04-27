@@ -13,6 +13,7 @@ class PointsProfile extends PureComponent {
       <Query
         query={POINTS_PROFILE_USER_ORG_LIMITED}
         variables={{ email: getUserEmail(), org_id: this.props.match.params.orgSlug }}
+        pollInterval={1000}
       >
         {({ loading, error, data: { points } }) => {
           if (loading) return <div className="loader" />;

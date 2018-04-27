@@ -23,7 +23,7 @@ class DeleteModal extends Component {
               </h4>
               <p>
                 This is permanent. Any points earned by completing tasks associated with this
-                contact WILL NOT be removed
+                contact will be removed from your score.
               </p>
               <DeletePotentialVoterButton
                 pv_id={potentialVoter.id}

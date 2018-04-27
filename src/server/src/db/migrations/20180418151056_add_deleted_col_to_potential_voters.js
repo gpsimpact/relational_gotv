@@ -5,7 +5,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.table('potential_voters', t => {
-    t.dropColumn('deleted');
-  });
+  return knex.raw('ALTER TABLE potential_voters DROP COLUMN deleted CASCADE');
 };
