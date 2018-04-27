@@ -35,22 +35,50 @@ class PvListRow extends PureComponent {
                     </small>
                   </div>
                 ) : (
-                  <div className="content">
-                    <strong>
-                      {content.first_name} {content.last_name}
-                    </strong>
-                    <br />
-                    <small>{content.city}</small>
-                    <br />
-                    <small>
-                      Points: {content.pointsEarned} / {content.pointsPotential}
-                    </small>
-                  </div>
-                )}
+                    <div className="content">
+                      <strong>
+                        {content.first_name} {content.last_name}
+                      </strong>
+                      <br />
+                      <small>{content.city}</small>
+                      <br />
+                      <small>
+                        Points: {content.pointsEarned} / {content.pointsPotential}
+                      </small>
+                    </div>
+                  )}
               </div>
               <div className="column">
                 {content.voterFileRecord && content.voterFileRecord.state_file_id ? (
                   <div className="field is-grouped is-grouped-multiline">
+
+                    <div className="control">
+                      <div
+                        className="tags has-addons hover-hand"
+                        onClick={this.props.openTaskModal}
+                      >
+                        <span
+                          className={classNames('tag', 'is-white', {
+                            'tag-button-danger': content.countAvailableTasks > 0,
+                            'tag-button-success': content.countAvailableTasks === 0,
+                          })}
+                        >
+                          <abbr title="The count of available tasks for that contact.">TASKS:</abbr>
+                        </span>
+                        <span
+                          className={classNames('tag', {
+                            'is-danger': content.countAvailableTasks > 0,
+                            'is-success': content.countAvailableTasks === 0,
+                          })}
+                        >
+                          {content.countCompletedTasks}/{content.countAvailableTasks +
+                            content.countCompletedTasks}
+                        </span>
+                      </div>
+                    </div>
+
+
+
                     <div className="control">
                       <div
                         className="tags has-addons hover-hand"
@@ -91,29 +119,7 @@ class PvListRow extends PureComponent {
                       </div>
                     </div>
 
-                    <div className="control">
-                      <div
-                        className="tags has-addons hover-hand"
-                        onClick={this.props.openTaskModal}
-                      >
-                        <span
-                          className={classNames('tag', 'is-white', {
-                            'tag-button-danger': content.countAvailableTasks > 0,
-                            'tag-button-success': content.countAvailableTasks === 0,
-                          })}
-                        >
-                          <abbr title="The count of available tasks for that contact.">TODO:</abbr>
-                        </span>
-                        <span
-                          className={classNames('tag', {
-                            'is-danger': content.countAvailableTasks > 0,
-                            'is-success': content.countAvailableTasks === 0,
-                          })}
-                        >
-                          {content.countAvailableTasks}
-                        </span>
-                      </div>
-                    </div>
+
 
                     <div className="control">
                       <div
@@ -142,16 +148,16 @@ class PvListRow extends PureComponent {
                     </div>
                   </div>
                 ) : (
-                  <a
-                    className="button is-small is-danger"
-                    onClick={this.props.openVoterSearchModal}
-                  >
-                    <span className="icon is-small">
-                      <FontAwesomeIcon icon={faExclamation} />
-                    </span>{' '}
-                    <span>Match to voter record</span>
-                  </a>
-                )}
+                    <a
+                      className="button is-small is-danger"
+                      onClick={this.props.openVoterSearchModal}
+                    >
+                      <span className="icon is-small">
+                        <FontAwesomeIcon icon={faExclamation} />
+                      </span>{' '}
+                      <span>Match to voter record</span>
+                    </a>
+                  )}
               </div>
               <div className="column is-one-fifth">
                 <div className="field is-grouped">

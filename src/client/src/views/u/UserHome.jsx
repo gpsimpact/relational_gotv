@@ -60,6 +60,10 @@ class UserHome extends PureComponent {
                 <small>
                   <dl>
                     <dt>
+                      <abbr title="The count of available tasks for that contact.">TASKS:</abbr>
+                    </dt>
+                    <dd>The count of available tasks for that contact.</dd>
+                    <dt>
                       <abbr title="Has this contact been matched to the voter file?">
                         Registered?
                       </abbr>
@@ -69,10 +73,7 @@ class UserHome extends PureComponent {
                       <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
                     </dt>
                     <dd>Has this contact registered to vote by mail?</dd>
-                    <dt>
-                      <abbr title="The count of available tasks for that contact.">TODO:</abbr>
-                    </dt>
-                    <dd>The count of available tasks for that contact.</dd>
+
                     <dt>
                       <abbr title="Has this contact cast a ballot in the Nov. 2018 general election?">
                         Voted?
