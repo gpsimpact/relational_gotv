@@ -2,7 +2,13 @@ import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import MY_POTENTIAL_VOTERS from '../../data/queries/potentialVoters';
-import { InfiniteLoader, AutoSizer, List } from 'react-virtualized';
+import {
+  InfiniteLoader,
+  AutoSizer,
+  List,
+  CellMeasurer,
+  CellMeasurerCache,
+} from 'react-virtualized';
 import VoterSearchModal from './VoterSearchModal';
 import { uniqBy } from 'lodash';
 import PvListRow from './PvListRow';
@@ -47,6 +53,11 @@ class PotentialVotersList extends PureComponent {
     });
   };
 
+  cache = new CellMeasurerCache({
+    defaultHeight: 50,
+    fixedWidth: true,
+  });
+
   render() {
     // const { loading, error, potentialVoters, loadMoreRows } = this.props;
     return (
@@ -78,6 +89,7 @@ class PotentialVotersList extends PureComponent {
                 </div>
               );
             }
+
             return (
               <div>
                 <h1 className="title">You have added {potentialVoters.items.length} contacts:</h1>
@@ -123,8 +135,8 @@ class PotentialVotersList extends PureComponent {
                             )}
                             ref={registerChild}
                             rowCount={potentialVoters.items.length}
-                            rowHeight={100}
-                            rowRenderer={({ index, style }) => {
+                            rowHeight={this.cache.rowHeight}
+                            rowRenderer={({ index, style, parent }) => {
                               let content;
                               // console.log(this.props);
                               if (index < potentialVoters.items.length) {
@@ -140,6 +152,9 @@ class PotentialVotersList extends PureComponent {
                                   <PvListRow
                                     id={content.id}
                                     content={content}
+                                    index={index}
+                                    cache={this.cache}
+                                    parent={parent}
                                     openVoterSearchModal={() =>
                                       this._openModal('voterSearchModalOpen', content)
                                     }
