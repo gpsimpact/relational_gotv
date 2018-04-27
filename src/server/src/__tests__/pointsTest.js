@@ -101,7 +101,7 @@ describe('Tasks', () => {
         email: users[0].email,
       },
       earned: 289,
-      potential: 44,
+      potential: 333,
     });
   });
 
@@ -211,7 +211,7 @@ describe('Tasks', () => {
         email: users[0].email,
       },
       earned: 289,
-      potential: 44,
+      potential: 333,
     });
     expect(result.data.points.items).toContainEqual({
       organization: { id: org1.id },
@@ -221,7 +221,7 @@ describe('Tasks', () => {
         email: null,
       },
       earned: 289,
-      potential: 44,
+      potential: 333,
     });
   });
 
@@ -331,7 +331,7 @@ describe('Tasks', () => {
         email: users[0].email,
       },
       earned: 289,
-      potential: 44,
+      potential: 333,
     });
     expect(result.data.points.items).toContainEqual({
       organization: { id: org1.id },
@@ -341,7 +341,7 @@ describe('Tasks', () => {
         email: users[1].email,
       },
       earned: 289,
-      potential: 44,
+      potential: 333,
     });
   });
 });

@@ -9,7 +9,8 @@ export default `
     nextTask: Task
     countCompletedTasks: Int
     countAvailableTasks: Int
-    voPoints: Int
+    pointsEarned: Int
+    pointsPotential: Int
     taskPoints: Int
     voterFileRecord: Voter
     deleted: Boolean

@@ -18,18 +18,18 @@ class VoterConnector {
       .then(mapTo(keys, x => x.state_file_id))
   );
 
-  voterPointsById = new DataLoader(keys =>
-    this.sqlDb
-      .table('voter_file')
-      .whereIn('state_file_id', keys)
-      .select(
-        this.sqlDb.raw(
-          'state_file_id, (20 + CASE WHEN vo_ab_requested_primary THEN 20 ELSE 0 END + CASE WHEN vo_voted_primary THEN 20 ELSE 0 END + CASE WHEN vo_ab_requested_general THEN 20 ELSE 0 END + CASE WHEN vo_voted_general THEN 20 ELSE 0 END) as total_vo_points'
-        )
-      )
-      .groupBy('state_file_id')
-      .then(mapTo(keys, x => x.state_file_id))
-  );
+  // voterPointsById = new DataLoader(keys =>
+  //   this.sqlDb
+  //     .table('voter_file')
+  //     .whereIn('state_file_id', keys)
+  //     .select(
+  //       this.sqlDb.raw(
+  //         'state_file_id, (20 + CASE WHEN vo_ab_requested_primary THEN 20 ELSE 0 END + CASE WHEN vo_voted_primary THEN 20 ELSE 0 END + CASE WHEN vo_ab_requested_general THEN 20 ELSE 0 END + CASE WHEN vo_voted_general THEN 20 ELSE 0 END) as total_vo_points'
+  //       )
+  //     )
+  //     .groupBy('state_file_id')
+  //     .then(mapTo(keys, x => x.state_file_id))
+  // );
 }
 
 export default VoterConnector;

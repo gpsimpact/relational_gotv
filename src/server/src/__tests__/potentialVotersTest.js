@@ -21,6 +21,7 @@ beforeEach(
       db.raw('TRUNCATE TABLE organizations CASCADE'),
       db.raw('TRUNCATE TABLE potential_voters CASCADE'),
       db.raw('TRUNCATE TABLE voter_file CASCADE'),
+      db.raw('TRUNCATE TABLE tasks CASCADE'),
     ])
 );
 afterAll(async () => await db.destroy());
@@ -622,7 +623,7 @@ describe('Potential Voters', () => {
         form_schema: JSON.stringify({}),
         pv_id: pvs[0].id,
         form_data: JSON.stringify({}),
-        point_value: faker.random.number(),
+        point_value: 299,
         status: 'INCOMPLETE',
         sequence: 1,
         description: faker.commerce.productName(),
@@ -642,7 +643,8 @@ describe('Potential Voters', () => {
               id: "${pvs[0].id}"
             }
           ) {
-            voPoints
+            pointsEarned
+            pointsPotential
             taskPoints
           }
         }
@@ -651,7 +653,7 @@ describe('Potential Voters', () => {
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.potentialVoter.voPoints).toBe(60);
-    expect(result.data.potentialVoter.taskPoints).toBe(63);
+    expect(result.data.potentialVoter.pointsEarned).toBe(79);
+    expect(result.data.potentialVoter.pointsPotential).toBe(362);
   });
 });

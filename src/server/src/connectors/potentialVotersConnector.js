@@ -34,6 +34,13 @@ class PotentialVotersConnector {
       .whereIn('user_email', map(fetchPayloads, 'user_email'))
       .whereIn('org_id', map(fetchPayloads, 'org_id'))
       .select();
+
+  PvPointsById = new DataLoader(keys =>
+    this.sqlDb
+      .table('pv_points_rollup')
+      .whereIn('id', keys)
+      .then(mapTo(keys, x => x.id))
+  );
 }
 
 export default PotentialVotersConnector;
