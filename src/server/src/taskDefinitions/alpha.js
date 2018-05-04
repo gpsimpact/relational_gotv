@@ -8,6 +8,25 @@ export default {
         content: '# This is a header\n\nAnd this is a paragraph',
       },
       {
+        id: 'textAreaId',
+        widget: 'textarea',
+        validationType: 'string',
+        label: 'This is text area label',
+        placeholder: 'Enter text here',
+        validationTests: [
+          {
+            method: 'required',
+            message: 'this is required',
+          },
+          {
+            method: 'min',
+            value: 5,
+            message: 'must have length greater than 5',
+          },
+        ],
+        initialValue: 'pizza',
+      },
+      {
         id: 'favColor',
         type: 'text',
         widget: 'textinput',

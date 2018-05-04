@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import Yup from 'yup';
 import PropTypes from 'prop-types';
 import TextInput from '../../components/elements/TextInput';
+import TextArea from '../../components/elements/TextArea';
 import Selector from '../../components/elements/Selector';
 import ReactMarkdown from 'react-markdown';
 
@@ -80,6 +81,21 @@ class SchemaForm extends PureComponent {
                       key={idx}
                       id={field.id}
                       type={field.type}
+                      label={field.label}
+                      placeholder={field.placeholder}
+                      error={touched[field.id] && errors[field.id]}
+                      value={values[field.id]}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </div>
+                );
+              } else if (field.widget === 'textarea') {
+                return (
+                  <div style={baseStyle}>
+                    <TextArea
+                      key={idx}
+                      id={field.id}
                       label={field.label}
                       placeholder={field.placeholder}
                       error={touched[field.id] && errors[field.id]}
