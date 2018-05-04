@@ -4,6 +4,7 @@ import Yup from 'yup';
 import PropTypes from 'prop-types';
 import TextInput from '../../components/elements/TextInput';
 import Selector from '../../components/elements/Selector';
+import ReactMarkdown from 'react-markdown';
 
 class SchemaForm extends PureComponent {
   render() {
@@ -53,6 +54,7 @@ class SchemaForm extends PureComponent {
         validationSchema[field.id] = validator;
       }
     });
+    const baseStyle = { paddingTop: 20 };
     return (
       <Formik
         initialValues={initialValues}
@@ -73,40 +75,55 @@ class SchemaForm extends PureComponent {
             {this.props.schema.fields.map((field, idx) => {
               if (field.widget === 'textinput') {
                 return (
-                  <TextInput
-                    key={idx}
-                    id={field.id}
-                    type={field.type}
-                    label={field.label}
-                    placeholder={field.placeholder}
-                    error={touched[field.id] && errors[field.id]}
-                    value={values[field.id]}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
+                  <div style={baseStyle}>
+                    <TextInput
+                      key={idx}
+                      id={field.id}
+                      type={field.type}
+                      label={field.label}
+                      placeholder={field.placeholder}
+                      error={touched[field.id] && errors[field.id]}
+                      value={values[field.id]}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </div>
                 );
               } else if (field.widget === 'p') {
-                return <p key={idx}>{field.text}</p>;
+                // DEPRECIATED. DON't USE
+                return (
+                  <div style={baseStyle}>
+                    <p key={idx}>{field.text}</p>
+                  </div>
+                );
+              } else if (field.widget === 'markdown') {
+                return (
+                  <div style={baseStyle}>
+                    <ReactMarkdown key={idx} source={field.content} />
+                  </div>
+                );
               } else if (field.widget === 'select') {
                 return (
-                  <Selector
-                    key={idx}
-                    id={field.id}
-                    label={field.label}
-                    options={field.options}
-                    placeholder={field.placeholder}
-                    error={touched[field.id] && errors[field.id]}
-                    value={values[field.id]}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
+                  <div style={baseStyle}>
+                    <Selector
+                      key={idx}
+                      id={field.id}
+                      label={field.label}
+                      options={field.options}
+                      placeholder={field.placeholder}
+                      error={touched[field.id] && errors[field.id]}
+                      value={values[field.id]}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </div>
                 );
               }
               return null;
             })}
             <div className="Column">
               <div className="field ">
-                <div className="control">
+                <div className="control" style={baseStyle}>
                   <button
                     type="submit"
                     className="button is-link submit-button is-fullwidth"

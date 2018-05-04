@@ -4,14 +4,8 @@ export default {
     submitButtonText: 'Complete',
     fields: [
       {
-        widget: 'p',
-        text:
-          'This is an example of a task that we ask the volunteer to perform to mobilize a voter. A task can be any combination of instructions, inputs and dropdowns. In this example we might ask a question.',
-      },
-      {
-        widget: 'p',
-        text:
-          'Please contact this voter and ask them the following question. Enter their responses below.',
+        widget: 'markdown',
+        content: '# This is a header\n\nAnd this is a paragraph',
       },
       {
         id: 'favColor',

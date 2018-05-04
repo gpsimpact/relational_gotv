@@ -4,8 +4,8 @@ export default {
     submitButtonText: 'Mark as completed!',
     fields: [
       {
-        widget: 'p',
-        text: 'Which one of these options do you prefer?',
+        widget: 'markdown',
+        content: '# This is a header\n\nAnd this is a paragraph',
       },
       {
         id: 'pickOne',

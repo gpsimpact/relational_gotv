@@ -23,8 +23,8 @@
       "initialValue": "calazone"
     },
     {
-      "widget": "p",
-      "text": "lorem ipsum dolsom"
+      "widget": "markdown",
+      "content": "# This is a header\n\nAnd this is a paragraph"
     }
   ]
 }

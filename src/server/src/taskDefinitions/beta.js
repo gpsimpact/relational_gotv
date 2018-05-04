@@ -4,13 +4,8 @@ export default {
     submitButtonText: 'Mark as completed!',
     fields: [
       {
-        widget: 'p',
-        text: 'This is a task that illustrates multiple questions in one task. Both are required.',
-      },
-      {
-        widget: 'p',
-        text:
-          'Please contact this voter and ask them the following questions. Type their input below.',
+        widget: 'markdown',
+        content: '# This is a header\n\nAnd this is a paragraph',
       },
       {
         id: 'favBluth',

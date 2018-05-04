@@ -29,6 +29,7 @@
     "react": "^16.2.0",
     "react-apollo": "^2.1.0-beta.2",
     "react-dom": "^16.2.0",
+    "react-markdown": "^3.3.0",
     "react-router-dom": "^4.2.2",
     "react-router-prop-types": "^1.0.2",
     "react-scripts": "1.1.1",
