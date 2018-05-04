@@ -41,18 +41,18 @@ class PvListRow extends PureComponent {
                     </small>
                   </div>
                 ) : (
-                  <div className="content">
-                    <strong>
-                      {content.first_name} {content.last_name}
-                    </strong>
-                    <br />
-                    <small>{content.city}</small>
-                    <br />
-                    <small>
-                      Points: {content.pointsEarned} / {content.pointsPotential}
-                    </small>
-                  </div>
-                )}
+                    <div className="content">
+                      <strong>
+                        {content.first_name} {content.last_name}
+                      </strong>
+                      <br />
+                      <small>{content.city}</small>
+                      <br />
+                      <small>
+                        Points: {content.pointsEarned} / {content.pointsPotential}
+                      </small>
+                    </div>
+                  )}
               </div>
               <div className="column">
                 {content.voterFileRecord && content.voterFileRecord.state_file_id ? (
@@ -109,7 +109,7 @@ class PvListRow extends PureComponent {
                               content.voterFileRecord.vo_ab_requested_primary === true,
                           })}
                         >
-                          <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
+                          <abbr title="Has this contact applied for a mail in ballot?">VBM?</abbr>
                         </span>
                         <span
                           className={classNames('tag', {
@@ -149,16 +149,16 @@ class PvListRow extends PureComponent {
                     </div>
                   </div>
                 ) : (
-                  <a
-                    className="button is-small is-danger"
-                    onClick={this.props.openVoterSearchModal}
-                  >
-                    <span className="icon is-small">
-                      <FontAwesomeIcon icon={faExclamation} />
-                    </span>{' '}
-                    <span>Match to voter record</span>
-                  </a>
-                )}
+                    <a
+                      className="button is-small is-danger"
+                      onClick={this.props.openVoterSearchModal}
+                    >
+                      <span className="icon is-small">
+                        <FontAwesomeIcon icon={faExclamation} />
+                      </span>{' '}
+                      <span>Match to voter record</span>
+                    </a>
+                  )}
               </div>
               <div className="column is-one-fifth">
                 <div className="field is-grouped">

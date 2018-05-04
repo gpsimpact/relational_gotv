@@ -70,9 +70,9 @@ class UserHome extends PureComponent {
                     </dt>
                     <dd>Has this contact been matched to a registered voter in the voter file?</dd>
                     <dt>
-                      <abbr title="Has this contact registered to vote by mail?">VBM?</abbr>
+                      <abbr title="Has this contact applied for a mail in ballot?">VBM?</abbr>
                     </dt>
-                    <dd>Has this contact registered to vote by mail?</dd>
+                    <dd>Has this contact applied for a mail in ballot?</dd>
 
                     <dt>
                       <abbr title="Has this contact cast a ballot in the Nov. 2018 general election?">
