@@ -97,6 +97,31 @@ class PotentialVotersList extends PureComponent {
                     registered to vote, and registering them if they are not.
                   </p>
 
+                  <p>Here is a brief overview of the points you may earn:</p>
+                  <ul>
+                    <li>For having 10 or more contacts: 10 pts.</li>
+                    <li>For matching a contact to a record in the voter file: 1 pt. each</li>
+                    <li>
+                      For each contact, related to the primary election, then again for the general
+                      election:
+                    </li>
+                    <li>
+                      <ul>
+                        <li>Contact applies for an advance ballot by mail: 5 pts.</li>
+                        <li>
+                          Contact votes early (submits ballot by mail or votes in advance in
+                          person): 5 pts.
+                        </li>
+                        <li>
+                          Contact votes (any which way, early, or on election day): 10-40 pts.
+                          depending on the contact&apos;s record of voting. Those who vote every
+                          election garner fewer points than those who vote infrequently. We&apos;re
+                          creating a culture of voting here!
+                        </li>
+                      </ul>
+                    </li>
+                    <li>Additional, self-reporting tasks will be made available for 1 pt. each.</li>
+                  </ul>
                   <p>
                     In the end, you make all the difference. Your enthusiasm, your dedication to
                     creating a culture of voting will convince your circle to get out and become
