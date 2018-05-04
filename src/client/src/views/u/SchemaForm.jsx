@@ -76,7 +76,7 @@ class SchemaForm extends PureComponent {
             {this.props.schema.fields.map((field, idx) => {
               if (field.widget === 'textinput') {
                 return (
-                  <div style={baseStyle}>
+                  <div style={baseStyle} key={idx}>
                     <TextInput
                       key={idx}
                       id={field.id}
@@ -92,7 +92,7 @@ class SchemaForm extends PureComponent {
                 );
               } else if (field.widget === 'textarea') {
                 return (
-                  <div style={baseStyle}>
+                  <div style={baseStyle} key={idx}>
                     <TextArea
                       key={idx}
                       id={field.id}
@@ -108,19 +108,19 @@ class SchemaForm extends PureComponent {
               } else if (field.widget === 'p') {
                 // DEPRECIATED. DON't USE
                 return (
-                  <div style={baseStyle}>
-                    <p key={idx}>{field.text}</p>
+                  <div style={baseStyle} key={idx}>
+                    <p>{field.text}</p>
                   </div>
                 );
               } else if (field.widget === 'markdown') {
                 return (
-                  <div style={baseStyle}>
-                    <ReactMarkdown key={idx} source={field.content} />
+                  <div style={baseStyle} key={idx}>
+                    <ReactMarkdown source={field.content} />
                   </div>
                 );
               } else if (field.widget === 'select') {
                 return (
-                  <div style={baseStyle}>
+                  <div style={baseStyle} key={idx}>
                     <Selector
                       key={idx}
                       id={field.id}

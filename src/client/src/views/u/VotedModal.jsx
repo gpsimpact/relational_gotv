@@ -7,7 +7,7 @@ import { parse, distanceInWordsToNow, format } from 'date-fns';
 
 class VotedModal extends Component {
   render() {
-    const { potentialVoter } = this.props;
+    const { potentialVoter, cycle } = this.props;
     return (
       <div className={classNames('modal', { 'is-active': this.props.open })}>
         <div className="modal-background" onClick={() => this.props.close()} />
@@ -32,31 +32,65 @@ class VotedModal extends Component {
                         </div>
                       ) : (
                         <div>
-                          Data about who has voted will not be available until 20 days out from the
-                          Primary election when early vote information is published. Check back
-                          after 7/13/2018
+                          Data about who has voted will not be available until 20 days out from the{' '}
+                          {`${cycle}`} election. Check back after{' '}
+                          {cycle === 'primary' ? '7/13/2018' : '10/17/2018'}
                         </div>
                       )}
                     </div>
                   );
                 }}
               </Query>
-              <h4>
-                {potentialVoter.first_name} {potentialVoter.last_name} has{' '}
-                {potentialVoter.voterFileRecord.vo_voted ? null : 'NOT'} voted in the General 2018
-                election.
-              </h4>
-              {potentialVoter.voterFileRecord.vo_voted ? (
-                <p>
-                  Hooray! {potentialVoter.first_name} voted on{' '}
-                  {format(parse(potentialVoter.voterFileRecord.vo_voted_date), 'MM/DD/YYYY')} via
-                  &quot;{potentialVoter.voterFileRecord.vo_voted_method}&quot;
-                </p>
+              {cycle === 'primary' ? (
+                <div>
+                  <h4>
+                    {potentialVoter.first_name} {potentialVoter.last_name} has{' '}
+                    {potentialVoter.voterFileRecord.vo_voted_primary ? null : 'NOT'} voted in the
+                    Primary 2018 election!
+                  </h4>
+                  <div>
+                    {potentialVoter.voterFileRecord.vo_voted_primary ? (
+                      <p>
+                        Hooray! {potentialVoter.voterFileRecord.first_name} voted on{' '}
+                        {format(
+                          parse(potentialVoter.voterFileRecord.vo_voted_date_primary),
+                          'MM/DD/YYYY'
+                        )}{' '}
+                        via &quot;{potentialVoter.voterFileRecord.vo_voted_method_primary}&quot;
+                      </p>
+                    ) : (
+                      <p>
+                        We&apos;ve not yet seen data indicating that {potentialVoter.first_name} has
+                        voted. Encourage them to vote early via mail or in-person.
+                      </p>
+                    )}
+                  </div>
+                </div>
               ) : (
-                <p>
-                  We&apos;ve not yet seen data indicating that {potentialVoter.first_name} has
-                  voted. Encourage them to vote early via mail or in-person.
-                </p>
+                <div>
+                  <h4>
+                    {potentialVoter.first_name} {potentialVoter.last_name} has{' '}
+                    {potentialVoter.voterFileRecord.vo_voted_general ? null : 'NOT'} voted in the
+                    General 2018 election!
+                  </h4>
+                  <div>
+                    {potentialVoter.voterFileRecord.vo_voted_general ? (
+                      <p>
+                        Hooray! {potentialVoter.voterFileRecord.first_name} voted on{' '}
+                        {format(
+                          parse(potentialVoter.voterFileRecord.vo_voted_date_general),
+                          'MM/DD/YYYY'
+                        )}{' '}
+                        via &quot;{potentialVoter.voterFileRecord.vo_voted_method_general}&quot;
+                      </p>
+                    ) : (
+                      <p>
+                        We&apos;ve not yet seen data indicating that {potentialVoter.first_name} has
+                        voted. Encourage them to vote early via mail or in-person.
+                      </p>
+                    )}
+                  </div>
+                </div>
               )}
             </div>
           </section>

@@ -27,16 +27,18 @@ class PotentialVotersList extends PureComponent {
       pvEditModalOpen: false,
       deleteModalOpen: false,
       selectedPotentialVoter: null,
+      selectedCycle: null,
     };
 
     this._openModal = this._openModal.bind(this);
     this._closeModal = this._closeModal.bind(this);
   }
 
-  _openModal = (modalName, potentialVoter) => {
+  _openModal = (modalName, potentialVoter, cycle) => {
     this.setState({
       [modalName]: true,
       selectedPotentialVoter: potentialVoter,
+      selectedCycle: cycle ? cycle : null,
     });
   };
 
@@ -44,6 +46,7 @@ class PotentialVotersList extends PureComponent {
     this.setState({
       [modalName]: false,
       selectedPotentialVoter: potentialVoter,
+      selectedCycle: null,
     });
   };
 
@@ -202,11 +205,11 @@ class PotentialVotersList extends PureComponent {
                                     openVoterReviewModal={() =>
                                       this._openModal('voterReviewModalOpen', content)
                                     }
-                                    openVoteByMailModal={() =>
-                                      this._openModal('voteByMailModalOpen', content)
+                                    openVoteByMailModal={cycle =>
+                                      this._openModal('voteByMailModalOpen', content, cycle)
                                     }
-                                    openVotedModal={() =>
-                                      this._openModal('votedModalOpen', content)
+                                    openVotedModal={cycle =>
+                                      this._openModal('votedModalOpen', content, cycle)
                                     }
                                     openTaskModal={() => this._openModal('taskModalOpen', content)}
                                     openPvEditModal={() =>
@@ -247,11 +250,13 @@ class PotentialVotersList extends PureComponent {
                       open={this.state.voteByMailModalOpen}
                       potentialVoter={this.state.selectedPotentialVoter}
                       close={() => this._closeModal('voteByMailModalOpen')}
+                      cycle={this.state.selectedCycle}
                     />
                     <VotedModal
                       open={this.state.votedModalOpen}
                       potentialVoter={this.state.selectedPotentialVoter}
                       close={() => this._closeModal('votedModalOpen')}
+                      cycle={this.state.selectedCycle}
                     />
                     <TaskModal
                       open={this.state.taskModalOpen}

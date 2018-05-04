@@ -123,7 +123,7 @@ class PvListRow extends PureComponent {
                           <div className="control">
                             <div
                               className="tags has-addons hover-hand"
-                              onClick={this.props.openVoteByMailModal}
+                              onClick={() => this.props.openVoteByMailModal('primary')}
                             >
                               <span
                                 className={classNames('tag', 'is-white', {
@@ -153,7 +153,7 @@ class PvListRow extends PureComponent {
                           <div className="control">
                             <div
                               className="tags has-addons hover-hand"
-                              onClick={this.props.openVotedModal}
+                              onClick={() => this.props.openVotedModal('primary')}
                             >
                               <span
                                 className={classNames('tag', 'is-white', {
@@ -189,7 +189,7 @@ class PvListRow extends PureComponent {
                           <div className="control">
                             <div
                               className="tags has-addons hover-hand"
-                              onClick={this.props.openVoteByMailModal}
+                              onClick={() => this.props.openVoteByMailModal('general')}
                             >
                               <span
                                 className={classNames('tag', 'is-white', {
@@ -219,7 +219,7 @@ class PvListRow extends PureComponent {
                           <div className="control">
                             <div
                               className="tags has-addons hover-hand"
-                              onClick={this.props.openVotedModal}
+                              onClick={() => this.props.openVotedModal('general')}
                             >
                               <span
                                 className={classNames('tag', 'is-white', {
