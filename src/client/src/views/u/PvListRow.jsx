@@ -35,6 +35,10 @@ class PvListRow extends PureComponent {
                     <small>
                       Points: {content.pointsEarned} / {content.pointsPotential}
                     </small>
+                    <br />
+                    <small>
+                      Voter Propensity Score: {content.voterFileRecord.propensity_score} / 4
+                    </small>
                   </div>
                 ) : (
                   <div className="content">
