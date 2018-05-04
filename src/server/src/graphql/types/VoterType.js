@@ -9,6 +9,8 @@ export default `
     state: String
     zipcode: String
     dob: isoDate
+    propensity_score: Int
+    party: String
     vo_ab_requested_primary: Boolean
     vo_ab_requested_date_primary: isoDate
     vo_voted_primary: Boolean
