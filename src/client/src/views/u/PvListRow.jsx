@@ -22,7 +22,9 @@ class PvListRow extends PureComponent {
                 {content.voterFileRecord.state_file_id ? (
                   <div className="content">
                     <strong>
-                      {content.voterFileRecord.first_name} {content.voterFileRecord.last_name}
+                      {content.voterFileRecord.first_name} {content.voterFileRecord.last_name} ({
+                        content.voterFileRecord.party
+                      })
                     </strong>
                     <br />
                     <small>

@@ -33,6 +33,8 @@ const ASSOCIATE_PV_VOTER = gql`
         vo_voted_general
         vo_voted_date_general
         vo_voted_method_general
+        propensity_score
+        party
       }
       nextTask {
         id
