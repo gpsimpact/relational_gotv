@@ -15,7 +15,7 @@ class PvListRow extends PureComponent {
         parent={this.props.parent}
         rowIndex={this.props.index}
       >
-        {({ measure }) => (
+        {() => (
           <div>
             <div className="columns">
               <div className="column">

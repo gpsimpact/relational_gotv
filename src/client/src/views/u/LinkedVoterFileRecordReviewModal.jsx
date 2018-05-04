@@ -31,62 +31,89 @@ class LinkedVoterFileRecordReviewModal extends Component {
 
         <div className="modal-card">
           <header className="modal-card-head">
-            <p className="modal-card-title">Matched to Voter File Record</p>
+            <p className="modal-card-title">Associated Voter File Record</p>
             <button className="delete" aria-label="close" onClick={() => this.props.close()} />
           </header>
           <section className="modal-card-body">
             <div className="content">
-              <h4>
-                {potentialVoter.first_name} {potentialVoter.last_name} is linked to voter file
-                record:
-              </h4>
-              <dl>
-                <dt>
-                  <strong>KS Voter File Id</strong>
-                </dt>
-                <dd>{potentialVoter.voterFileRecord.state_file_id}</dd>
-                <dt>
-                  <strong>Name</strong>
-                </dt>
-                <dd>
-                  {potentialVoter.voterFileRecord.first_name}&nbsp;
-                  {potentialVoter.voterFileRecord.middle_name}&nbsp;
-                  {potentialVoter.voterFileRecord.last_name}
-                </dd>
-                <dt>
-                  <strong>Address</strong>
-                </dt>
-                <dd>{`${potentialVoter.voterFileRecord.home_address} - ${
-                  potentialVoter.voterFileRecord.city
-                }, ${potentialVoter.voterFileRecord.state} ${
-                  potentialVoter.voterFileRecord.zipcode
-                }`}</dd>
+              {potentialVoter.voterFileRecord.state_file_id ? (
+                <div>
+                  <h4>
+                    {potentialVoter.first_name} {potentialVoter.last_name} is linked to voter file
+                    record:
+                  </h4>
+                  <dl>
+                    <dt>
+                      <strong>KS Voter File Id</strong>
+                    </dt>
+                    <dd>{potentialVoter.voterFileRecord.state_file_id}</dd>
+                    <dt>
+                      <strong>Name</strong>
+                    </dt>
+                    <dd>
+                      {potentialVoter.voterFileRecord.first_name}&nbsp;
+                      {potentialVoter.voterFileRecord.middle_name}&nbsp;
+                      {potentialVoter.voterFileRecord.last_name}
+                    </dd>
+                    <dt>
+                      <strong>Address</strong>
+                    </dt>
+                    <dd>{`${potentialVoter.voterFileRecord.home_address} - ${
+                      potentialVoter.voterFileRecord.city
+                    }, ${potentialVoter.voterFileRecord.state} ${
+                      potentialVoter.voterFileRecord.zipcode
+                    }`}</dd>
 
-                <dt>
-                  <strong>Age</strong>
-                </dt>
-                {potentialVoter &&
-                potentialVoter.voterFileRecord &&
-                potentialVoter.voterFileRecord.dob ? (
-                  <dd>
-                    {differenceInCalendarYears(
-                      new Date(),
-                      parse(potentialVoter.voterFileRecord.dob)
-                    )}{' '}
-                    years old
-                  </dd>
-                ) : (
-                  <dd>?</dd>
-                )}
-              </dl>
+                    <dt>
+                      <strong>Age</strong>
+                    </dt>
+                    {potentialVoter &&
+                    potentialVoter.voterFileRecord &&
+                    potentialVoter.voterFileRecord.dob ? (
+                      <dd>
+                        {differenceInCalendarYears(
+                          new Date(),
+                          parse(potentialVoter.voterFileRecord.dob)
+                        )}{' '}
+                        years old
+                      </dd>
+                    ) : (
+                      <dd>?</dd>
+                    )}
+                  </dl>
+                </div>
+              ) : (
+                <div>
+                  <h4>
+                    {potentialVoter.first_name} {potentialVoter.last_name} is NOT currently linked
+                    to voter file record
+                  </h4>
+                  <p>
+                    This contact is not currently matched to a voter file record. Click below to
+                    attempt to search for their record to link to this contact.
+                  </p>
+                  <button
+                    className="button is-link submit-button is-fullwidth"
+                    color="primary"
+                    onClick={() => {
+                      this.props.close();
+                      this.props.openVoterSearchModal();
+                    }}
+                  >
+                    Search for matching voter records
+                  </button>
+                </div>
+              )}
             </div>
           </section>
 
           <footer className="modal-card-foot">
-            <DisassociateVoterButton
-              pv_id={potentialVoter && potentialVoter.id}
-              close_modal={this.props.close}
-            />
+            {potentialVoter.voterFileRecord.state_file_id ? (
+              <DisassociateVoterButton
+                pv_id={potentialVoter && potentialVoter.id}
+                close_modal={this.props.close}
+              />
+            ) : null}
           </footer>
         </div>
         <button
@@ -103,6 +130,7 @@ LinkedVoterFileRecordReviewModal.propTypes = {
   potentialVoter: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
+  openVoterSearchModal: PropTypes.func.isRequired,
 };
 
 export default LinkedVoterFileRecordReviewModal;

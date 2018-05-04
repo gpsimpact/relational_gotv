@@ -239,6 +239,9 @@ class PotentialVotersList extends PureComponent {
                       open={this.state.voterReviewModalOpen}
                       potentialVoter={this.state.selectedPotentialVoter}
                       close={() => this._closeModal('voterReviewModalOpen')}
+                      openVoterSearchModal={() =>
+                        this._openModal('voterSearchModalOpen', this.state.selectedPotentialVoter)
+                      }
                     />
                     <VoteByMailModal
                       open={this.state.voteByMailModalOpen}
@@ -254,6 +257,9 @@ class PotentialVotersList extends PureComponent {
                       open={this.state.taskModalOpen}
                       potentialVoter={this.state.selectedPotentialVoter}
                       close={() => this._closeModal('taskModalOpen')}
+                      openVoterSearchModal={() =>
+                        this._openModal('voterSearchModalOpen', this.state.selectedPotentialVoter)
+                      }
                     />
                     <PvEditModal
                       open={this.state.pvEditModalOpen}

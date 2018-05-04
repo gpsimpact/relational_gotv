@@ -15,7 +15,7 @@ class PvListRow extends PureComponent {
         parent={this.props.parent}
         rowIndex={this.props.index}
       >
-        {({ measure }) => (
+        {() => (
           <div>
             <div className="columns">
               <div className="column">
@@ -90,12 +90,24 @@ class PvListRow extends PureComponent {
                           className="tags has-addons hover-hand"
                           onClick={this.props.openVoterReviewModal}
                         >
-                          <span className="tag is-white tag-button-success">
+                          <span
+                            className={classNames('tag', 'is-white', {
+                              'tag-button-danger': content.voterFileRecord.state_file_id === null,
+                              'tag-button-success': content.voterFileRecord.state_file_id !== null,
+                            })}
+                          >
                             <abbr title="Has this contact been matched to a registered voter in the voter file?">
                               Registered?
                             </abbr>
                           </span>
-                          <span className="tag is-success">Yes</span>
+                          <span
+                            className={classNames('tag', {
+                              'is-danger': content.voterFileRecord.state_file_id === null,
+                              'is-success': content.voterFileRecord.state_file_id !== null,
+                            })}
+                          >
+                            {content.voterFileRecord.state_file_id ? 'Yes' : 'No'}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -279,6 +291,9 @@ PvListRow.propTypes = {
   openTaskModal: PropTypes.func.isRequired,
   openPvEditModal: PropTypes.func.isRequired,
   openDeleteModal: PropTypes.func.isRequired,
+  cache: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  parent: PropTypes.object.isRequired,
 };
 
 export default PvListRow;

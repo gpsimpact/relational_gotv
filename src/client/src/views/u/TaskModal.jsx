@@ -25,47 +25,78 @@ class TaskModal extends PureComponent {
           </header>
           <section className="modal-card-body">
             <div className="content">
-              <Mutation
-                mutation={UPDATE_TASK}
-                refetchQueries={[
-                  {
-                    query: POINTS_PROFILE_USER_ORG_LIMITED,
-                    variables: { email: getUserEmail(), org_id: this.props.match.params.orgSlug },
-                  },
-                ]}
-              >
-                {updateTask => (
-                  <div>
-                    {potentialVoter.nextTask ? (
-                      <SchemaForm
-                        key={potentialVoter.nextTask.id}
-                        taskId={potentialVoter.nextTask.id}
-                        schema={potentialVoter.nextTask.form_schema}
-                        point_value={potentialVoter.nextTask.point_value}
-                        submitFn={values =>
-                          updateTask({
-                            variables: {
-                              id: potentialVoter.nextTask.id,
-                              status: 'COMPLETE',
-                              form_data: values,
-                            },
-                          }).then(() => this.props.close())
-                        }
-                      />
-                    ) : (
-                      <div>
-                        <div className="has-text-centered	">
-                          <FontAwesomeIcon icon={faThumbsUp} size="10x" />
+              {potentialVoter.voterFileRecord && potentialVoter.voterFileRecord.state_file_id ? (
+                <Mutation
+                  mutation={UPDATE_TASK}
+                  refetchQueries={[
+                    {
+                      query: POINTS_PROFILE_USER_ORG_LIMITED,
+                      variables: { email: getUserEmail(), org_id: this.props.match.params.orgSlug },
+                    },
+                  ]}
+                >
+                  {updateTask => (
+                    <div>
+                      {potentialVoter.nextTask ? (
+                        <SchemaForm
+                          key={potentialVoter.nextTask.id}
+                          taskId={potentialVoter.nextTask.id}
+                          schema={potentialVoter.nextTask.form_schema}
+                          point_value={potentialVoter.nextTask.point_value}
+                          submitFn={values =>
+                            updateTask({
+                              variables: {
+                                id: potentialVoter.nextTask.id,
+                                status: 'COMPLETE',
+                                form_data: values,
+                              },
+                            }).then(() => this.props.close())
+                          }
+                        />
+                      ) : (
+                        <div>
+                          <div className="has-text-centered	">
+                            <FontAwesomeIcon icon={faThumbsUp} size="10x" />
+                          </div>
+                          <h2>
+                            You&apos;ve completed all the currently assigned tasks for this voter!
+                          </h2>
+                          <p>Check back again soon as we are always adding more tasks</p>
                         </div>
-                        <h2>
-                          You&apos;ve completed all the currently assigned tasks for this voter!
-                        </h2>
-                        <p>Check back again soon as we are always adding more tasks</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </Mutation>
+                      )}
+                    </div>
+                  )}
+                </Mutation>
+              ) : (
+                <div className="content">
+                  <h4>Match this person to the voter file. </h4>
+                  <p>
+                    <strong>
+                      Your first task is to make sure this person is registered to vote!
+                    </strong>
+                  </p>
+                  <p>
+                    First, check to see if you can match them up with a record in the public voter
+                    file provided by your county.
+                  </p>
+                  <button
+                    className="button is-link submit-button is-fullwidth"
+                    color="primary"
+                    onClick={() => {
+                      this.props.close();
+                      this.props.openVoterSearchModal();
+                    }}
+                  >
+                    Search for matching voter records
+                  </button>
+                  <p style={{ paddingTop: 10 }}>
+                    If they aren’t there, it might be that they aren’t registered to vote. You
+                    should contact them and ask them if they’ve registered recently, or if you might
+                    have their name or city wrong. If they aren’t registered, or they don’t know,
+                    encourage them to go to ksvotes.org to check their registration or to register
+                  </p>
+                </div>
+              )}
             </div>
           </section>
         </div>
@@ -84,6 +115,7 @@ TaskModal.propTypes = {
   close: PropTypes.func.isRequired,
   potentialVoter: PropTypes.object.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
+  openVoterSearchModal: PropTypes.func.isRequired,
 };
 
 export default withRouter(TaskModal);
