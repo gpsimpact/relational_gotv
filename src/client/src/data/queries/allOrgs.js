@@ -16,6 +16,7 @@ const ALL_ORGS = gql`
         contact_name
         contact_email
         contact_phone
+        admin_notes
       }
     }
   }

@@ -7,6 +7,8 @@ import NewPotentialVoterForm from './NewPotentialVoterForm';
 import OrgSidebarInfo from './OrgSidebarInfo';
 import classNames from 'classnames';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import { isOrgAdmin } from '../../utils/auth';
+import OrgAdminSection from './OrgAdminSection';
 
 class UserHome extends PureComponent {
   state = {
@@ -19,6 +21,7 @@ class UserHome extends PureComponent {
           <div className="columns">
             <div className="column is-three-quarters" style={{ paddingRight: 30 }}>
               <PotentialVotersList org_id={this.props.match.params.orgSlug} />
+              {isOrgAdmin(this.props.match.params.orgSlug) ? <OrgAdminSection /> : null}
               <div className={classNames('modal', { 'is-active': this.state.newPvModalOpen })}>
                 <div
                   className="modal-background"

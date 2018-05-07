@@ -1,5 +1,5 @@
 import decode from 'jwt-decode';
-import { keys, has } from 'lodash';
+import { keys, has, includes } from 'lodash';
 
 export const setToken = idToken => localStorage.setItem('token', idToken);
 
@@ -38,6 +38,15 @@ export const hasOrgAccess = orgId => {
   const token = getToken();
   const decoded = decode(token);
   return has(decoded.permissions, orgId);
+};
+
+export const isOrgAdmin = orgId => {
+  const token = getToken();
+  const decoded = decode(token);
+  if (!has(decoded.permissions, orgId)) {
+    return false;
+  }
+  return includes(decoded.permissions[orgId], 'ADMIN');
 };
 
 export const getUserEmail = () => {

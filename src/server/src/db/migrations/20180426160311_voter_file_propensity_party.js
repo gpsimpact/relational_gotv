@@ -6,5 +6,7 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.raw('ALTER TABLE voter_file DROP COLUMN propensity_score, DROP COLUM party CASCADE');
+  return knex.raw(
+    'ALTER TABLE voter_file DROP COLUMN propensity_score CASCADE, DROP COLUMN party CASCADE'
+  );
 };

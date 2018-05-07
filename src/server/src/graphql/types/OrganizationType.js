@@ -8,6 +8,7 @@ export default `
     contact_name: String!
     contact_email: String!
     contact_phone: String!
+    admin_notes: String
   }
 
   type OrganizationUserPermission {

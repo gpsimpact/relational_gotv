@@ -7,7 +7,7 @@ import redisDb from '../redisClient';
 // import { find } from 'lodash';
 // import bcrypt from 'bcrypt';
 // import jwt from 'jsonwebtoken';
-// import { generateFakeUsers } from '../utils';
+import { generateFakeUsers } from '../utils';
 
 beforeAll(async () => await db.migrate.latest({ directory: 'src/db/migrations' }));
 beforeEach(
@@ -89,6 +89,91 @@ describe('Organizational Info', () => {
             contact_name
             contact_email
             contact_phone
+          }
+        }
+    `;
+    const result = await graphql(schema, query, rootValue, context);
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(result.data.organization).toEqual(org1);
+  });
+
+  test('Non admins can not get admin notes', async () => {
+    const org1 = {
+      id: faker.random.uuid(),
+      name: faker.company.companyName(),
+      cta: faker.company.catchPhrase(),
+      slug: faker.lorem.slug(),
+      contact_name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      contact_email: faker.internet.email(),
+      contact_phone: faker.phone.phoneNumber(),
+      admin_notes: faker.company.catchPhrase(),
+    };
+
+    await db('organizations').insert(org1);
+
+    const rootValue = {};
+    const context = new MakeContext({
+      user: null,
+    });
+
+    const query = `
+      query {
+          organization(
+            where: {
+              id: "${org1.id}"
+            },
+          ) {
+            id
+            name
+            cta
+            slug
+            contact_name
+            contact_email
+            contact_phone
+            admin_notes
+          }
+        }
+    `;
+    const result = await graphql(schema, query, rootValue, context);
+    // console.log(JSON.stringify(result, null, '\t'));
+    expect(result.data.organization.admin_notes).toBeNull();
+  });
+
+  test('Admins can get admin notes', async () => {
+    const users = generateFakeUsers(3, 17);
+    const org1 = {
+      id: faker.random.uuid(),
+      name: faker.company.companyName(),
+      cta: faker.company.catchPhrase(),
+      slug: faker.lorem.slug(),
+      contact_name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      contact_email: faker.internet.email(),
+      contact_phone: faker.phone.phoneNumber(),
+      admin_notes: faker.company.catchPhrase(),
+    };
+
+    await db('organizations').insert(org1);
+
+    const rootValue = {};
+    const context = new MakeContext({
+      user: { email: users[0].email, permissions: { [org1.id]: ['ADMIN'] } },
+    });
+
+    const query = `
+      query {
+          organization(
+            where: {
+              id: "${org1.id}"
+            },
+          ) {
+            id
+            name
+            cta
+            slug
+            contact_name
+            contact_email
+            contact_phone
+            admin_notes
           }
         }
     `;

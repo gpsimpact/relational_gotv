@@ -10,6 +10,7 @@ const ORG_DETAILS = gql`
       contact_name
       contact_email
       contact_phone
+      admin_notes
     }
   }
 `;
