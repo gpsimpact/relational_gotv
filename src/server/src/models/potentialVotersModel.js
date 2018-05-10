@@ -35,10 +35,10 @@ class PotentialVoterModel {
 
   createPotentialVoter = async ({ data }, ctx) => {
     if (hasPermission(ctx.user, data.org_id, 'AMBASSADOR', true)) {
-      const dlKey = {
-        user_email: ctx.user.email,
-        org_id: data.org_id,
-      };
+      // const dlKey = {
+      //   user_email: ctx.user.email,
+      //   org_id: data.org_id,
+      // };
 
       const manualInsert = await ctx.connectors.potentialVoters.createPotentialVoter({
         ...data,

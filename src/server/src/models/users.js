@@ -53,12 +53,15 @@ class UserModel {
 
     const permsByService = {};
     map(userServicePermissionsRaw, permission => {
-      if (has(permsByService, permission.service_id)) {
+      if (has(permsByService, permission.org_id)) {
         permsByService[permission.org_id].push(permission.permission);
       } else {
         permsByService[permission.org_id] = [permission.permission];
       }
     });
+
+    console.log(userServicePermissionsRaw);
+    console.log(permsByService);
 
     const tokenPayload = {
       email,
