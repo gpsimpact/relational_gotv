@@ -6,7 +6,7 @@ import MakeContext from '../Context';
 // import { find } from 'lodash';
 // import bcrypt from 'bcrypt';
 // import jwt from 'jsonwebtoken';
-import { generateFakePVs, generateFakeUsers } from '../utils';
+import { generateFakePVs, generateFakeUsers, generateFakeVoters } from '../utils';
 import redisDb from '../redisClient';
 
 beforeAll(async () => await db.migrate.latest({ directory: 'src/db/migrations' }));
@@ -17,6 +17,7 @@ beforeEach(
       db.raw('TRUNCATE TABLE tasks CASCADE'),
       db.raw('TRUNCATE TABLE users CASCADE'),
       db.raw('TRUNCATE TABLE organizations CASCADE'),
+      db.raw('TRUNCATE TABLE voter_file CASCADE'),
       redisDb.flushall(),
     ])
 );
@@ -27,6 +28,8 @@ describe('Tasks', () => {
     const users = generateFakeUsers(1, 1);
     const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
     const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
+    const voters = generateFakeVoters(1, 199);
+    pvs[0].state_file_id = voters[0].state_file_id;
     const tasks = [
       {
         id: faker.random.uuid(),
@@ -63,6 +66,7 @@ describe('Tasks', () => {
     await db('organizations').insert(org1);
     await db('potential_voters').insert(pvs);
     await db('tasks').insert(tasks);
+    await db('voter_file').insert(voters);
     const userPerms = {
       [org1.id]: ['AMBASSADOR'],
     };
@@ -100,7 +104,7 @@ describe('Tasks', () => {
         last_name: users[0].last_name,
         email: users[0].email,
       },
-      earned: 289,
+      earned: 300,
       potential: 333,
     });
   });
@@ -192,8 +196,6 @@ describe('Tasks', () => {
                 last_name
                 email
               }
-              earned
-              potential
             }
           }
         }
@@ -210,8 +212,6 @@ describe('Tasks', () => {
         last_name: users[0].last_name,
         email: users[0].email,
       },
-      earned: 289,
-      potential: 333,
     });
     expect(result.data.points.items).toContainEqual({
       organization: { id: org1.id },
@@ -220,8 +220,6 @@ describe('Tasks', () => {
         last_name: users[1].last_name,
         email: null,
       },
-      earned: 289,
-      potential: 333,
     });
   });
 
@@ -312,8 +310,6 @@ describe('Tasks', () => {
                 last_name
                 email
               }
-              earned
-              potential
             }
           }
         }
@@ -330,8 +326,6 @@ describe('Tasks', () => {
         last_name: users[0].last_name,
         email: users[0].email,
       },
-      earned: 289,
-      potential: 333,
     });
     expect(result.data.points.items).toContainEqual({
       organization: { id: org1.id },
@@ -340,8 +334,6 @@ describe('Tasks', () => {
         last_name: users[1].last_name,
         email: users[1].email,
       },
-      earned: 289,
-      potential: 333,
     });
   });
 });

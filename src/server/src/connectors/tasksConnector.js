@@ -1,5 +1,5 @@
 import DataLoader from 'dataloader';
-import { mapTo } from '../utils';
+import { mapTo, mapToMany } from '../utils';
 import { map } from 'lodash';
 import { write } from 'fs';
 // import knex from 'knex';
@@ -34,6 +34,14 @@ class TasksConnector {
       .orderBy('pv_id', 'sequence')
       .distinct(this.sqlDb.raw('ON (pv_id) *'))
       .then(mapTo(keys, x => x.pv_id))
+  );
+
+  relevantTasksByPvId = new DataLoader(keys =>
+    this.sqlDb
+      .table('task_availability')
+      .whereIn('pv_id', keys)
+      .where({ dependency_met: true, time_constraint_available: true })
+      .then(mapToMany(keys, x => x.pv_id))
   );
 
   completedTasksCountByPvId = new DataLoader(keys =>

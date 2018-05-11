@@ -503,10 +503,8 @@ describe('Potential Voters', () => {
               id: "${pvs[0].id}"
             }
           ) {
-            nextTask {
+            tasks {
               id
-              form_schema
-              form_data
               point_value
               status
               sequence
@@ -519,7 +517,7 @@ describe('Potential Voters', () => {
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.potentialVoter.nextTask.id).toBe(tasks[1].id);
+    expect(result.data.potentialVoter.tasks.length).toEqual(tasks.length);
   });
 
   test('PV query returns task counts', async () => {
@@ -653,7 +651,7 @@ describe('Potential Voters', () => {
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.potentialVoter.pointsEarned).toBe(79);
+    expect(result.data.potentialVoter.pointsEarned).toBe(74);
     expect(result.data.potentialVoter.pointsPotential).toBe(362);
   });
 });

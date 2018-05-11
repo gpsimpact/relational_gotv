@@ -6,7 +6,7 @@ export default `
     city: String!
     user_email: String!
     org_id: String!
-    nextTask: Task
+    nextTask: Task # depreciated
     countCompletedTasks: Int
     countAvailableTasks: Int
     pointsEarned: Int
@@ -14,6 +14,7 @@ export default `
     taskPoints: Int
     voterFileRecord: Voter
     deleted: Boolean
+    tasks: [Task]
   }
 
   input PotentialVoterInput {
