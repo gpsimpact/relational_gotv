@@ -60,9 +60,6 @@ class UserModel {
       }
     });
 
-    console.log(userServicePermissionsRaw);
-    console.log(permsByService);
-
     const tokenPayload = {
       email,
       permissions: permsByService,

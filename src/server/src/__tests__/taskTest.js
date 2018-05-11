@@ -158,4 +158,200 @@ describe('Tasks', () => {
     // expect db tasks for this pv to match
     expect(dbTasks.length).toEqual(newPVtasks.length);
   });
+
+  test('task_availabillity view correctly checks dependency requirement when it is unmet', async () => {
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
+    const tasks = [
+      {
+        id: 'alpha',
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INCOMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+      {
+        id: 'beta',
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INCOMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+        only_after_completion_of: 'alpha',
+      },
+    ];
+    await db('users').insert(users[0]);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+    await db('tasks').insert(tasks);
+    const dbTasks = await db
+      .table('task_availability')
+      .where({ pv_id: pvs[0].id, id: 'beta' })
+      .first();
+    expect(dbTasks.dependency_met).toBe(false);
+  });
+
+  test('task_availabillity view correctly checks dependency requirement when it is met', async () => {
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
+    const tasks = [
+      {
+        id: 'alpha',
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INCOMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+      {
+        id: 'beta',
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INCOMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+    ];
+    await db('users').insert(users[0]);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+    await db('tasks').insert(tasks);
+    const dbTasks = await db
+      .table('task_availability')
+      .where({ pv_id: pvs[0].id, id: 'beta' })
+      .first();
+    expect(dbTasks.dependency_met).toBe(true);
+  });
+
+  test('task_availabillity view correctly states time relevancy', async () => {
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
+    const tasks = [
+      {
+        id: 'alpha',
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INCOMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+        not_visible_before: '2020-01-01',
+      },
+      {
+        id: 'beta',
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INCOMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+        not_visible_after: '2010-01-01',
+      },
+      {
+        id: 'charlie',
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INCOMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+    ];
+    await db('users').insert(users[0]);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+    await db('tasks').insert(tasks);
+    const alpha = await db
+      .table('task_availability')
+      .where({ pv_id: pvs[0].id, id: 'alpha' })
+      .first();
+    expect(alpha.time_constraint_available).toBe(false);
+
+    const beta = await db
+      .table('task_availability')
+      .where({ pv_id: pvs[0].id, id: 'beta' })
+      .first();
+    expect(beta.time_constraint_available).toBe(false);
+
+    const charlie = await db
+      .table('task_availability')
+      .where({ pv_id: pvs[0].id, id: 'charlie' })
+      .first();
+    expect(charlie.time_constraint_available).toBe(true);
+  });
+
+  test('task_availabillity view correctly states status availabillity', async () => {
+    const users = generateFakeUsers(1, 1);
+    const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
+    const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
+    const tasks = [
+      {
+        id: 'alpha',
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INCOMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+      {
+        id: 'beta',
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'COMPLETE',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+      {
+        id: 'charlie',
+        form_schema: JSON.stringify({}),
+        pv_id: pvs[0].id,
+        form_data: JSON.stringify({}),
+        point_value: faker.random.number(),
+        status: 'INPROGRESS',
+        sequence: 1,
+        description: faker.commerce.productName(),
+      },
+    ];
+    await db('users').insert(users[0]);
+    await db('organizations').insert(org1);
+    await db('potential_voters').insert(pvs);
+    await db('tasks').insert(tasks);
+
+    const alpha = await db
+      .table('task_availability')
+      .where({ pv_id: pvs[0].id, id: 'alpha' })
+      .first();
+    expect(alpha.status_available).toBe(true);
+
+    const beta = await db
+      .table('task_availability')
+      .where({ pv_id: pvs[0].id, id: 'beta' })
+      .first();
+    expect(beta.status_available).toBe(false);
+
+    const charlie = await db
+      .table('task_availability')
+      .where({ pv_id: pvs[0].id, id: 'charlie' })
+      .first();
+    expect(charlie.status_available).toBe(true);
+  });
 });
