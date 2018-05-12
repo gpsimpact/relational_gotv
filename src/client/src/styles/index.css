@@ -13034,3 +13034,11 @@ label.panel-block {
 .tag-button-danger:hover {
   background-color: #ff3860 !important;
   color: white !important; }
+
+.task_row.complete {
+  font-style: italic;
+  color: #23d160; }
+
+.task_title.complete {
+  font-style: italic;
+  text-decoration: line-through; }

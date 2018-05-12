@@ -10,17 +10,24 @@ import { withRouter } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/fontawesome-pro-solid';
+import { faSquare, faCheckSquare } from '@fortawesome/fontawesome-pro-light';
+import { sortBy } from 'lodash';
 
 class TaskModal extends PureComponent {
+  state = {
+    selectedTask: null,
+  };
+
   render() {
     const { potentialVoter } = this.props;
+    const sortedTasks = sortBy(potentialVoter.tasks, 'status').reverse();
     return (
       <div className={classNames('modal', { 'is-active': this.props.open })}>
         <div className="modal-background" onClick={() => this.props.close()} />
 
         <div className="modal-card">
           <header className="modal-card-head">
-            <p className="modal-card-title">The next task:</p>
+            <p className="modal-card-title">Tasks</p>
             <button className="delete" aria-label="close" onClick={() => this.props.close()} />
           </header>
           <section className="modal-card-body">
@@ -37,16 +44,16 @@ class TaskModal extends PureComponent {
                 >
                   {updateTask => (
                     <div>
-                      {potentialVoter.nextTask ? (
+                      {this.state.selectedTask !== null ? (
                         <SchemaForm
-                          key={potentialVoter.nextTask.id}
-                          taskId={potentialVoter.nextTask.id}
-                          schema={potentialVoter.nextTask.form_schema}
-                          point_value={potentialVoter.nextTask.point_value}
+                          key={this.state.selectedTask.id}
+                          taskId={this.state.selectedTask.id}
+                          schema={this.state.selectedTask.form_schema}
+                          point_value={this.state.selectedTask.point_value}
                           submitFn={values =>
                             updateTask({
                               variables: {
-                                id: potentialVoter.nextTask.id,
+                                id: this.state.selectedTask.id,
                                 status: 'COMPLETE',
                                 form_data: values,
                               },
@@ -55,13 +62,65 @@ class TaskModal extends PureComponent {
                         />
                       ) : (
                         <div>
-                          <div className="has-text-centered	">
-                            <FontAwesomeIcon icon={faThumbsUp} size="10x" />
-                          </div>
-                          <h2>
-                            You&apos;ve completed all the currently assigned tasks for this voter!
-                          </h2>
-                          <p>Check back again soon as we are always adding more tasks</p>
+                          {sortedTasks.length > 0 ? (
+                            <div className="content">
+                              <h4>
+                                Click a task below to preview or complete. Completed tasks earn
+                                points!
+                              </h4>
+                              <table className="table">
+                                <thead>
+                                  <tr>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>Points</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {sortedTasks.map(task => (
+                                    <tr
+                                      className={classNames('task_row', {
+                                        complete: task.status === 'COMPLETE',
+                                      })}
+                                      key={task.id}
+                                      onClick={() => {
+                                        if (task.status !== 'COMPLETE') {
+                                          this.setState({ selectedTask: task });
+                                        }
+                                      }}
+                                    >
+                                      <td
+                                        className={classNames('task_title', {
+                                          complete: task.status === 'COMPLETE',
+                                        })}
+                                      >
+                                        {task.description}
+                                      </td>
+                                      <td>
+                                        {task.status === 'COMPLETE' ? (
+                                          <FontAwesomeIcon icon={faCheckSquare} size="2x" />
+                                        ) : (
+                                          <FontAwesomeIcon icon={faSquare} size="2x" />
+                                        )}
+                                      </td>
+                                      <td>{task.point_value}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          ) : (
+                            <div>
+                              <div className="has-text-centered	">
+                                <FontAwesomeIcon icon={faThumbsUp} size="10x" />
+                              </div>
+                              <h2>
+                                You&apos;ve completed all the currently assigned tasks for this
+                                voter!
+                              </h2>
+                              <p>Check back again soon as we are always adding more tasks</p>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>

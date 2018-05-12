@@ -47,6 +47,13 @@ const MY_POTENTIAL_VOTERS = gql`
           form_schema
           point_value
         }
+        tasks {
+          id
+          description
+          status
+          form_schema
+          point_value
+        }
       }
       pageInfo {
         nextCursor

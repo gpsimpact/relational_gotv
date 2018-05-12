@@ -55,14 +55,25 @@ class TasksConnector {
       .then(mapTo(keys, x => x.pv_id))
   );
 
+  // availableTasksCountByPvId = new DataLoader(keys =>
+  //   this.sqlDb
+  //     .table('tasks')
+  //     .count('* as countAvailableTasks')
+  //     .whereIn('pv_id', keys)
+  //     .whereIn('status', ['INCOMPLETE', 'INPROGRESS'])
+  //     .whereRaw('(not_visible_before <= now() or not_visible_before IS NULL)')
+  //     .whereRaw('(not_visible_after >= now() or not_visible_after IS NULL)')
+  //     .groupBy('pv_id')
+  //     .select('pv_id')
+  //     .then(mapTo(keys, x => x.pv_id))
+  // );
+
   availableTasksCountByPvId = new DataLoader(keys =>
     this.sqlDb
-      .table('tasks')
+      .table('task_availability')
       .count('* as countAvailableTasks')
       .whereIn('pv_id', keys)
-      .whereIn('status', ['INCOMPLETE', 'INPROGRESS'])
-      .whereRaw('(not_visible_before <= now() or not_visible_before IS NULL)')
-      .whereRaw('(not_visible_after >= now() or not_visible_after IS NULL)')
+      .where({ dependency_met: true, time_constraint_available: true, status_available: true })
       .groupBy('pv_id')
       .select('pv_id')
       .then(mapTo(keys, x => x.pv_id))

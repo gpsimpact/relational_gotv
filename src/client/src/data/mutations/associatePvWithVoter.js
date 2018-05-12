@@ -41,6 +41,13 @@ const ASSOCIATE_PV_VOTER = gql`
         form_schema
         point_value
       }
+      tasks {
+        id
+        description
+        status
+        form_schema
+        point_value
+      }
     }
   }
 `;

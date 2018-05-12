@@ -45,6 +45,13 @@ const UPDATE_TASK = gql`
           form_schema
           point_value
         }
+        tasks {
+          id
+          description
+          status
+          form_schema
+          point_value
+        }
       }
     }
   }

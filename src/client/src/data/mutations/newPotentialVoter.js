@@ -41,6 +41,13 @@ const NEW_POTENTIAL_VOTER = gql`
         form_schema
         point_value
       }
+      tasks {
+        id
+        description
+        status
+        form_schema
+        point_value
+      }
     }
   }
 `;

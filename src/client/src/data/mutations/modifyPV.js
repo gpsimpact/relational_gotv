@@ -41,6 +41,13 @@ const UPDATE_PV = gql`
         form_schema
         point_value
       }
+      tasks {
+        id
+        description
+        status
+        form_schema
+        point_value
+      }
     }
   }
 `;

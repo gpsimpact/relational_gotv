@@ -59,3 +59,13 @@
   background-color: $danger !important;
   color: $white !important;
 }
+
+.task_row.complete {
+  font-style: italic;
+  color: $success;
+}
+
+.task_title.complete {
+  font-style: italic;
+  text-decoration: line-through; 
+}
