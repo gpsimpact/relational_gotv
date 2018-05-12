@@ -7,10 +7,10 @@ class Footer extends PureComponent {
         <div className="container">
           <div className="content has-text-centered">
             <p>
-              <strong>The Voter to Voter Project</strong> is supported by{' '}
-              <a href="https://www.mainstreamcoalition.org/">the MainStream Education Foundation</a>{' '}
-              with support from the{' '}
-              <a href="https://reachhealth.org/">Reach Healthcare Foundation</a>.
+              This Relational Get Out The Vote project was conceived by{' '}
+              <a href="https://www.gpsimpact.com/">GPS Impact</a> and the{' '}
+              <a href="https://www.mainstreamcoalition.org/">MainStream Education Foundation.</a>{' '}
+              Personal. Powerful.
             </p>
           </div>
         </div>
