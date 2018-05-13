@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tasks point total scenario 1 1`] = `
+Object {
+  "data": Object {
+    "points": Object {
+      "items": Array [
+        Object {
+          "earned": 137,
+          "organization": Object {
+            "id": "dfbda790-67cb-47da-a05a-021d6f30409a",
+          },
+          "potential": 2,
+          "user": Object {
+            "email": "Cindy.Pacocha@gmail.com",
+            "first_name": "Geo",
+            "last_name": "Franecki",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`Tasks point total scenario 2 1`] = `
+Object {
+  "data": Object {
+    "points": Object {
+      "items": Array [
+        Object {
+          "earned": 27,
+          "organization": Object {
+            "id": "dfbda790-67cb-47da-a05a-021d6f30409a",
+          },
+          "potential": 2,
+          "user": Object {
+            "email": "Cindy.Pacocha@gmail.com",
+            "first_name": "Geo",
+            "last_name": "Franecki",
+          },
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`Tasks point total scenario 3 1`] = `
+Object {
+  "data": Object {
+    "points": Object {
+      "items": Array [
+        Object {
+          "earned": 0,
+          "organization": Object {
+            "id": "dfbda790-67cb-47da-a05a-021d6f30409a",
+          },
+          "potential": 0,
+          "user": Object {
+            "email": "Cindy.Pacocha@gmail.com",
+            "first_name": "Geo",
+            "last_name": "Franecki",
+          },
+        },
+      ],
+    },
+  },
+}
+`;

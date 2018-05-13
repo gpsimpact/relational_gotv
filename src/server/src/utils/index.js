@@ -56,6 +56,7 @@ export const generateFakePVs = (num, seed, user_email, org_id) => {
         first_name: faker.name.firstName(),
         last_name: faker.name.lastName(),
         city: faker.address.city(),
+        deleted: false,
         user_email,
         org_id,
       });

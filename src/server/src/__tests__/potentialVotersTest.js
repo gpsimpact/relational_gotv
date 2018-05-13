@@ -353,7 +353,7 @@ describe('Potential Voters', () => {
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.potentialVoter).toEqual(pvs[0]);
+    expect(result.data.potentialVoter.id).toEqual(pvs[0].id);
   });
 
   test('User can query for a single PV including voter data', async () => {
@@ -587,13 +587,16 @@ describe('Potential Voters', () => {
     const users = generateFakeUsers(1, 1);
     const org1 = { id: faker.random.uuid(), name: faker.company.companyName() };
     const pvs = generateFakePVs(1, 11, users[0].email, org1.id);
-    const voters = generateFakeVoters(1, 133);
-    // specify test voter condition. should equal 20 + 20 (not 100)
-    voters[0].vo_ab_requested_primary = true;
-    voters[0].vo_voted_primary = false;
-    voters[0].vo_ab_requested_general = true;
-    voters[0].vo_voted_general = false;
-    await db('voter_file').insert(voters);
+    const voters = [
+      {
+        state_file_id: 9988776655,
+        vo_ab_requested_primary: true,
+        vo_voted_primary: true,
+        vo_ab_requested_general: true,
+        vo_voted_general: true,
+        propensity_score: 0,
+      },
+    ];
     pvs[0].state_file_id = voters[0].state_file_id;
     const tasks = [
       {
@@ -601,7 +604,7 @@ describe('Potential Voters', () => {
         form_schema: JSON.stringify({}),
         pv_id: pvs[0].id,
         form_data: JSON.stringify({}),
-        point_value: 21,
+        point_value: 1,
         status: 'COMPLETE',
         sequence: 1,
         description: faker.commerce.productName(),
@@ -611,7 +614,7 @@ describe('Potential Voters', () => {
         form_schema: JSON.stringify({}),
         pv_id: pvs[0].id,
         form_data: JSON.stringify({}),
-        point_value: 42,
+        point_value: 1,
         status: 'COMPLETE',
         sequence: 2,
         description: faker.commerce.productName(),
@@ -621,7 +624,7 @@ describe('Potential Voters', () => {
         form_schema: JSON.stringify({}),
         pv_id: pvs[0].id,
         form_data: JSON.stringify({}),
-        point_value: 299,
+        point_value: 1,
         status: 'INCOMPLETE',
         sequence: 1,
         description: faker.commerce.productName(),
@@ -631,6 +634,7 @@ describe('Potential Voters', () => {
     await db('organizations').insert(org1);
     await db('potential_voters').insert(pvs);
     await db('tasks').insert(tasks);
+    await db('voter_file').insert(voters);
     const userPerms = {
       [org1.id]: ['AMBASSADOR'],
     };
@@ -651,7 +655,7 @@ describe('Potential Voters', () => {
     const context = new MakeContext({ user: { email: users[0].email, permissions: userPerms } });
     const result = await graphql(schema, query, rootValue, context);
     // console.log(JSON.stringify(result, null, '\t'));
-    expect(result.data.potentialVoter.pointsEarned).toBe(74);
-    expect(result.data.potentialVoter.pointsPotential).toBe(362);
+    expect(result.data.potentialVoter.pointsEarned).toBe(138);
+    expect(result.data.potentialVoter.pointsPotential).toBe(3);
   });
 });

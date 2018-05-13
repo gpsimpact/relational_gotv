@@ -20,34 +20,36 @@ exports.up = function(knex) {
                 CASE WHEN voter_file.vo_voted_method_general ILIKE '%EARLY%' THEN 1 ELSE 0 END as vo_ab_requested_general_early,
                 CASE WHEN voter_file.vo_voted_general = true THEN 1 ELSE 0 END AS vo_voted_general,
                 (CASE WHEN voter_file.vo_voted_primary = true THEN 1 ELSE 0 END * 15 * (
-	            	CASE 
-	            		WHEN propensity_score = 0 THEN 5
-	            		WHEN propensity_score = 1 THEN 4
-	            		WHEN propensity_score = 2 THEN 3
-	            		WHEN propensity_score = 3 THEN 2
-	            		WHEN propensity_score = 4 THEN 1
-	            	END
-	            	)
-	            ) AS primary_voted_points, -- 15 points for each voter who voted in primary + propensity bonus
-	            (CASE WHEN voter_file.vo_voted_general = true THEN 1 ELSE 0 END * 10 * (
-	            	CASE 
-	            		WHEN propensity_score = 0 THEN 5
-	            		WHEN propensity_score = 1 THEN 4
-	            		WHEN propensity_score = 2 THEN 3
-	            		WHEN propensity_score = 3 THEN 2
-	            		WHEN propensity_score = 4 THEN 1
-	            	END
-	            	)
-	            ) AS general_voted_points -- 15 points for each voter who voted in general + propensity bonus
+                CASE 
+                  WHEN propensity_score = 0 THEN 5
+                  WHEN propensity_score = 1 THEN 4
+                  WHEN propensity_score = 2 THEN 3
+                  WHEN propensity_score = 3 THEN 2
+                  WHEN propensity_score = 4 THEN 1
+                  ELSE 1
+                END
+                )
+              ) AS primary_voted_points, -- 15 points for each voter who voted in primary + propensity bonus
+              (CASE WHEN voter_file.vo_voted_general = true THEN 1 ELSE 0 END * 10 * (
+                CASE 
+                  WHEN propensity_score = 0 THEN 5
+                  WHEN propensity_score = 1 THEN 4
+                  WHEN propensity_score = 2 THEN 3
+                  WHEN propensity_score = 3 THEN 2
+                  WHEN propensity_score = 4 THEN 1
+                  ELSE 1
+                END
+                )
+              ) AS general_voted_points -- 15 points for each voter who voted in general + propensity bonus
               FROM potential_voters
               -- Join task point calculations
               LEFT JOIN (
                 SELECT 
                   potential_voters.id as pv_id,
                   SUM( CASE WHEN tasks.status = 'COMPLETE' THEN tasks.point_value ELSE 0 END) as earned_task_points,
-                  SUM( tasks.point_value ) as potential_task_points
+                  SUM( CASE WHEN tasks.dependency_met = TRUE AND tasks.time_constraint_available = TRUE THEN tasks.point_value ELSE 0 END) as potential_task_points
                 FROM potential_voters 
-                LEFT JOIN tasks ON tasks.pv_id = potential_voters.id
+                LEFT JOIN task_availability tasks ON tasks.pv_id = potential_voters.id
                 GROUP BY 1
               ) pv_task_sums ON potential_voters.id = pv_task_sums.pv_id
               LEFT JOIN voter_file on potential_voters.state_file_id = voter_file.state_file_id
@@ -86,6 +88,7 @@ exports.up = function(knex) {
           AS earned,
           potential_task_points AS potential
           FROM sums_table
+
         );
       `);
     }
